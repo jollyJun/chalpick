@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>찰픽 — 딱 맞는 콘텐츠만</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500&display=swap" rel="stylesheet">
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          bg: '#0c0c0c',
+          surface: '#181818',
+          card: '#1c1c1c',
+          border: '#2a2a2a',
+          border2: '#383838',
+          accent: '#ff5c2b',
+          accent2: '#ffb347',
+          textmain: '#f0ede8',
+          muted: '#888888',
+          dim: '#555555',
+        },
+        fontFamily: {
+          display: ['"Bebas Neue"', 'sans-serif'],
+          serif: ['"Noto Serif KR"', 'serif'],
+          sans: ['"Noto Sans KR"', 'sans-serif'],
+        },
+      }
+    }
+  }
+</script>
+<style>
+  /* ── BASE ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: #0c0c0c; color: #f0ede8; font-family: 'Noto Sans KR', sans-serif; font-weight: 300; overflow-x: hidden; }
+
+  /* ── NOISE ── */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none; z-index: 1000; opacity: 0.5;
+  }
+
+  /* ── NAV ── */
+  #navbar { transition: background .4s, backdrop-filter .4s, border-color .4s; }
+  #navbar.scrolled { background: rgba(12,12,12,0.88); backdrop-filter: blur(20px); border-color: #2a2a2a !important; }
+
+  /* ── HERO ── */
+  .hero-orb {
+    position: absolute; top: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(255,92,43,0.12) 0%, transparent 65%);
+    pointer-events: none;
+    animation: orb-drift 12s ease-in-out infinite alternate;
+  }
+  @keyframes orb-drift {
+    from { transform: translate(0,0) scale(1); }
+    to   { transform: translate(-60px,80px) scale(1.15); }
+  }
+
+  /* ── HERO TITLE ── */
+  .hero-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(72px, 12vw, 160px);
+    line-height: 0.9;
+    letter-spacing: 2px;
+  }
+  .title-outline { -webkit-text-stroke: 1.5px #f0ede8; color: transparent; }
+  .title-accent  { color: #ff5c2b; }
+
+  /* ── HERO ANIM ── */
+  .hero-eyebrow { opacity:0; transform:translateY(20px); animation: fade-up .8s .2s forwards; }
+  .hero-h1      { opacity:0; transform:translateY(30px); animation: fade-up .9s .4s forwards; }
+  .hero-sub     { opacity:0; transform:translateY(20px); animation: fade-up .8s .7s forwards; }
+  .hero-form    { opacity:0; transform:translateY(20px); animation: fade-up .8s .95s forwards; }
+  .scroll-hint  { opacity:0; animation: fade-up .8s 1.4s forwards; }
+
+  @keyframes fade-up { to { opacity:1; transform:translateY(0); } }
+
+  /* ── SCROLL HINT ── */
+  .scroll-line {
+    width:40px; height:1px;
+    background:#555; position:relative; overflow:hidden;
+  }
+  .scroll-line::after {
+    content:''; position:absolute; top:0; left:-100%;
+    width:100%; height:100%; background:#ff5c2b;
+    animation: slide-right 1.6s 1.6s ease-in-out infinite;
+  }
+  @keyframes slide-right { 0%{left:-100%} 50%{left:0} 100%{left:100%} }
+
+  /* ── EMAIL FORM ── */
+  .form-input {
+    flex:1; background:#181818; border:1px solid #2a2a2a; border-right:none;
+    color:#f0ede8; font-family:'Noto Sans KR',sans-serif; font-size:14px;
+    padding:16px 20px; outline:none;
+    border-radius:2px 0 0 2px; transition:border-color .2s;
+  }
+  .form-input::placeholder { color:#555; }
+  .form-input:focus { border-color:#ff5c2b; }
+  .form-btn {
+    background:#ff5c2b; border:1px solid #ff5c2b; color:#fff;
+    font-family:'Noto Sans KR',sans-serif; font-size:13px; font-weight:500;
+    padding:16px 28px; cursor:pointer; border-radius:0 2px 2px 0;
+    white-space:nowrap; letter-spacing:.5px; transition:background .2s, transform .15s;
+  }
+  .form-btn:hover { background:#e04a1a; transform:translateX(2px); }
+  .form-btn-lg { padding:18px 32px; }
+  .success-msg {
+    display:none; margin-top:12px; padding:14px 22px;
+    background:rgba(255,92,43,.08); border:1px solid rgba(255,92,43,.25);
+    border-radius:2px; font-size:14px; color:#ffb347;
+  }
+
+  /* ── MARQUEE ── */
+  .marquee-track { display:flex; gap:60px; animation:marquee 26s linear infinite; white-space:nowrap; }
+  @keyframes marquee { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+  .m-dot { width:4px; height:4px; border-radius:50%; background:#ff5c2b; display:inline-block; }
+
+  /* ── FEATURE CARD ── */
+  .feat-card { position:relative; overflow:hidden; transition:background .3s; }
+  .feat-card::before {
+    content:''; position:absolute; top:0; left:0; right:0; height:2px;
+    background:#ff5c2b; transform:scaleX(0); transform-origin:left;
+    transition:transform .4s;
+  }
+  .feat-card:hover::before { transform:scaleX(1); }
+  .feat-card:hover { background:#1e1e1e; }
+  .feat-num {
+    font-family:'Bebas Neue',sans-serif; font-size:64px;
+    color:#2a2a2a; line-height:1; margin-bottom:16px; transition:color .3s;
+  }
+  .feat-card:hover .feat-num { color:rgba(255,92,43,.15); }
+
+  /* ── HOW STEP ── */
+  .how-step { opacity:.42; transition:opacity .3s; }
+  .how-step:hover { opacity:1; }
+
+  /* ── TAG ── */
+  .tag { transition:all .2s; cursor:default; }
+  .tag:hover, .tag.active {
+    border-color:#ff5c2b !important; color:#ff5c2b !important;
+    background:rgba(255,92,43,.06);
+  }
+  .tag-group-label {
+    font-size:10px; letter-spacing:3px; color:#555; text-transform:uppercase;
+    display:block; width:100%; text-align:center; margin:20px 0 10px;
+  }
+
+  /* ── CTA ── */
+  .cta-glow {
+    position:absolute; top:50%; left:50%;
+    transform:translate(-50%,-50%);
+    width:600px; height:600px;
+    background:radial-gradient(circle, rgba(255,92,43,.07) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .cta-title { font-family:'Bebas Neue',sans-serif; font-size:clamp(60px,8vw,110px); line-height:.95; }
+  .cta-outline { -webkit-text-stroke:1px #f0ede8; color:transparent; }
+
+  /* ── REVEAL ── */
+  .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s, transform .7s; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:640px){
+    .form-row { flex-direction:column; }
+    .form-input { border-right:1px solid #2a2a2a; border-bottom:none; border-radius:2px 2px 0 0; }
+    .form-btn { border-radius:0 0 2px 2px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ NAV ══ -->
+<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-12 py-5 border-b border-transparent">
+  <a href="#" class="font-display text-3xl tracking-widest text-textmain no-underline">
+    찰<span class="text-accent">픽</span>
+  </a>
+  <a href="#cta" class="text-sm font-medium text-accent border border-accent px-5 py-2 rounded-sm no-underline hover:bg-accent hover:text-white transition-all duration-200" style="letter-spacing:.5px">
+    사전 등록
+  </a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="relative min-h-screen flex flex-col justify-center px-12 pt-32 pb-20 overflow-hidden">
+  <div class="hero-orb"></div>
+
+  <p class="hero-eyebrow text-xs font-medium text-accent mb-8" style="letter-spacing:4px; text-transform:uppercase">
+    콘텐츠 큐레이션 서비스 · Coming Soon
+  </p>
+
+  <h1 class="hero-h1 hero-title max-w-4xl">
+    찰나에<br>
+    <span class="title-outline">PICK</span>
+    <span class="title-accent">하다</span>
+  </h1>
+
+  <p class="hero-sub mt-10 text-lg text-muted max-w-lg" style="line-height:1.8">
+    수백만 개의 콘텐츠 중에서<br>
+    <strong class="text-textmain font-medium">지금 당신에게 딱 맞는 것</strong>만 골라드립니다.<br>
+    웹툰, 영화, OTT, 웹소설, 전자책, 예능, 다큐까지 — 한곳에서.
+  </p>
+
+  <div class="hero-form mt-14">
+    <label class="block mb-3 text-xs text-muted" style="letter-spacing:3px; text-transform:uppercase" for="email1">출시 알림 신청</label>
+    <div class="form-row flex max-w-md">
+      <input type="email" id="email1" class="form-input" placeholder="이메일 주소를 입력하세요" autocomplete="email">
+      <button class="form-btn" onclick="handleSubmit('email1','success1')">알림 받기 →</button>
+    </div>
+    <p class="mt-3 text-xs text-dim">✓ 스팸 없음 &nbsp;·&nbsp; ✓ 언제든 해지 가능 &nbsp;·&nbsp; <span class="text-accent">출시 시 가장 먼저 알려드려요</span></p>
+    <div class="success-msg" id="success1">🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.</div>
+  </div>
+
+  <div class="scroll-hint absolute bottom-10 left-12 flex items-center gap-3 text-xs text-muted" style="letter-spacing:3px; text-transform:uppercase">
+    <span class="scroll-line"></span>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══ MARQUEE ══ -->
+<div class="border-t border-b border-border py-3 overflow-hidden bg-surface">
+  <div class="marquee-track">
+    <!-- set A -->
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      네이버웹툰 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      영화 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      드라마 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      넷플릭스 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      디즈니+ <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      티빙 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      카카오페이지 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      네이버시리즈 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      웨이브 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      리디 <span class="m-dot"></span>
+    </span>
+    <!-- set B (duplicate for seamless loop) -->
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      네이버웹툰 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      영화 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      드라마 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      넷플릭스 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      디즈니+ <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      티빙 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      카카오페이지 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      네이버시리즈 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      웨이브 <span class="m-dot"></span>
+    </span>
+    <span class="font-display text-xs text-muted flex items-center gap-14" style="letter-spacing:5px">
+      리디 <span class="m-dot"></span>
+    </span>
+  </div>
+</div>
+
+<!-- ══ FEATURES ══ -->
+<section class="max-w-6xl mx-auto px-12 py-28">
+  <span class="reveal block text-xs font-medium text-accent mb-5" style="letter-spacing:4px; text-transform:uppercase">왜 찰픽인가</span>
+  <h2 class="reveal font-serif text-4xl md:text-5xl font-bold leading-tight max-w-lg mb-20" style="line-height:1.3">
+    콘텐츠 과부하로 생기는<br>혼란의 시간을 끝냅니다
+  </h2>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-0.5">
+
+    <!-- 01 -->
+    <div class="feat-card reveal bg-card p-12">
+      <div class="feat-num">01</div>
+      <h3 class="text-lg font-medium text-textmain mb-3">취향 학습 AI</h3>
+      <p class="text-sm text-muted leading-relaxed">
+        시간이 지날수록<br>나에게 맞추어지는 콘텐츠 큐레이션<br>알고리즘이 아닌, 취향입니다.
+      </p>
+    </div>
+
+    <!-- 02 -->
+    <div class="feat-card reveal bg-card p-12">
+      <div class="feat-num">02</div>
+      <h3 class="text-lg font-medium text-textmain mb-3">멀티포맷 통합</h3>
+      <p class="text-sm text-muted leading-relaxed">
+        웹툰, 영화, OTT, 웹소설,<br>전자책, 예능, 다큐를 앱 하나로.<br>
+        플랫폼 전환 없이 원하는 콘텐츠를<br>쉽게 찾고 즐겁게 소비하세요.
+      </p>
+    </div>
+
+    <!-- 03 -->
+    <div class="feat-card reveal bg-card p-12">
+      <div class="feat-num">03</div>
+      <h3 class="text-lg font-medium text-textmain mb-3">장르 기반 통합 검색</h3>
+      <p class="text-sm text-muted leading-relaxed">
+        로맨스, 판타지, 미스터리, 드라마 <br>장르 하나만 고르면 웹툰부터 OTT까지<br>한 번에 검색됩니다.<br>플랫폼은 찰픽이 알아서 넘나듭니다.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══ HOW IT WORKS ══ -->
+<section class="bg-surface border-t border-b border-border py-28">
+  <div class="max-w-6xl mx-auto px-12 grid grid-cols-1 md:grid-cols-2 gap-20 items-start">
+
+    <div>
+      <span class="reveal block text-xs font-medium text-accent mb-5" style="letter-spacing:4px; text-transform:uppercase">사용 방법</span>
+      <h2 class="reveal font-serif text-4xl md:text-5xl font-bold" style="line-height:1.3">
+        30초면<br>편해집니다.
+      </h2>
+    </div>
+
+    <div class="flex flex-col">
+
+      <div class="how-step reveal flex gap-6 py-7 border-b border-border">
+        <span class="font-display text-xl text-accent min-w-8 pt-0.5" style="font-size:20px">01</span>
+        <div>
+          <h4 class="text-base font-medium text-textmain mb-2">회원가입</h4>
+          <p class="text-sm text-muted" style="line-height:1.8">
+            회원가입 하면서 관심 장르를 선택하세요. 로맨스, 판타지, 액션 등 취향을 알려주시면 바로 맞춤 피드가 준비됩니다.
+          </p>
+        </div>
+      </div>
+
+      <div class="how-step reveal flex gap-6 py-7 border-b border-border">
+        <span class="font-display text-xl text-accent min-w-8 pt-0.5" style="font-size:20px">02</span>
+        <div>
+          <h4 class="text-base font-medium text-textmain mb-2">찰픽 카테고리 적용</h4>
+          <p class="text-sm text-muted" style="line-height:1.8">
+            웹툰, 영화, OTT, 웹소설 등 콘텐츠 유형과 로맨스, 판타지, 역사극 등 장르를 선택하여 검색하세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="how-step reveal flex gap-6 py-7 border-b border-border">
+        <span class="font-display text-xl text-accent min-w-8 pt-0.5" style="font-size:20px">03</span>
+        <div>
+          <h4 class="text-base font-medium text-textmain mb-2">검색 결과 확인</h4>
+          <p class="text-sm text-muted" style="line-height:1.8">
+            플랫폼과 콘텐츠 유형에 상관없이 원하는 장르의 작품들을 찰픽에서 한눈에 확인하세요.
+          </p>
+        </div>
+      </div>
+
+      <div class="how-step reveal flex gap-6 py-7">
+        <span class="font-display text-xl text-accent min-w-8 pt-0.5" style="font-size:20px">04</span>
+        <div>
+          <h4 class="text-base font-medium text-textmain mb-2">콘텐츠 감상</h4>
+          <p class="text-sm text-muted" style="line-height:1.8">
+            마음에 드는 작품을 감상하세요. 나중에 볼 작품은 찰픽 보관함에 저장해두면 언제든 확인가능합니다.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══ CATEGORIES ══ -->
+<section class="max-w-5xl mx-auto px-12 py-24 text-center">
+  <p class="reveal font-serif text-2xl text-muted mb-10">
+    <strong class="text-textmain">어떤 취향이든</strong> 찰픽이 찾아드립니다
+  </p>
+
+  <div class="reveal flex flex-wrap gap-2.5 justify-center">
+    <!-- 장르 태그 -->
+    <span class="tag-group-label">장르</span>
+
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm active">🌸 로맨스</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">⚔️ 액션·무협</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">✨ 판타지·SF</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🔍 미스터리·공포</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">😄 코미디·일상</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">💔 드라마·감동</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📜 역사·시대극</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🎌 이세계·전생</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🏫 학원·청춘</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🏆 스포츠</span>
+
+    <!-- 콘텐츠 유형 -->
+    <span class="tag-group-label">콘텐츠 유형</span>
+
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📖 웹툰</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🎬 영화</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📺 드라마·OTT</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📝 웹소설</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📚 전자책</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">😂 예능·버라이어티</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🎙 다큐·교양</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🎌 애니메이션</span>
+
+    <!-- 플랫폼 -->
+    <span class="tag-group-label">플랫폼</span>
+
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🟢 네이버웹툰</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🔴 넷플릭스</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🔵 디즈니+</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🟣 티빙</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🟡 카카오페이지</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">🎥 영화관</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📗 밀리의서재</span>
+    <span class="tag text-sm border border-border text-muted px-5 py-2.5 rounded-sm">📕 리디</span>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="relative py-36 text-center overflow-hidden" id="cta">
+  <div class="cta-glow"></div>
+
+  <p class="reveal text-xs text-accent mb-6" style="letter-spacing:4px; text-transform:uppercase">얼리어답터 모집 중</p>
+
+  <h2 class="reveal cta-title mb-12">
+    지금 신청하면<br>
+    <span class="cta-outline">무료 프리미엄</span>
+  </h2>
+
+  <div class="reveal">
+    <div class="flex justify-center">
+      <div class="form-row flex max-w-lg w-full px-8 md:px-0">
+        <input type="email" id="email2" class="form-input" placeholder="이메일 주소를 입력하세요" autocomplete="email">
+        <button class="form-btn form-btn-lg" onclick="handleSubmit('email2','success2')">사전 등록하기</button>
+      </div>
+    </div>
+    <div class="success-msg max-w-md mx-auto text-left" id="success2">🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.</div>
+    <p class="mt-4 text-xs text-dim text-center">
+      얼리어답터 <span class="text-accent">3개월 프리미엄 무료</span> 제공 예정 · 선착순 1,000명
+    </p>
+  </div>
+</section>
+
+<!-- ══ FOOTER ══ -->
+<footer class="border-t border-border px-12 py-10 flex justify-between items-center flex-wrap gap-4">
+  <a href="#" class="font-display text-2xl tracking-widest text-muted no-underline">
+    찰<span class="text-accent">픽</span>
+  </a>
+  <span class="text-xs text-dim" style="letter-spacing:.5px">© 2025 찰픽 · 모든 콘텐츠를 찰나에 픽</span>
+</footer>
+
+<script>
+  // Nav scroll
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Scroll reveal
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Tag toggle
+  document.querySelectorAll('.tag').forEach(tag => {
+    tag.addEventListener('click', () => tag.classList.toggle('active'));
+  });
+
+  // Form submit
+  function handleSubmit(inputId, successId) {
+    const input = document.getElementById(inputId);
+    const successEl = document.getElementById(successId);
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!re.test(input.value.trim())) {
+      input.style.borderColor = '#ff3b30';
+      setTimeout(() => input.style.borderColor = '', 1500);
+      return;
+    }
+    input.value = '';
+    successEl.style.display = 'block';
+  }
+</script>
+</body>
+</html>
