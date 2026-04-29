@@ -570,18 +570,68 @@
     tag.addEventListener('click', () => tag.classList.toggle('active'));
   });
 
-  // Form submit
+  // ── 이메일 수집: Formspree 연동 ──
+  const FORMSPREE_URL = 'https://formspree.io/f/xnjwaglo';
+
   function handleSubmit(inputId, successId) {
     const input = document.getElementById(inputId);
     const successEl = document.getElementById(successId);
+    const btn = input.nextElementSibling;
+    const email = input.value.trim();
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!re.test(input.value.trim())) {
+
+    // 이메일 형식 검증
+    if (!re.test(email)) {
       input.style.borderColor = '#ff3b30';
+      input.focus();
       setTimeout(() => input.style.borderColor = '', 1500);
       return;
     }
-    input.value = '';
-    successEl.style.display = 'block';
+
+    // 버튼 로딩 상태
+    const originalText = btn.textContent;
+    btn.disabled = true;
+    btn.style.opacity = '0.7';
+    btn.style.cursor = 'wait';
+    btn.textContent = '전송 중...';
+
+    // Formspree로 AJAX 전송 (페이지 이동/팝업 없음)
+    fetch(FORMSPREE_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        source: inputId === 'email1' ? '히어로 알림 신청' : 'CTA 사전 등록',
+        location: window.location.href,
+        timestamp: new Date().toISOString()
+      })
+    })
+    .then(response => {
+      if (response.ok) {
+        // 성공
+        input.value = '';
+        successEl.innerHTML = '🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.';
+        successEl.style.color = '';
+        successEl.style.display = 'block';
+      } else {
+        throw new Error('전송 실패');
+      }
+    })
+    .catch(err => {
+      // 에러 시 사용자에게 알림
+      successEl.innerHTML = '⚠️ 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
+      successEl.style.color = '#ff8c5a';
+      successEl.style.display = 'block';
+    })
+    .finally(() => {
+      btn.disabled = false;
+      btn.style.opacity = '';
+      btn.style.cursor = '';
+      btn.textContent = originalText;
+    });
   }
 </script>
 </body>
