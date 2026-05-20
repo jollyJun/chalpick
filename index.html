@@ -308,8 +308,12 @@
     word-break: keep-all;
   }
   .cta-outline {
-    -webkit-text-stroke:1px #f0ede8;
+    background:linear-gradient(120deg, #ff5c2b 0%, #ffb347 100%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
     color:transparent;
+    text-shadow:0 0 40px rgba(255,92,43,.25);
   }
 
   /* ── REVEAL ── */
@@ -447,27 +451,27 @@
     <!-- 01 -->
     <div class="feat-card reveal bg-card p-8 sm:p-12 rounded-lg">
       <div class="feat-num">01</div>
-      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">취향 학습 AI</h3>
+      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">취향을 읽는 4가지 질문</h3>
       <p class="text-sm text-muted ko-text" style="line-height:1.85">
-        시간이 지날수록 나에게 맞추어지는 콘텐츠 큐레이션. 알고리즘이 아닌, 취향입니다.
+        당신이 본 작품을 템포·분위기·결말·세계관 네 가지로 분석합니다. 막연한 추천이 아니라, 당신이 왜 그 작품을 좋아했는지를 읽어냅니다.
       </p>
     </div>
 
     <!-- 02 -->
     <div class="feat-card reveal bg-card p-8 sm:p-12 rounded-lg">
       <div class="feat-num">02</div>
-      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">멀티포맷 통합</h3>
+      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">플랫폼 경계를 지웁니다</h3>
       <p class="text-sm text-muted ko-text" style="line-height:1.85">
-        웹툰, 영화, OTT, 웹소설, 전자책, 예능, 다큐를 앱 하나로. 플랫폼 전환 없이 원하는 콘텐츠를 쉽게 찾고 즐겁게 소비하세요.
+        웹툰, 영화, OTT, 웹소설, 전자책, 예능, 다큐. 흩어진 콘텐츠를 한곳에서. 어디서 보든, 찾는 건 한 번이면 됩니다.
       </p>
     </div>
 
     <!-- 03 -->
     <div class="feat-card reveal bg-card p-8 sm:p-12 rounded-lg">
       <div class="feat-num">03</div>
-      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">장르 기반 통합 검색</h3>
+      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">당신에게 이름을 붙입니다</h3>
       <p class="text-sm text-muted ko-text" style="line-height:1.85">
-        로맨스, 판타지, 미스터리, 드라마. 장르 하나만 고르면 웹툰부터 OTT까지 한 번에 검색됩니다. 플랫폼은 찰픽이 알아서 넘나듭니다.
+        '새벽 감성 사색가'부터 '금요일 밤 사이다파'까지. 당신의 취향에 이름이 생깁니다. 그리고 그 취향에 딱 맞는 작품이 따라옵니다.
       </p>
     </div>
   </div>
@@ -489,9 +493,9 @@
       <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7 border-b border-border">
         <span class="font-display text-xl text-accent min-w-[28px] pt-1">01</span>
         <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">회원가입</h4>
+          <h4 class="text-base font-medium text-textmain mb-2 ko-text">취향 진단 3분</h4>
           <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            회원가입 하면서 관심 장르를 선택하세요. 로맨스, 판타지, 액션 등 취향을 알려주시면 바로 맞춤 피드가 준비됩니다.
+            가입하면서 작품 몇 개에 좋아요만 누르세요. 그 자리에서 당신의 취향 라벨이 만들어지고, 첫 추천이 바로 준비됩니다.
           </p>
         </div>
       </div>
@@ -499,9 +503,9 @@
       <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7 border-b border-border">
         <span class="font-display text-xl text-accent min-w-[28px] pt-1">02</span>
         <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">찰픽 카테고리 적용</h4>
+          <h4 class="text-base font-medium text-textmain mb-2 ko-text">장르 × 포맷 한 번에 검색</h4>
           <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            웹툰, 영화, OTT, 웹소설 등 콘텐츠 유형과 로맨스, 판타지, 역사극 등 장르를 선택하여 검색하세요.
+            웹툰·영화·OTT·웹소설 등 포맷과 로맨스·판타지·미스터리 등 장르를 함께 골라 검색하세요. 플랫폼은 신경 쓰지 마세요.
           </p>
         </div>
       </div>
@@ -509,9 +513,9 @@
       <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7 border-b border-border">
         <span class="font-display text-xl text-accent min-w-[28px] pt-1">03</span>
         <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">검색 결과 확인</h4>
+          <h4 class="text-base font-medium text-textmain mb-2 ko-text">흩어진 작품이 한눈에</h4>
           <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            플랫폼과 콘텐츠 유형에 상관없이 원하는 장르의 작품들을 찰픽에서 한눈에 확인하세요.
+            플랫폼과 포맷에 상관없이, 원하는 장르의 작품이 찰픽 화면 하나에 모입니다. 더 이상 앱을 옮겨 다닐 필요가 없습니다.
           </p>
         </div>
       </div>
@@ -519,9 +523,9 @@
       <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7">
         <span class="font-display text-xl text-accent min-w-[28px] pt-1">04</span>
         <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">콘텐츠 감상</h4>
+          <h4 class="text-base font-medium text-textmain mb-2 ko-text">보고, 모으고, 다시 추천받고</h4>
           <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            마음에 드는 작품을 감상하세요. 나중에 볼 작품은 찰픽 보관함에 저장해두면 언제든 확인 가능합니다.
+            마음에 든 작품은 보관함에 저장하세요. 당신이 본 작품은 매일 취향에 반영되어, 내일은 더 정확한 추천이 기다립니다.
           </p>
         </div>
       </div>
