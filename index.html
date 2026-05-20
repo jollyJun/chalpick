@@ -77,13 +77,70 @@
   /* ── HERO TITLE ── */
   .hero-title {
     font-family: 'Bebas Neue', 'Noto Sans KR', sans-serif;
-    font-size: clamp(56px, 13vw, 160px);
+    /* 모바일(1단)에서는 화면 폭 기준으로 큼직하게 */
+    font-size: clamp(52px, 13vw, 120px);
     line-height: 0.95;
     letter-spacing: 1px;
     word-break: keep-all;
   }
+  /* 데스크탑(2단)에서도 텍스트를 큼직하게 유지.
+     화면 폭(vw) 기준으로 키우되 최대치를 제한해 폰 영역을 침범하지 않게 함 */
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: clamp(64px, 7.5vw, 104px);
+    }
+  }
   .title-outline { -webkit-text-stroke: 1.5px #f0ede8; color: transparent; }
   .title-accent  { color: #ff5c2b; }
+
+  /* ── HERO SECTION ── */
+  .hero-section {
+    display: grid;
+    place-items: center;
+  }
+
+  /* ── HERO PHONE IMAGE ── */
+  .hero-phone-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    /* 화면/컬럼 폭에 따라 자연스럽게 커지되 최대치 제한 */
+    max-width: clamp(204px, 32vw, 374px);
+    object-fit: contain;
+    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.55));
+    -webkit-user-select: none;
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── HERO GRID (순수 CSS — Tailwind CDN 미로드 시에도 안전) ── */
+  .hero-grid {
+    display: grid;
+    grid-template-columns: 1fr;     /* 기본: 모바일 1단 */
+    gap: 2.5rem;
+    width: 100%;
+    max-width: 80rem;
+    margin: 0 auto;
+    align-items: center;
+  }
+  .hero-text  { order: 1; min-width: 0; }
+  .hero-phone { order: 2; display: flex; justify-content: center; align-items: center; }
+
+  /* 모바일(1단)에서는 폰 이미지를 조금 작게 + 가운데 정렬 */
+  @media (max-width: 1023px) {
+    .hero-phone-img { max-width: min(238px, 60vw); }
+    .hero-section { min-height: auto; }   /* 세로로 길어지므로 강제 100vh 해제 */
+  }
+
+  /* 데스크탑(≥1024px): 좌우 2단 — 텍스트 왼쪽, 폰 오른쪽 */
+  @media (min-width: 1024px) {
+    .hero-grid {
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .hero-text  { order: 1; }
+    .hero-phone { order: 2; justify-content: flex-end; }
+  }
 
   /* ── HERO ANIM ── */
   .hero-eyebrow { opacity:0; transform:translateY(20px); animation: fade-up .8s .2s forwards; }
@@ -298,40 +355,55 @@
 </nav>
 
 <!-- ══ HERO ══ -->
-<section class="relative min-h-screen flex flex-col justify-center px-6 sm:px-12 pt-28 sm:pt-32 pb-20 overflow-hidden">
+<section class="hero-section relative min-h-screen grid place-items-center px-6 sm:px-12 pt-28 sm:pt-32 pb-20 overflow-hidden">
   <div class="hero-orb"></div>
 
-  <p class="hero-eyebrow text-[10px] sm:text-xs font-medium text-accent mb-6 sm:mb-8 ko-text" style="letter-spacing:3px; text-transform:uppercase">
-    콘텐츠 큐레이션 서비스 · COMING SOON
-  </p>
+  <!-- 좌우 2단 그리드: lg 이상 2단(텍스트+폰), 그 미만 1단 -->
+  <div class="hero-grid">
 
-  <h1 class="hero-h1 hero-title max-w-4xl">
-    찰떡같이<br>
-    <span class="title-outline">PICK</span>
-    <span class="title-accent">하다</span>
-  </h1>
+    <!-- ── 좌측: 텍스트 영역 (모바일에서 순서 1) ── -->
+    <div class="hero-text">
+      <p class="hero-eyebrow text-[10px] sm:text-xs font-medium text-accent mb-6 sm:mb-8 ko-text" style="letter-spacing:3px; text-transform:uppercase">
+        콘텐츠 큐레이션 서비스 · COMING SOON
+      </p>
 
-  <p class="hero-sub mt-8 sm:mt-10 text-base sm:text-lg text-muted max-w-lg ko-text" style="line-height:1.85">
-    수백만 개의 콘텐츠 중에서<br>
-    <strong class="text-textmain font-medium">지금 당신에게 딱 맞는 것</strong>만 골라드립니다.<br class="hidden sm:block">
-    <span class="block sm:inline mt-1 sm:mt-0">웹툰 · 영화 · OTT · 웹소설까지 한곳에서.</span>
-  </p>
+      <h1 class="hero-h1 hero-title">
+        찰떡같이<br>
+        <span class="title-outline">PICK</span>
+        <span class="title-accent">하다</span>
+      </h1>
 
-  <div class="hero-form mt-10 sm:mt-14 w-full max-w-md">
-    <label class="block mb-3 text-[11px] text-muted ko-text" style="letter-spacing:3px; text-transform:uppercase" for="email1">출시 알림 신청</label>
-    <div class="form-row flex">
-      <input type="email" id="email1" class="form-input" placeholder="이메일 주소를 입력하세요" autocomplete="email" inputmode="email">
-      <button class="form-btn" onclick="handleSubmit('email1','success1')">알림 받기 →</button>
+      <p class="hero-sub mt-8 sm:mt-10 text-base sm:text-lg text-muted max-w-lg ko-text" style="line-height:1.85">
+        수백만 개의 콘텐츠 중에서<br>
+        <strong class="text-textmain font-medium">지금 당신에게 딱 맞는 것</strong>만 골라드립니다.<br class="hidden sm:block">
+        <span class="block sm:inline mt-1 sm:mt-0">웹툰 · 영화 · OTT · 웹소설까지 한곳에서.</span>
+      </p>
+
+      <div class="hero-form mt-10 sm:mt-14 w-full max-w-md">
+        <label class="block mb-3 text-[11px] text-muted ko-text" style="letter-spacing:3px; text-transform:uppercase" for="email1">출시 알림 신청</label>
+        <div class="form-row flex">
+          <input type="email" id="email1" class="form-input" placeholder="이메일 주소를 입력하세요" autocomplete="email" inputmode="email">
+          <button class="form-btn" onclick="handleSubmit('email1','success1')">알림 받기 →</button>
+        </div>
+        <p class="mt-3 text-xs text-dim ko-text leading-relaxed">
+          ✓ 스팸 없음 &nbsp;·&nbsp; ✓ 언제든 해지 가능<br class="sm:hidden">
+          <span class="hidden sm:inline">&nbsp;·&nbsp;</span>
+          <span class="text-accent">출시 시 가장 먼저 알려드려요</span>
+        </p>
+        <div class="success-msg" id="success1">🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.</div>
+      </div>
     </div>
-    <p class="mt-3 text-xs text-dim ko-text leading-relaxed">
-      ✓ 스팸 없음 &nbsp;·&nbsp; ✓ 언제든 해지 가능<br class="sm:hidden">
-      <span class="hidden sm:inline">&nbsp;·&nbsp;</span>
-      <span class="text-accent">출시 시 가장 먼저 알려드려요</span>
-    </p>
-    <div class="success-msg" id="success1">🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.</div>
+
+    <!-- ── 우측: 스마트폰 이미지 (모바일에서 순서 2, 텍스트 아래로) ── -->
+    <div class="hero-phone">
+      <img src="smtp.png" alt="찰픽 앱 미리보기"
+           class="hero-phone-img"
+           loading="eager" decoding="async">
+    </div>
+
   </div>
 
-  <div class="scroll-hint hidden sm:flex absolute bottom-10 left-12 items-center gap-3 text-xs text-muted" style="letter-spacing:3px; text-transform:uppercase">
+  <div class="scroll-hint hidden lg:flex absolute bottom-10 left-12 items-center gap-3 text-xs text-muted" style="letter-spacing:3px; text-transform:uppercase">
     <span class="scroll-line"></span>
     <span>Scroll</span>
   </div>
