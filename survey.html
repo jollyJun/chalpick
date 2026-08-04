@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>델파이 조사 1라운드 — 택배 노동자 직무복귀평가</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+:root{
+  --ink:#0F2027;
+  --ink2:#3D5560;
+  --muted:#6E838C;
+  --paper:#EDF1F2;
+  --surface:#FFFFFF;
+  --line:#D3DDE1;
+  --accent:#0B6E77;
+  --accent-soft:#E1EFF0;
+  --signal:#E9B23C;
+  --signal-deep:#8A6412;
+  --danger:#B3402A;
+  --radius:10px;
+  --sans:"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Noto Sans KR",sans-serif;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{
+  font-family:var(--sans);
+  background:var(--paper);
+  color:var(--ink);
+  font-size:16px;
+  line-height:1.6;
+  -webkit-text-size-adjust:100%;
+  word-break:keep-all;
+}
+button,input,textarea,select{font-family:inherit;font-size:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+/* ---------- shell ---------- */
+.wrap{max-width:640px;margin:0 auto;background:var(--surface);min-height:100vh;
+  box-shadow:0 0 0 1px var(--line)}
+
+header{position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);
+  backdrop-filter:saturate(1.4) blur(8px);border-bottom:1px solid var(--line)}
+.hbar{display:flex;align-items:baseline;gap:8px;padding:10px 16px 6px}
+.hbar .eyebrow{font-size:11px;letter-spacing:.14em;color:var(--muted);font-weight:600}
+.hbar .stepno{margin-left:auto;font-family:var(--mono);font-size:11px;color:var(--ink2);
+  font-variant-numeric:tabular-nums}
+.htitle{padding:0 16px 10px;font-size:15px;font-weight:700;letter-spacing:-.01em}
+.track{display:flex;gap:3px;padding:0 16px 10px}
+.track i{flex:1;height:5px;background:var(--line);border-radius:99px;transition:background .25s}
+.track i.on{background:var(--signal)}
+.track i.now{background:var(--accent)}
+
+main{padding:20px 16px 24px}
+section[hidden]{display:none}
+
+/* ---------- typography ---------- */
+h1{font-size:23px;line-height:1.35;letter-spacing:-.02em;margin:0 0 14px}
+h2.sec{font-size:19px;line-height:1.35;letter-spacing:-.02em;margin:0 0 6px}
+.sub{color:var(--ink2);font-size:14px;margin:0 0 20px}
+.lead{font-size:15px;color:var(--ink2)}
+.kicker{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.12em;
+  color:var(--accent);border:1px solid var(--accent);padding:3px 8px;border-radius:4px;margin-bottom:14px}
+
+/* ---------- intro ---------- */
+.meta{border-top:1px solid var(--line);margin-top:18px}
+.meta div{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line);font-size:14px}
+.meta dt,.meta .k{flex:0 0 92px;color:var(--muted);font-weight:600;font-size:13px}
+.meta .v{flex:1;color:var(--ink)}
+.notice{background:var(--accent-soft);border-radius:var(--radius);padding:14px 15px;font-size:14px;
+  color:#0A4B52;margin:18px 0 0}
+.notice b{color:#083E44}
+.warnbox{border-left:3px solid var(--signal);background:#FDF6E6;padding:12px 14px;font-size:13.5px;
+  color:var(--signal-deep);border-radius:0 var(--radius) var(--radius) 0;margin-top:14px}
+
+/* ---------- fields ---------- */
+.q{margin:0 0 26px}
+.q>.label{display:block;font-weight:700;font-size:15.5px;margin-bottom:4px;letter-spacing:-.01em}
+.q>.hint{font-size:13px;color:var(--muted);margin-bottom:10px}
+.req{color:var(--danger);font-weight:700;margin-left:3px}
+.opt{color:var(--muted);font-weight:500;font-size:12px;margin-left:5px}
+
+.txt,.num{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:var(--radius);
+  background:var(--surface);color:var(--ink);min-height:48px}
+.txt:focus,.num:focus{border-color:var(--accent);outline:none}
+textarea.txt{min-height:96px;resize:vertical;line-height:1.55}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+.inline{display:flex;align-items:center;gap:8px}
+.inline .num{max-width:130px}
+.unit{color:var(--muted);font-size:14px;white-space:nowrap}
+
+/* choice chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips label{display:inline-flex;align-items:center;gap:7px;border:1.5px solid var(--line);
+  border-radius:99px;padding:9px 14px;font-size:14px;background:var(--surface);cursor:pointer;
+  min-height:44px;transition:border-color .15s,background .15s}
+.chips input{position:absolute;opacity:0;width:0;height:0}
+.chips label .box{width:16px;height:16px;border:1.5px solid var(--muted);border-radius:4px;flex:0 0 auto;
+  position:relative}
+.chips label.sel{border-color:var(--accent);background:var(--accent-soft);
+  color:#08464D;font-weight:600}
+.chips label.sel .box{background:var(--accent);border-color:var(--accent)}
+.chips label.sel .box::after{content:"";position:absolute;left:4px;top:1px;width:5px;height:9px;
+  border:solid #fff;border-width:0 2px 2px 0;transform:rotate(42deg)}
+
+/* segmented */
+.seg{display:grid;gap:6px}
+.seg.c3{grid-template-columns:repeat(3,1fr)}
+.seg.c5{grid-template-columns:repeat(5,1fr)}
+.seg.c2{grid-template-columns:repeat(2,1fr)}
+.seg label{position:relative;display:flex;align-items:center;justify-content:center;text-align:center;
+  border:1.5px solid var(--line);border-radius:8px;padding:10px 4px;font-size:13px;min-height:52px;
+  background:var(--surface);cursor:pointer;line-height:1.25;transition:border-color .15s,background .15s}
+.seg.c5 label{font-size:11.5px;padding:8px 2px;letter-spacing:-.03em}
+.seg input{position:absolute;opacity:0;width:0;height:0}
+.seg label.sel{border-color:var(--accent);background:var(--accent);color:#fff;font-weight:700}
+
+/* ---------- task cards ---------- */
+.card{border:1px solid var(--line);border-radius:12px;padding:0;margin:0 0 14px;overflow:hidden;
+  background:var(--surface)}
+.card.done{border-color:#B6CCD1}
+.card>.top{display:flex;gap:11px;padding:14px 14px 12px}
+.tag{flex:0 0 26px;height:26px;border-radius:6px;background:var(--ink);color:#fff;
+  font-family:var(--mono);font-size:12.5px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.card.done .tag{background:var(--accent)}
+.tname{font-weight:700;font-size:15px;letter-spacing:-.01em;line-height:1.35}
+.tdesc{font-size:13px;color:var(--muted);margin-top:3px;line-height:1.45}
+.card>.body{padding:0 14px 14px}
+.card .imp-label{font-size:12px;font-weight:700;color:var(--muted);letter-spacing:.06em;margin:0 0 7px}
+.detail{margin-top:14px;padding-top:14px;border-top:1px dashed var(--line)}
+.detail[hidden]{display:none}
+.detail .dl{font-size:12px;font-weight:700;color:var(--signal-deep);letter-spacing:.04em;margin-bottom:10px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:400px){.grid2{grid-template-columns:1fr}}
+.f{display:flex;flex-direction:column;gap:5px}
+.f .fl{font-size:12.5px;color:var(--ink2);font-weight:600}
+.f .num{padding:10px 11px;min-height:44px}
+
+/* ---------- ranking ---------- */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:14px}
+.tabs button{border:1.5px solid var(--line);background:var(--surface);border-radius:8px;padding:11px 6px;
+  font-size:14px;font-weight:600;color:var(--ink2);min-height:48px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tray{display:flex;gap:6px;margin-bottom:12px}
+.tray i{flex:1;height:34px;border-radius:6px;border:1.5px dashed #C6B489;
+  background:repeating-linear-gradient(135deg,#FDF6E6 0 6px,#F6E7C2 6px 12px);
+  display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;
+  color:#A98B45;font-style:normal}
+.tray i.filled{border:1.5px solid var(--signal);background:var(--signal);color:#3D2C05;font-weight:700}
+.traynote{font-size:12.5px;color:var(--muted);margin:-6px 0 12px;font-family:var(--mono)}
+.picklist{border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.pick{display:flex;align-items:center;gap:11px;padding:13px 13px;border-bottom:1px solid var(--line);
+  background:var(--surface);cursor:pointer;min-height:56px}
+.pick:last-child{border-bottom:0}
+.pick input{position:absolute;opacity:0;width:0;height:0}
+.pick .sq{flex:0 0 22px;height:22px;border:1.5px solid var(--muted);border-radius:5px;position:relative}
+.pick .pn{font-family:var(--mono);font-size:11.5px;color:var(--muted);flex:0 0 18px}
+.pick .pt{font-size:14px;line-height:1.35;flex:1}
+.pick.sel{background:#FDF6E6}
+.pick.sel .sq{background:var(--signal);border-color:var(--signal)}
+.pick.sel .sq::after{content:"";position:absolute;left:6px;top:3px;width:6px;height:11px;
+  border:solid #3D2C05;border-width:0 2.5px 2.5px 0;transform:rotate(42deg)}
+.pick.locked{opacity:.42;cursor:not-allowed}
+.pick .lockmsg{font-size:11px;color:var(--danger);font-weight:600;flex:0 0 auto}
+
+/* ---------- z1 table-ish ---------- */
+.z1{border:1px solid var(--line);border-radius:12px;margin:0 0 14px;overflow:hidden}
+.z1 .zh{display:flex;gap:11px;padding:14px 14px 10px}
+.z1 .zname{font-weight:700;font-size:15px;letter-spacing:-.01em}
+.z1 .zsrc{font-size:12px;color:var(--muted);margin-top:2px}
+.z1 .zb{padding:0 14px 14px}
+.crit{background:var(--paper);border-radius:8px;padding:11px 12px;margin-bottom:12px}
+.crit .ct{font-size:11px;font-weight:700;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
+.crit ul{margin:0;padding-left:16px;font-size:13.5px;color:var(--ink2);line-height:1.55}
+.crit li+li{margin-top:4px}
+
+/* ---------- nav ---------- */
+.navbar{position:sticky;bottom:0;z-index:30;background:rgba(255,255,255,.97);
+  backdrop-filter:blur(8px);border-top:1px solid var(--line);
+  padding:10px 16px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px}
+.navbar[hidden]{display:none}
+.btn{flex:1;min-height:52px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);
+  color:var(--ink);font-size:16px;font-weight:700;cursor:pointer;letter-spacing:-.01em}
+.btn.prim{background:var(--accent);border-color:var(--accent);color:#fff;flex:2}
+.btn.dark{background:var(--ink);border-color:var(--ink);color:#fff;flex:2}
+.btn:active{transform:translateY(1px)}
+.btn[hidden]{display:none}
+.btn.wide{flex:1;width:100%}
+
+/* ---------- error ---------- */
+.err{color:var(--danger);font-size:13px;font-weight:600;margin-top:7px;display:none}
+.err.show{display:block}
+.invalid .txt,.invalid .num{border-color:var(--danger)}
+.card.invalid,.z1.invalid{border-color:var(--danger)}
+.toast{position:fixed;left:50%;bottom:84px;transform:translateX(-50%) translateY(12px);
+  background:var(--ink);color:#fff;padding:11px 16px;border-radius:99px;font-size:13.5px;font-weight:600;
+  opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:60;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ---------- modal ---------- */
+.scrim{position:fixed;inset:0;background:rgba(15,32,39,.5);z-index:70;display:flex;align-items:flex-end;
+  justify-content:center;padding:0}
+.scrim[hidden]{display:none}
+.sheet{background:var(--surface);border-radius:16px 16px 0 0;max-width:640px;width:100%;
+  padding:22px 18px calc(18px + env(safe-area-inset-bottom))}
+.sheet h3{margin:0 0 8px;font-size:17px}
+.sheet p{margin:0 0 16px;font-size:14px;color:var(--ink2)}
+.sheet .row{display:flex;gap:8px}
+
+/* ---------- done ---------- */
+.done-mark{width:52px;height:52px;border-radius:14px;background:var(--accent);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:16px}
+.steps{counter-reset:s;margin:18px 0 0;padding:0;list-style:none}
+.steps li{counter-increment:s;position:relative;padding:0 0 14px 34px;font-size:14.5px;color:var(--ink2)}
+.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:23px;height:23px;border-radius:6px;
+  background:var(--ink);color:#fff;font-family:var(--mono);font-size:12px;font-weight:700;
+  display:flex;align-items:center;justify-content:center}
+.steps li b{color:var(--ink)}
+.mailrow{display:flex;align-items:center;gap:8px;background:var(--paper);border-radius:8px;padding:11px 12px;
+  margin-top:6px;font-family:var(--mono);font-size:13.5px;word-break:break-all}
+.mailrow button{flex:0 0 auto;border:1px solid var(--line);background:var(--surface);border-radius:6px;
+  padding:7px 10px;font-size:12px;font-weight:700;cursor:pointer;min-height:36px}
+.raw{width:100%;min-height:170px;font-family:var(--mono);font-size:11.5px;line-height:1.5;
+  border:1.5px solid var(--line);border-radius:10px;padding:11px;margin-top:10px;background:var(--paper)}
+details.fold{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+details.fold summary{font-size:14px;font-weight:700;cursor:pointer;color:var(--ink2)}
+footer.cred{padding:24px 16px calc(28px + env(safe-area-inset-bottom));border-top:1px solid var(--line);
+  font-size:12.5px;color:var(--muted);line-height:1.6}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <div class="hbar">
+    <span class="eyebrow">델파이 조사 · 1라운드</span>
+    <span class="stepno" id="stepno">시작</span>
+  </div>
+  <div class="htitle" id="htitle">택배 노동자 직무복귀평가 항목 도출</div>
+  <div class="track" id="track" aria-hidden="true"></div>
+</header>
+
+<main id="main">
+
+<!-- ===== 0. 표지 ===== -->
+<section id="s0">
+  <span class="kicker">전문가 · 숙련자 패널 조사</span>
+  <h1>택배 노동자 직무복귀평가에 포함할 모의작업 과제와 동작숙련도 관찰항목을 정해 주십시오.</h1>
+  <p class="lead">근로복지공단 인천병원 재활의학연구센터입니다. 바쁘신 중에 시간을 내어 주셔서 감사합니다.</p>
+
+  <div class="meta">
+    <div><span class="k">연구과제</span><span class="v">택배 노동자의 직무 복귀 판정을 위한 신체 능력 및 숙련도 기반 환산 모델 개발 연구</span></div>
+    <div><span class="k">IRB 승인</span><span class="v">KCIRB-2026-0002-001</span></div>
+    <div><span class="k">소요시간</span><span class="v">약 20~25분</span></div>
+    <div><span class="k">회신 마감</span><span class="v">2026년 8월 10일</span></div>
+  </div>
+
+  <div class="notice">
+    <b>무엇을 여쭙는가</b><br>
+    택배 노동자가 산재 등으로 일을 쉬었다가 복귀할 때, 신체능력을 평가하려면 <b>어떤 모의작업 과제</b>를 넣어야 하는지, 그리고 그 과제를 할 때 <b>동작의 요령(숙련도)</b>을 어떤 기준으로 관찰해야 하는지에 대한 의견입니다.
+  </div>
+
+  <div class="notice" style="background:var(--paper);color:var(--ink2)">
+    본 조사는 2라운드로 진행됩니다. 1라운드에서 동의율 70%에 도달하지 못한 항목은 2라운드 온라인 회의에서 다시 논의합니다. 응답은 익명으로 처리되며 통계 처리 후 본 연구 목적 외에는 사용되지 않습니다.
+  </div>
+
+  <div class="warnbox">
+    응답은 이 화면에만 임시로 남습니다. <b>중간에 브라우저를 닫거나 새로고침하면 처음부터 다시 작성해야 합니다.</b> 한 번에 끝까지 작성해 주십시오. 마지막 화면에서 응답 파일이 만들어집니다.
+  </div>
+</section>
+
+<!-- ===== 1. 응답자 특성 ===== -->
+<section id="s1" hidden>
+  <h2 class="sec">I. 응답자 특성</h2>
+  <p class="sub">통계 처리를 위한 기본 정보입니다.</p>
+
+  <div class="q" id="q-field">
+    <span class="label">소속 / 전문분야<span class="req">*</span></span>
+    <span class="hint">해당하는 항목을 모두 선택해 주십시오.</span>
+    <div class="chips" id="fieldChips"></div>
+    <input class="txt" id="fieldEtc" type="text" placeholder="기타 — 직접 입력" style="margin-top:10px" hidden>
+    <p class="err" id="e-field">한 개 이상 선택해 주십시오.</p>
+  </div>
+
+  <div class="q" id="q-career">
+    <span class="label">관련 분야 경력<span class="req">*</span></span>
+    <div class="inline">
+      <input class="num" id="career" type="text" inputmode="decimal" placeholder="0"><span class="unit">년</span>
+    </div>
+    <p class="err" id="e-career">경력을 입력해 주십시오.</p>
+  </div>
+
+  <div id="courierBlock" hidden>
+    <div class="q">
+      <span class="label">총 택배업 종사기간<span class="opt">현직 택배기사 응답</span></span>
+      <div class="inline">
+        <input class="num" id="cyy" type="text" inputmode="numeric" placeholder="0"><span class="unit">년</span>
+        <input class="num" id="cmm" type="text" inputmode="numeric" placeholder="0"><span class="unit">개월</span>
+      </div>
+    </div>
+    <div class="q">
+      <span class="label">주 배송지역 유형<span class="opt">현직 택배기사 응답</span></span>
+      <span class="hint">예: 아파트 단지 위주 / 단독주택·상가 혼재 / 농어촌 등</span>
+      <input class="txt" id="carea" type="text" placeholder="배송지역 유형">
+    </div>
+  </div>
+
+  <div class="q">
+    <span class="label">응답자 식별용 표기<span class="opt">선택</span></span>
+    <span class="hint">성명 또는 소속 등 연구팀이 회신을 구분할 표기입니다. 비워 두셔도 됩니다.</span>
+    <input class="txt" id="who" type="text" placeholder="예: 홍길동 / OO병원">
+  </div>
+</section>
+
+<!-- ===== 2. 과제 중요도 ===== -->
+<section id="s2" hidden>
+  <h2 class="sec">II. 후보 과제별 중요도</h2>
+  <p class="sub">각 과제가 직무복귀평가에 <b>반드시 포함되어야</b> 한다고 생각하십니까? <b>중요함</b>을 선택하시면 그 과제에 맞는 세부 기준 입력칸이 열립니다. 과제마다 묻는 항목이 다릅니다.</p>
+  <div id="taskList"></div>
+  <p class="err" id="e-tasks">중요도를 선택하지 않은 과제가 있습니다.</p>
+</section>
+
+<!-- ===== 3. 상위/하위 5 ===== -->
+<section id="s3" hidden>
+  <h2 class="sec">III. 과제 중요도 선정</h2>
+  <p class="sub">12개 과제 중 복귀평가에 <b>가장 중요한 5개</b>와 <b>상대적으로 가장 덜 중요한 5개</b>를 각각 골라 주십시오. 각각 정확히 5개입니다.</p>
+  <div class="tabs" role="tablist">
+    <button type="button" id="tabTop" role="tab" aria-selected="true">상위 5 (가장 중요)</button>
+    <button type="button" id="tabBot" role="tab" aria-selected="false">하위 5 (가장 덜 중요)</button>
+  </div>
+  <div class="tray" id="tray"></div>
+  <p class="traynote" id="traynote"></p>
+  <div class="picklist" id="pickList"></div>
+  <p class="err" id="e-rank">상위 5개와 하위 5개를 각각 정확히 5개 선택해 주십시오.</p>
+</section>
+
+<!-- ===== 4. Z1 ===== -->
+<section id="s4" hidden>
+  <h2 class="sec">IV. 동작숙련도(Z1) 관찰항목 검증</h2>
+  <p class="sub">참여자가 모의작업 과제를 수행하는 동안 관찰자가 <b>동작의 요령</b>을 채점하기 위한 7개 항목입니다. 각 항목이 복귀판정 지표로 적절한지 평가해 주십시오.</p>
+  <div id="z1List"></div>
+  <p class="err" id="e-z1">평가하지 않은 항목이 있습니다.</p>
+
+  <div class="q" style="margin-top:26px">
+    <span class="label">수정하거나 삭제해야 할 항목<span class="opt">선택</span></span>
+    <span class="hint">해당 항목의 번호와 이유를 적어 주십시오.</span>
+    <textarea class="txt" id="z1edit" placeholder="예: 7번 — 관찰자 주관이 크게 개입될 소지가 있어 기준을 구체화해야 함"></textarea>
+  </div>
+  <div class="q">
+    <span class="label">추가되어야 할 관찰항목<span class="opt">선택</span></span>
+    <span class="hint">위 목록에 없으나 동작숙련도 평가에 반드시 포함되어야 한다고 생각하는 항목입니다.</span>
+    <textarea class="txt" id="z1add" placeholder="추가 항목과 관찰기준"></textarea>
+  </div>
+</section>
+
+<!-- ===== 5. 추가 의견 + 2라운드 ===== -->
+<section id="s5" hidden>
+  <h2 class="sec">V. 추가 의견</h2>
+  <p class="sub">자유롭게 적어 주십시오. 해당 사항이 없으면 비워 두셔도 됩니다.</p>
+  <div class="q">
+    <span class="label">추가되어야 할 과제<span class="opt">선택</span></span>
+    <span class="hint">12개 과제 목록에 없으나 복귀평가에 반드시 포함되어야 한다고 생각하는 과제입니다.</span>
+    <textarea class="txt" id="addTask" placeholder="과제명과 이유"></textarea>
+  </div>
+  <div class="q">
+    <span class="label">제외해야 할 과제<span class="opt">선택</span></span>
+    <span class="hint">특정 과제를 제외해야 한다고 보신다면 이유와 함께 적어 주십시오.</span>
+    <textarea class="txt" id="delTask" placeholder="과제명과 이유"></textarea>
+  </div>
+
+  <h2 class="sec" style="margin-top:32px">VI. 2라운드 참여 의향</h2>
+  <p class="sub">1라운드에서 70% 합의에 이르지 못한 항목은 온라인 화상회의(약 2시간, 일정 추후 조율)로 재논의합니다.</p>
+  <div class="q" id="q-r2">
+    <span class="label">2라운드 참여 의향<span class="req">*</span></span>
+    <div class="seg c2" id="r2seg"></div>
+    <p class="err" id="e-r2">선택해 주십시오.</p>
+  </div>
+  <div class="q" id="q-email" hidden>
+    <span class="label">연락 가능한 이메일<span class="req">*</span></span>
+    <span class="hint">2라운드 일정 안내에만 사용됩니다.</span>
+    <input class="txt" id="email" type="email" inputmode="email" autocomplete="email" placeholder="name@example.com">
+    <p class="err" id="e-email">이메일 형식을 확인해 주십시오.</p>
+  </div>
+</section>
+
+<!-- ===== 6. 완료 ===== -->
+<section id="s6" hidden>
+  <div class="done-mark" aria-hidden="true">✓</div>
+  <h2 class="sec">작성이 끝났습니다</h2>
+  <p class="sub">아래 순서로 응답 파일을 연구팀에 보내 주십시오.</p>
+
+  <ol class="steps">
+    <li><b>응답 파일 저장</b>을 눌러 파일을 내려받습니다. (텍스트 파일 1개)</li>
+    <li>메일 앱에서 아래 주소로 <b>새 메일을 작성</b>합니다.</li>
+    <li>내려받은 파일을 <b>첨부</b>해 보내 주십시오. 마감은 8월 10일입니다.</li>
+  </ol>
+
+  <div class="mailrow">
+    <span id="mailAddr">obok0505@naver.com</span>
+    <button type="button" id="copyMail">주소 복사</button>
+  </div>
+
+  <button class="btn dark wide" id="dlBtn" style="margin-top:18px">응답 파일 저장</button>
+  <button class="btn wide" id="mailBtn" style="margin-top:8px">메일 앱 열기</button>
+
+  <details class="fold" id="rawFold">
+    <summary>파일 저장이 안 되면 — 응답 내용 직접 복사하기</summary>
+    <p class="sub" style="margin:10px 0 0">아래 내용을 전체 복사해 메일 본문에 붙여 보내 주셔도 됩니다.</p>
+    <button class="btn wide" id="copyRaw" style="margin-top:8px">응답 내용 전체 복사</button>
+    <textarea class="raw" id="raw" readonly></textarea>
+  </details>
+
+  <footer class="cred">
+    연구책임자 김진홍 · 근로복지공단 인천병원 재활의학연구센터 책임연구원<br>
+    문의 obok0505@naver.com
+  </footer>
+</section>
+
+</main>
+
+<div class="navbar" id="nav">
+  <button class="btn" id="btnPrev" type="button" hidden>이전</button>
+  <button class="btn prim" id="btnNext" type="button">설문 시작</button>
+</div>
+</div>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<div class="scrim" id="scrim" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="shTitle">
+    <h3 id="shTitle">세부 수치가 비어 있습니다</h3>
+    <p id="shBody"></p>
+    <div class="row">
+      <button class="btn" type="button" id="shBack">돌아가서 채우기</button>
+      <button class="btn dark" type="button" id="shGo">그대로 제출</button>
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+/* ============ 데이터 ============ */
+var FIELDS = ["재활의학 전문의","산업의학 전문의","물리치료사/작업치료사","인간공학 전문가",
+  "물류센터 안전관리자/관리감독자","현직 택배기사(숙련자)","산재보험 정책 관계자","기타"];
+
+var IMP = ["중요함","중요하지 않음","잘 모르겠음"];
+var LIK = ["매우 적절","적절","보통","부적절","매우 부적절"];
+
+var W = {k:"weight",l:"적정 중량",u:"kg"};
+var D = {k:"dist",l:"적정 거리",u:"m"};
+var R = {k:"reps",l:"반복횟수",u:"회"};
+var T = {k:"time",l:"소요시간",u:"분"};
+
+var TASKS = [
+ {n:"물건 들기(Lifting)", d:"상차 시 박스를 바닥/적재대에서 들어올림", f:[W,D,R,T]},
+ {n:"물건 내려놓기(Lowering)", d:"하차 시 박스를 내려놓음", f:[W,D,R,T]},
+ {n:"중량물 상/하차 작업", d:"반복적 들기-내리기, 처리 속도 포함", f:[W,D,R,T]},
+ {n:"중량물 지지 상태 이동(복합이동)", d:"경사로·평지 구간 보행", f:[W,D,R,T]},
+ {n:"계단 오르내리기", d:"중량물 소지 상태", f:[W,{k:"floors",l:"계단 단수/층수",u:"개층"},R,T]},
+ {n:"탑차(화물칸) 승하차", d:"화물칸에 오르고 내리는 동작", f:[{k:"withbox",l:"박스 동반 여부",yn:1},{k:"height",l:"승강 높이",u:"cm"},R,T]},
+ {n:"대차·핸드카트 밀기/당기기", d:"", f:[{k:"weight",l:"적정 중량(대차 적재하중)",u:"kg"},{k:"dist",l:"이동거리",u:"m"},R,T]},
+ {n:"좁고 낮은 공간에서 자세 유지", d:"탑차 내부 등 저천장 환경, 쪼그려 앉기 등", f:[{k:"ceil",l:"공간 높이(천장까지)",u:"cm"},{k:"hold",l:"지속시간",u:"초"},R]},
+ {n:"중량물 지지 상태에서 방향 전환", d:"몸돌리기", f:[W,{k:"angle",l:"회전각도",u:"도"},R,T]},
+ {n:"장시간 도보 이동", d:"배송지 탐색 포함", f:[{k:"dist",l:"총 이동거리",u:"m"},{k:"hold",l:"지속시간",u:"분"},{k:"reps",l:"1일 반복횟수",u:"회"}]},
+ {n:"유산소 지구력 평가", d:"예: 반복적 계단 오르내리기 등", f:[{k:"hold",l:"지속시간",u:"분"},{k:"rpe",l:"체감강도 RPE",u:"0~10"}]},
+ {n:"화물차 운전석(캡) 승하차 반복 동작", d:"차량 톤수(7.5톤 이하/초과)에 따른 승강 높이 차이 포함", f:[{k:"withbox",l:"박스 동반 여부",yn:1},{k:"height",l:"승강 높이",u:"cm"},R,T]}
+];
+
+var Z1 = [
+ {n:"물건 들기", s:"SWT 과제1", c:["발을 넓게 벌리고 물건에 몸을 붙이는가","무릎을 굽혀 다리 힘으로 들어올리는가","들기 전 무게를 가늠하는 시험적 동작을 보이는가"]},
+ {n:"몸돌리기(방향전환)", s:"SWT 과제1", c:["발을 옮겨 몸 전체가 함께 도는가","물건을 몸통에 밀착시켜 유지하는가"]},
+ {n:"물건 내려놓기", s:"SWT 과제1", c:["무릎을 굽혀 허리 충격을 방지하는가","무게중심이 한쪽으로 쏠리지 않는가"]},
+ {n:"복합이동 — 운반 중 보행", s:"SWT 과제2", c:["상체를 곧게 유지하고 무게중심을 몸에 가깝게 두는가","경사로에서 보폭을 좁히고 무게중심을 낮추는가"]},
+ {n:"자세유지 — 저천장 환경", s:"SWT 과제3", c:["고관절·무릎을 이용해 자세를 낮추는가","쪼그린 자세에서 균형을 유지하는가"]},
+ {n:"대차·핸드카트 사용", s:"", c:["하체를 이용해 체중을 싣는가","손잡이를 적정 높이로 잡고 안정적으로 조작하는가"]},
+ {n:"작업 리듬·피로 관리", s:"세션 전반", c:["연속 작업 중 짧은 휴식이나 자세 전환으로 피로를 조절하는가"]}
+];
+
+var TITLES = ["택배 노동자 직무복귀평가 항목 도출","I. 응답자 특성","II. 후보 과제별 중요도",
+  "III. 과제 중요도 선정","IV. 동작숙련도(Z1) 검증","V. 추가 의견 · VI. 2라운드","회신 안내"];
+
+/* ============ 상태 ============ */
+var step = 0, LAST = 6;
+var rankMode = "top";
+var state = {top:[], bot:[]};
+var $ = function(id){return document.getElementById(id);};
+var esc = function(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");};
+
+/* ============ 렌더 ============ */
+(function buildTrack(){
+  var h = "";
+  for (var i=1;i<=5;i++) h += "<i data-i='"+i+"'></i>";
+  $("track").innerHTML = h;
+})();
+
+(function buildFields(){
+  var h = "";
+  for (var i=0;i<FIELDS.length;i++){
+    h += "<label><input type='checkbox' name='fld' value='"+esc(FIELDS[i])+"'><span class='box' aria-hidden='true'></span><span>"+esc(FIELDS[i])+"</span></label>";
+  }
+  $("fieldChips").innerHTML = h;
+  $("fieldChips").addEventListener("change", function(){
+    var courier = false, etc = false, boxes = document.getElementsByName("fld");
+    for (var i=0;i<boxes.length;i++){
+      if (!boxes[i].checked) continue;
+      if (boxes[i].value.indexOf("현직 택배기사") === 0) courier = true;
+      if (boxes[i].value === "기타") etc = true;
+    }
+    $("courierBlock").hidden = !courier;
+    $("fieldEtc").hidden = !etc;
+    clearErr("q-field");
+  });
+})();
+
+(function buildTasks(){
+  var h = "";
+  for (var i=0;i<TASKS.length;i++){
+    var t = TASKS[i], no = i+1, imp = "";
+    for (var j=0;j<IMP.length;j++){
+      imp += "<label><input type='radio' name='imp"+no+"' value='"+esc(IMP[j])+"'><span>"+esc(IMP[j])+"</span></label>";
+    }
+    var det = "";
+    for (var k=0;k<t.f.length;k++){
+      var f = t.f[k], nm = "t"+no+"_"+f.k;
+      if (f.yn){
+        det += "<div class='f' style='grid-column:1/-1'><span class='fl'>"+esc(f.l)+"</span><div class='seg c2'>"+
+          "<label><input type='radio' name='"+nm+"' value='예'><span>예</span></label>"+
+          "<label><input type='radio' name='"+nm+"' value='아니오'><span>아니오</span></label></div></div>";
+      } else {
+        det += "<div class='f'><span class='fl'>"+esc(f.l)+"</span><div class='inline'>"+
+          "<input class='num' type='text' inputmode='decimal' id='"+nm+"' placeholder='0'>"+
+          "<span class='unit'>"+esc(f.u)+"</span></div></div>";
+      }
+    }
+    h += "<div class='card' id='card"+no+"'>"+
+      "<div class='top'><span class='tag' aria-hidden='true'>"+no+"</span><div>"+
+      "<div class='tname'>"+esc(t.n)+"</div>"+
+      (t.d ? "<div class='tdesc'>"+esc(t.d)+"</div>" : "")+
+      "</div></div>"+
+      "<div class='body'><p class='imp-label'>중요도</p><div class='seg c3'>"+imp+"</div>"+
+      "<div class='detail' id='det"+no+"' hidden><p class='dl'>적정 수준 — 중요함으로 응답하신 경우</p>"+
+      "<div class='grid2'>"+det+"</div></div></div></div>";
+  }
+  $("taskList").innerHTML = h;
+  $("taskList").addEventListener("change", function(e){
+    var m = /^imp(\d+)$/.exec(e.target.name || "");
+    if (!m) return;
+    var no = m[1];
+    $("det"+no).hidden = (e.target.value !== "중요함");
+    $("card"+no).classList.add("done");
+    $("card"+no).classList.remove("invalid");
+    clearErr("e-tasks");
+  });
+})();
+
+(function buildRank(){
+  var tray = "";
+  for (var i=1;i<=5;i++) tray += "<i data-slot='"+i+"'>"+i+"</i>";
+  $("tray").innerHTML = tray;
+
+  var h = "";
+  for (var j=0;j<TASKS.length;j++){
+    var no = j+1;
+    h += "<label class='pick' id='pick"+no+"'><span class='pn'>"+no+"</span>"+
+      "<input type='checkbox' data-no='"+no+"'><span class='sq' aria-hidden='true'></span>"+
+      "<span class='pt'>"+esc(TASKS[j].n)+"</span><span class='lockmsg' id='lock"+no+"'></span></label>";
+  }
+  $("pickList").innerHTML = h;
+
+  $("pickList").addEventListener("change", function(e){
+    var cb = e.target;
+    if (!cb.dataset || !cb.dataset.no) return;
+    var no = parseInt(cb.dataset.no,10);
+    var mine = rankMode === "top" ? state.top : state.bot;
+    var other = rankMode === "top" ? state.bot : state.top;
+    if (cb.checked){
+      if (other.indexOf(no) >= 0){ cb.checked = false; toast("이미 반대쪽 목록에 선택된 과제입니다."); return; }
+      if (mine.length >= 5){ cb.checked = false; toast((rankMode==="top"?"상위":"하위")+" 5개가 이미 채워졌습니다."); return; }
+      mine.push(no);
+    } else {
+      var p = mine.indexOf(no);
+      if (p >= 0) mine.splice(p,1);
+    }
+    paintRank();
+    clearErr("e-rank");
+  });
+  $("tabTop").addEventListener("click", function(){ rankMode="top"; paintRank(); });
+  $("tabBot").addEventListener("click", function(){ rankMode="bot"; paintRank(); });
+})();
+
+function paintRank(){
+  var mine = rankMode === "top" ? state.top : state.bot;
+  var other = rankMode === "top" ? state.bot : state.top;
+  $("tabTop").setAttribute("aria-selected", rankMode==="top" ? "true" : "false");
+  $("tabBot").setAttribute("aria-selected", rankMode==="bot" ? "true" : "false");
+  var slots = $("tray").children;
+  for (var i=0;i<5;i++){
+    var filled = i < mine.length;
+    slots[i].className = filled ? "filled" : "";
+    slots[i].textContent = filled ? String(mine[i]) : String(i+1);
+  }
+  $("traynote").textContent = (rankMode==="top" ? "상위 5" : "하위 5") + " — " + mine.length + " / 5 선택  ·  " +
+    (rankMode==="top" ? "하위 5는 " + state.bot.length : "상위 5는 " + state.top.length) + " / 5";
+  for (var n=1;n<=12;n++){
+    var row = $("pick"+n), cb = row.querySelector("input"), lock = $("lock"+n);
+    var isOther = other.indexOf(n) >= 0;
+    cb.checked = mine.indexOf(n) >= 0;
+    cb.disabled = isOther;
+    row.classList.toggle("locked", isOther);
+    lock.textContent = isOther ? (rankMode==="top" ? "하위 선택" : "상위 선택") : "";
+  }
+}
+
+(function buildZ1(){
+  var h = "";
+  for (var i=0;i<Z1.length;i++){
+    var z = Z1[i], no = i+1, li = "";
+    for (var j=0;j<z.c.length;j++) li += "<li>"+esc(z.c[j])+"</li>";
+    var seg = "";
+    for (var k=0;k<LIK.length;k++){
+      seg += "<label><input type='radio' name='z"+no+"' value='"+esc(LIK[k])+"'><span>"+esc(LIK[k]).replace(" ","<br>")+"</span></label>";
+    }
+    h += "<div class='z1' id='z1c"+no+"'><div class='zh'><span class='tag' aria-hidden='true'>"+no+"</span><div>"+
+      "<div class='zname'>"+esc(z.n)+"</div>"+(z.s ? "<div class='zsrc'>"+esc(z.s)+"</div>" : "")+
+      "</div></div><div class='zb'><div class='crit'><p class='ct'>관찰 기준</p><ul>"+li+"</ul></div>"+
+      "<p class='imp-label'>복귀판정 지표로서 적절성</p><div class='seg c5'>"+seg+"</div></div></div>";
+  }
+  $("z1List").innerHTML = h;
+  $("z1List").addEventListener("change", function(e){
+    var m = /^z(\d+)$/.exec(e.target.name || "");
+    if (!m) return;
+    $("z1c"+m[1]).classList.remove("invalid");
+    clearErr("e-z1");
+  });
+})();
+
+(function buildR2(){
+  var opts = ["참여 의향 있음","참여 어려움"], h = "";
+  for (var i=0;i<opts.length;i++){
+    h += "<label><input type='radio' name='r2' value='"+esc(opts[i])+"'><span>"+esc(opts[i])+"</span></label>";
+  }
+  $("r2seg").innerHTML = h;
+  $("r2seg").addEventListener("change", function(e){
+    $("q-email").hidden = (e.target.value !== "참여 의향 있음");
+    clearErr("e-r2");
+  });
+})();
+
+/* ============ 유틸 ============ */
+var toastTimer = null;
+function toast(msg){
+  var t = $("toast");
+  t.textContent = msg;
+  t.classList.add("show");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = setTimeout(function(){ t.classList.remove("show"); }, 2200);
+}
+function clearErr(id){
+  var el = $(id);
+  if (!el) return;
+  if (el.classList.contains("err")){ el.classList.remove("show"); return; }
+  el.classList.remove("invalid");
+  var kids = el.getElementsByClassName("err");
+  for (var i=0;i<kids.length;i++) kids[i].classList.remove("show");
+}
+/* :has() 미지원 브라우저에서도 선택 표시가 보이도록 클래스로 동기화 */
+function syncSel(){
+  var labels = document.querySelectorAll(".chips label,.seg label,label.pick");
+  for (var i=0;i<labels.length;i++){
+    var inp = labels[i].querySelector("input");
+    if (!inp) continue;
+    if (inp.checked) labels[i].classList.add("sel");
+    else labels[i].classList.remove("sel");
+  }
+}
+document.addEventListener("change", syncSel);
+function showErr(id){ var el=$(id); if(el) el.classList.add("show"); }
+function radioVal(name){
+  var r = document.getElementsByName(name);
+  for (var i=0;i<r.length;i++) if (r[i].checked) return r[i].value;
+  return "";
+}
+function val(id){ var e=$(id); return e ? e.value.trim() : ""; }
+function scrollToEl(el){
+  if (!el) return;
+  var y = el.getBoundingClientRect().top + window.pageYOffset - 130;
+  window.scrollTo({top: y < 0 ? 0 : y, behavior: "smooth"});
+}
+
+/* ============ 검증 ============ */
+function validate(n){
+  var bad = null;
+  if (n === 1){
+    var boxes = document.getElementsByName("fld"), any = false;
+    for (var i=0;i<boxes.length;i++) if (boxes[i].checked) any = true;
+    if (!any){ showErr("e-field"); bad = bad || $("q-field"); }
+    var c = val("career");
+    if (c === "" || isNaN(parseFloat(c))){ showErr("e-career"); $("q-career").classList.add("invalid"); bad = bad || $("q-career"); }
+    else $("q-career").classList.remove("invalid");
+  }
+  if (n === 2){
+    for (var k=1;k<=12;k++){
+      if (!radioVal("imp"+k)){
+        $("card"+k).classList.add("invalid");
+        showErr("e-tasks");
+        bad = bad || $("card"+k);
+      }
+    }
+  }
+  if (n === 3){
+    if (state.top.length !== 5 || state.bot.length !== 5){ showErr("e-rank"); bad = bad || $("tray"); }
+  }
+  if (n === 4){
+    for (var z=1;z<=7;z++){
+      if (!radioVal("z"+z)){ $("z1c"+z).classList.add("invalid"); showErr("e-z1"); bad = bad || $("z1c"+z); }
+    }
+  }
+  if (n === 5){
+    var r2 = radioVal("r2");
+    if (!r2){ showErr("e-r2"); bad = bad || $("q-r2"); }
+    if (r2 === "참여 의향 있음"){
+      var em = val("email");
+      if (em === "" || em.indexOf("@") < 1 || em.indexOf(".") < 0){
+        showErr("e-email"); $("q-email").classList.add("invalid"); bad = bad || $("q-email");
+      } else $("q-email").classList.remove("invalid");
+    }
+  }
+  if (bad){ scrollToEl(bad); toast("표시된 항목을 확인해 주십시오."); return false; }
+  return true;
+}
+
+function missingDetails(){
+  var out = [];
+  for (var i=0;i<12;i++){
+    var no = i+1;
+    if (radioVal("imp"+no) !== "중요함") continue;
+    var t = TASKS[i], miss = 0;
+    for (var j=0;j<t.f.length;j++){
+      var f = t.f[j];
+      if (f.yn){ if (!radioVal("t"+no+"_"+f.k)) miss++; }
+      else if (val("t"+no+"_"+f.k) === "") miss++;
+    }
+    if (miss > 0) out.push(no);
+  }
+  return out;
+}
+
+/* ============ 이동 ============ */
+function go(n){
+  $("s"+step).hidden = true;
+  step = n;
+  $("s"+step).hidden = false;
+  $("htitle").textContent = TITLES[step];
+  $("stepno").textContent = (step >= 1 && step <= 5) ? ("STEP " + step + " / 5") : (step === 0 ? "시작" : "완료");
+  var slots = $("track").children;
+  for (var i=0;i<5;i++){
+    var idx = i+1;
+    slots[i].className = idx < step ? "on" : (idx === step ? "now" : "");
+    if (step === 6) slots[i].className = "on";
+  }
+  $("btnPrev").hidden = (step === 0 || step === 6);
+  $("btnNext").hidden = (step === 6);
+  $("btnNext").textContent = step === 0 ? "설문 시작" : (step === 5 ? "응답 완료" : "다음");
+  $("nav").hidden = (step === 6);
+  window.scrollTo({top:0, behavior: step === 0 ? "auto" : "smooth"});
+  if (step === 3) paintRank();
+}
+
+$("btnPrev").addEventListener("click", function(){ if (step > 0) go(step-1); });
+$("btnNext").addEventListener("click", function(){
+  if (step === 0){ go(1); return; }
+  if (!validate(step)) return;
+  if (step === 5){
+    var miss = missingDetails();
+    if (miss.length){
+      $("shBody").textContent = "중요함으로 응답하신 과제 중 " + miss.length + "개(" + miss.join(", ") + "번)에 세부 수치가 비어 있습니다. 수치는 합의 도출에 쓰이므로 가능하면 채워 주십시오.";
+      $("scrim").hidden = false;
+      return;
+    }
+    finish();
+    return;
+  }
+  go(step+1);
+});
+$("shBack").addEventListener("click", function(){
+  $("scrim").hidden = true;
+  go(2);
+  var miss = missingDetails();
+  if (miss.length) setTimeout(function(){ scrollToEl($("card"+miss[0])); }, 350);
+});
+$("shGo").addEventListener("click", function(){ $("scrim").hidden = true; finish(); });
+
+/* ============ 출력 ============ */
+var OUT = "";
+function pad2(x){ return x < 10 ? "0"+x : String(x); }
+function stamp(){
+  var d = new Date();
+  return d.getFullYear() + pad2(d.getMonth()+1) + pad2(d.getDate()) + "_" + pad2(d.getHours()) + pad2(d.getMinutes());
+}
+function nz(s){ return s === "" ? "-" : s; }
+
+/* 집계용 TSV의 열 이름 — buildReport의 push 순서와 동일하게 유지 */
+function tsvHeader(){
+  var h = ["응답자표기","소속분야","경력(년)","택배경력(년)","택배경력(개월)","배송지역유형"];
+  for (var i=0;i<TASKS.length;i++){
+    var no = i+1;
+    h.push("Q" + no + "_중요도");
+    for (var j=0;j<TASKS[i].f.length;j++) h.push("Q" + no + "_" + TASKS[i].f[j].k);
+  }
+  h.push("상위5","하위5");
+  for (var z=1;z<=7;z++) h.push("Z1_" + z);
+  h.push("Z1_수정삭제의견","Z1_추가항목","추가과제","제외과제","2R참여","이메일");
+  return h;
+}
+
+function buildReport(){
+  var L = [], tsv = [];
+  var now = new Date();
+  var when = now.getFullYear()+"-"+pad2(now.getMonth()+1)+"-"+pad2(now.getDate())+" "+pad2(now.getHours())+":"+pad2(now.getMinutes());
+
+  L.push("델파이 조사 1라운드 응답서");
+  L.push("택배 노동자 직무복귀평가(RTW Assessment) 모의작업 과제 및 동작숙련도 관찰항목 도출");
+  L.push("IRB 승인번호: KCIRB-2026-0002-001");
+  L.push("작성 시각: " + when);
+  L.push("");
+
+  /* I */
+  var flds = [], boxes = document.getElementsByName("fld");
+  for (var i=0;i<boxes.length;i++) if (boxes[i].checked){
+    flds.push(boxes[i].value === "기타" ? ("기타(" + nz(val("fieldEtc")) + ")") : boxes[i].value);
+  }
+  L.push("[ I. 응답자 특성 ]");
+  L.push("응답자 표기: " + nz(val("who")));
+  L.push("소속/전문분야: " + flds.join(", "));
+  L.push("관련 분야 경력: " + val("career") + " 년");
+  if (!$("courierBlock").hidden){
+    L.push("택배업 종사기간: " + nz(val("cyy")) + " 년 " + nz(val("cmm")) + " 개월");
+    L.push("주 배송지역 유형: " + nz(val("carea")));
+  }
+  L.push("");
+  tsv.push(val("who"), flds.join("|"), val("career"), val("cyy"), val("cmm"), val("carea"));
+
+  /* II */
+  L.push("[ II. 후보 과제별 중요도 ]");
+  for (var t=0;t<12;t++){
+    var no = t+1, task = TASKS[t], imp = radioVal("imp"+no);
+    L.push(no + ". " + task.n + (task.d ? " — " + task.d : ""));
+    L.push("   중요도: " + nz(imp));
+    tsv.push(imp);
+    var parts = [];
+    for (var f=0;f<task.f.length;f++){
+      var fd = task.f[f], v;
+      if (fd.yn) v = radioVal("t"+no+"_"+fd.k);
+      else v = val("t"+no+"_"+fd.k);
+      if (imp === "중요함") parts.push(fd.l + ": " + nz(v) + (fd.u ? " " + fd.u : ""));
+      tsv.push(imp === "중요함" ? v : "");
+    }
+    if (parts.length) L.push("   " + parts.join("   |   "));
+  }
+  L.push("");
+
+  /* III */
+  L.push("[ III. 과제 중요도 선정 ]  * 나열 순서는 순위를 의미하지 않음");
+  L.push("상위 5 (가장 중요):");
+  for (var a=0;a<state.top.length;a++) L.push("   - " + state.top[a] + ". " + TASKS[state.top[a]-1].n);
+  L.push("하위 5 (가장 덜 중요):");
+  for (var b=0;b<state.bot.length;b++) L.push("   - " + state.bot[b] + ". " + TASKS[state.bot[b]-1].n);
+  L.push("");
+  tsv.push(state.top.join("|"), state.bot.join("|"));
+
+  /* IV */
+  L.push("[ IV. 동작숙련도(Z1) 관찰항목 적절성 ]");
+  for (var z=0;z<7;z++){
+    var zv = radioVal("z"+(z+1));
+    L.push((z+1) + ". " + Z1[z].n + " : " + nz(zv));
+    tsv.push(zv);
+  }
+  L.push("");
+  L.push("수정/삭제 의견: " + nz(val("z1edit")));
+  L.push("추가 관찰항목: " + nz(val("z1add")));
+  L.push("");
+  tsv.push(val("z1edit").replace(/\s+/g," "), val("z1add").replace(/\s+/g," "));
+
+  /* V */
+  L.push("[ V. 추가 의견 ]");
+  L.push("추가할 과제: " + nz(val("addTask")));
+  L.push("제외할 과제: " + nz(val("delTask")));
+  L.push("");
+  tsv.push(val("addTask").replace(/\s+/g," "), val("delTask").replace(/\s+/g," "));
+
+  /* VI */
+  L.push("[ VI. 2라운드 참여 의향 ]");
+  L.push("참여 의향: " + nz(radioVal("r2")));
+  L.push("이메일: " + nz(val("email")));
+  L.push("");
+  tsv.push(radioVal("r2"), val("email"));
+
+  L.push("--------------------------------------------------");
+  L.push("집계용 데이터 (탭 구분 — 스프레드시트에 붙여넣기)");
+  L.push(tsvHeader().join("\t"));
+  L.push(tsv.join("\t"));
+  L.push("--------------------------------------------------");
+  L.push("회신: obok0505@naver.com / 마감 2026-08-10");
+
+  return L.join("\n");
+}
+
+function finish(){
+  OUT = buildReport();
+  $("raw").value = OUT;
+  window.onbeforeunload = null;
+  go(6);
+}
+
+function fileName(){
+  var who = val("who").replace(/[^0-9A-Za-z가-힣]/g,"");
+  return "델파이1R_응답" + (who ? "_" + who : "") + "_" + stamp() + ".txt";
+}
+
+$("dlBtn").addEventListener("click", function(){
+  try {
+    var blob = new Blob(["\ufeff" + OUT], {type:"text/plain;charset=utf-8"});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement("a");
+    a.href = url; a.download = fileName(); a.rel = "noopener";
+    document.body.appendChild(a); a.click();
+    setTimeout(function(){ document.body.removeChild(a); URL.revokeObjectURL(url); }, 1500);
+    toast("응답 파일을 저장했습니다.");
+  } catch (e) {
+    $("rawFold").open = true;
+    toast("이 브라우저에서는 저장이 막혔습니다. 아래에서 복사해 주십시오.");
+    scrollToEl($("rawFold"));
+  }
+});
+
+function copyText(text, okMsg){
+  var done = function(){ toast(okMsg); };
+  if (navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done, fallback);
+  } else fallback();
+  function fallback(){
+    var ta = document.createElement("textarea");
+    ta.value = text; ta.style.position="fixed"; ta.style.top="-1000px";
+    document.body.appendChild(ta); ta.focus(); ta.select();
+    try { document.execCommand("copy"); done(); }
+    catch(e){ toast("복사가 되지 않습니다. 직접 선택해 주십시오."); }
+    document.body.removeChild(ta);
+  }
+}
+$("copyMail").addEventListener("click", function(){ copyText("obok0505@naver.com", "메일 주소를 복사했습니다."); });
+$("copyRaw").addEventListener("click", function(){ copyText(OUT, "응답 내용을 복사했습니다."); });
+$("mailBtn").addEventListener("click", function(){
+  var subj = "[델파이 1라운드 응답] " + (val("who") || "응답자");
+  var body = "델파이 1라운드 응답 파일을 첨부합니다.\n\n(내려받은 텍스트 파일을 첨부해 주십시오.)";
+  window.location.href = "mailto:obok0505@naver.com?subject=" + encodeURIComponent(subj) + "&body=" + encodeURIComponent(body);
+});
+
+/* 이탈 경고 */
+window.onbeforeunload = function(e){
+  if (step > 0 && step < 6){ e.preventDefault(); e.returnValue = ""; return ""; }
+};
+
+/* 숫자 입력 정리 */
+document.addEventListener("input", function(e){
+  if (e.target.classList && e.target.classList.contains("num")){
+    var v = e.target.value.replace(/[^0-9.]/g,"");
+    var p = v.split(".");
+    if (p.length > 2) v = p[0] + "." + p.slice(1).join("");
+    if (e.target.value !== v) e.target.value = v;
+    e.target.closest(".q") && e.target.closest(".q").classList.remove("invalid");
+  }
+}, true);
+
+go(0);
+</script>
+</body>
+</html>
