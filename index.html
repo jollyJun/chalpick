@@ -1,714 +1,604 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" data-theme="light">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
-<title>찰픽 — 찰떡같은 콘텐츠 추천 서비스</title>
-<meta name="description" content="찰픽 — 웹툰, 영화, OTT, 웹소설까지 한곳에서. 콘텐츠 큐레이션 서비스.">
-<script src="https://cdn.tailwindcss.com"></script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Noto+Serif+KR:wght@400;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
-<script>
-  tailwind.config = {
-    theme: {
-      extend: {
-        colors: {
-          bg: '#0c0c0c',
-          surface: '#181818',
-          card: '#1c1c1c',
-          border: '#2a2a2a',
-          border2: '#383838',
-          accent: '#ff5c2b',
-          accent2: '#ffb347',
-          textmain: '#f0ede8',
-          muted: '#888888',
-          dim: '#555555',
-        },
-        fontFamily: {
-          display: ['"Bebas Neue"', 'sans-serif'],
-          serif: ['"Noto Serif KR"', 'serif'],
-          sans: ['"Noto Sans KR"', 'sans-serif'],
-        },
-      }
-    }
-  }
-</script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>찰픽 — 검색</title>
+<link rel="stylesheet" as="style" crossorigin
+  href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
-  /* ── BASE ── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
-  body {
-    background: #0c0c0c;
-    color: #f0ede8;
-    font-family: 'Noto Sans KR', sans-serif;
-    font-weight: 300;
-    overflow-x: hidden;
-    word-break: keep-all;     /* 한국어 단어 단위 줄바꿈 */
-    overflow-wrap: break-word;
-    line-height: 1.7;
-  }
+:root{
+  --surface-0:#E9ECF1; --surface-1:#FFFFFF; --surface-2:#F7F9FC;
+  --border:#E3E8EF; --border-strong:#CDD5E0; --border-accent:#F2C9A0;
+  --text-primary:#1A2330; --text-secondary:#5A6675; --text-muted:#8A94A3;
+  --text-accent:#C77D3A; --text-success:#2E8B57; --text-warning:#2F7DB3;
+  --text-danger:#7A5CB0; --text-neutral:#7A5CB0;
+  --bg-accent:#FBEFE2; --bg-success:#E4F2EA; --bg-warning:#E2EFF8; --bg-neutral:#EDE7F5;
+}
+html[data-theme="dark"]{
+  --surface-0:#0F1620; --surface-1:#141C28; --surface-2:#1B2530;
+  --border:#2A3746; --border-strong:#3A4A5C; --border-accent:#6E4A2A;
+  --text-primary:#EAF0F7; --text-secondary:#A9B6C6; --text-muted:#6E7B8C;
+  --text-accent:#E0A45C; --text-success:#4FB37A; --text-warning:#5AA9DE;
+  --text-danger:#A98BDD; --text-neutral:#A98BDD;
+  --bg-accent:#3A2A1A; --bg-success:#1E3A2A; --bg-warning:#16324A; --bg-neutral:#2A2440;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--surface-2);color:var(--text-primary);
+ font-family:"Pretendard Variable",Pretendard,-apple-system,'Noto Sans KR',sans-serif;
+ font-size:13px;-webkit-font-smoothing:antialiased}
+button{font-family:inherit;cursor:pointer}
+.wrap{max-width:1160px;margin:0 auto;padding:0 16px 64px}
 
-  /* ── NOISE ── */
-  body::before {
-    content: '';
-    position: fixed; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none; z-index: 1000; opacity: 0.5;
-  }
+header{background:var(--surface-1);border-bottom:.5px solid var(--border);position:sticky;top:0;z-index:20}
+.hd{max-width:1160px;margin:0 auto;padding:0 16px;height:56px;display:flex;align-items:center;gap:14px}
+.logo{font-size:19px;font-weight:800;letter-spacing:-.03em}
+.logo em{font-style:normal;color:var(--text-accent)}
+.hd nav{margin-left:auto;display:flex;gap:14px;align-items:center;font-size:12px;color:var(--text-secondary)}
+.hd nav a{color:inherit;text-decoration:none}
+.hd nav a:hover{color:var(--text-primary)}
+.tglbtn{border:1px solid var(--border-strong);background:var(--surface-1);
+ color:var(--text-secondary);border-radius:7px;padding:4px 9px;font-size:11px}
 
-  /* ── NAV ── */
-  #navbar { transition: background .4s, backdrop-filter .4s, border-color .4s; }
-  #navbar.scrolled { background: rgba(12,12,12,0.88); backdrop-filter: blur(20px); border-color: #2a2a2a !important; }
+/* 취향 시점 — 자유검색 위 */
+.lens{display:flex;align-items:center;gap:9px;margin-top:16px;padding:13px 16px;
+ background:var(--surface-1);border:.5px solid var(--border-accent);
+ border-radius:14px 14px 0 0;border-bottom:none;flex-wrap:wrap}
+.lens .lb{font-size:11px;color:var(--text-muted)}
+.lensbtn{border:.5px solid var(--border);background:transparent;border-radius:999px;
+ padding:7px 15px;font-size:13px;font-weight:500;color:var(--text-muted);
+ display:flex;align-items:center;gap:7px}
+.lensbtn[aria-pressed="true"].cat{background:var(--bg-accent);color:var(--text-accent);border-color:var(--bg-accent)}
+.lensbtn[aria-pressed="true"].dol{background:var(--bg-warning);color:var(--text-warning);border-color:var(--bg-warning)}
+.lens .note{font-size:11px;color:var(--text-muted);margin-left:auto}
 
-  /* ── HERO ── */
-  .hero-orb {
-    position: absolute; top: -200px; right: -200px;
-    width: 700px; height: 700px;
-    background: radial-gradient(circle, rgba(255,92,43,0.12) 0%, transparent 65%);
-    pointer-events: none;
-    animation: orb-drift 12s ease-in-out infinite alternate;
-  }
-  @keyframes orb-drift {
-    from { transform: translate(0,0) scale(1); }
-    to   { transform: translate(-60px,80px) scale(1.15); }
-  }
+.searchbox{background:var(--surface-1);border:.5px solid var(--border);
+ border-radius:0 0 14px 14px;overflow:hidden}
+.freebar{display:flex;gap:9px;align-items:center;padding:14px 16px;border-bottom:.5px solid var(--border);
+ border-top:.5px solid var(--border)}
+.freebar input{flex:1;border:none;outline:none;background:transparent;font-size:15px;
+ color:var(--text-primary);font-family:inherit}
+.freebar input::placeholder{color:var(--text-muted)}
+.freebar .ico{color:var(--text-muted);font-size:16px}
 
-  /* ── HERO TITLE ── */
-  .hero-title {
-    font-family: 'Bebas Neue', 'Noto Sans KR', sans-serif;
-    /* 모바일(1단)에서는 화면 폭 기준으로 큼직하게 */
-    font-size: clamp(52px, 13vw, 120px);
-    line-height: 0.95;
-    letter-spacing: 1px;
-    word-break: keep-all;
-  }
-  /* 데스크탑(2단)에서도 텍스트를 큼직하게 유지.
-     화면 폭(vw) 기준으로 키우되 최대치를 제한해 폰 영역을 침범하지 않게 함 */
-  @media (min-width: 1024px) {
-    .hero-title {
-      font-size: clamp(64px, 7.5vw, 104px);
-    }
-  }
-  .title-outline { -webkit-text-stroke: 1.5px #f0ede8; color: transparent; }
-  .title-accent  { color: #ff5c2b; }
+.tabs{display:flex;gap:2px;padding:10px 16px 0}
+.tab{border:none;background:transparent;padding:7px 13px;border-radius:8px 8px 0 0;
+ font-size:13px;font-weight:500;color:var(--text-muted)}
+.tab[aria-selected="true"]{background:var(--surface-2);color:var(--text-primary)}
+.tab .n{font-size:10px;color:var(--text-muted);margin-left:4px}
+.tab .dot{display:inline-flex;align-items:center;justify-content:center;min-width:15px;height:15px;
+ margin-left:5px;padding:0 4px;border-radius:999px;font-size:9.5px;font-weight:700;
+ background:var(--text-accent);color:#fff}
 
-  /* ── HERO SECTION ── */
-  .hero-section {
-    display: grid;
-    place-items: center;
-  }
+.active{display:none;align-items:center;gap:7px;flex-wrap:wrap;
+ padding:11px 16px;border-top:.5px solid var(--border);background:var(--bg-accent)}
+.active.on{display:flex}
+.active .lbl{font-size:11px;color:var(--text-accent);margin-right:2px}
+.actchip{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:999px;
+ padding:5px 9px 5px 11px;font-size:12px;font-weight:500;
+ background:var(--surface-1);color:var(--text-primary);
+ box-shadow:0 0 0 .5px var(--border-accent)}
+.actchip .g{font-size:10px;color:var(--text-muted)}
+.actchip .x{color:var(--text-muted);font-size:13px;line-height:1}
+.actchip:hover .x{color:var(--text-primary)}
+.clearall{margin-left:auto;border:none;background:none;font-size:11px;
+ color:var(--text-accent);text-decoration:underline}
+.panel{background:var(--surface-2);padding:13px 16px 15px;border-top:.5px solid var(--border)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{border:.5px solid var(--border-strong);background:var(--surface-1);
+ color:var(--text-secondary);border-radius:999px;padding:5px 11px;font-size:12px}
+.chip:hover{border-color:var(--text-muted)}
+.chip[aria-pressed="true"]{background:var(--text-primary);border-color:var(--text-primary);color:var(--surface-1)}
+.chip.dead{opacity:.3;cursor:default}
+.pill.dead{opacity:.3;cursor:default}
+.chip .c{font-size:10px;opacity:.6;margin-left:3px}
+.more{border:none;background:none;color:var(--text-secondary);font-size:11px;padding:6px 2px;text-decoration:underline}
 
-  /* ── HERO PHONE IMAGE ── */
-  .hero-phone-img {
-    display: block;
-    width: 100%;
-    height: auto;
-    /* 화면/컬럼 폭에 따라 자연스럽게 커지되 최대치 제한 */
-    max-width: clamp(204px, 32vw, 374px);
-    object-fit: contain;
-    filter: drop-shadow(0 30px 60px rgba(0,0,0,0.55));
-    -webkit-user-select: none;
-    user-select: none;
-    pointer-events: none;
-  }
+.filters{border-top:.5px solid var(--border);background:var(--surface-1);padding:4px 16px 12px}
+.fgroup{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding-top:9px}
+.fgroup>span.lbl{font-size:11px;color:var(--text-muted);width:44px;flex-shrink:0}
+.pill{border:.5px solid var(--border-strong);background:transparent;color:var(--text-secondary);
+ border-radius:7px;padding:4px 10px;font-size:12px}
+.pill[aria-pressed="true"]{background:var(--surface-0);color:var(--text-primary);border-color:var(--text-muted)}
+.pill .c{font-size:10px;opacity:.55;margin-left:3px}
+.dedupe{margin-left:auto;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px}
 
-  /* ── HERO GRID (순수 CSS — Tailwind CDN 미로드 시에도 안전) ── */
-  .hero-grid {
-    display: grid;
-    grid-template-columns: 1fr;     /* 기본: 모바일 1단 */
-    gap: 2.5rem;
-    width: 100%;
-    max-width: 80rem;
-    margin: 0 auto;
-    align-items: center;
-  }
-  .hero-text  { order: 1; min-width: 0; }
-  .hero-phone { order: 2; display: flex; justify-content: center; align-items: center; }
+.resbar{display:flex;align-items:baseline;gap:10px;margin:18px 0 12px;flex-wrap:wrap}
+.resbar strong{font-size:15px}
+.resbar .sub{font-size:11px;color:var(--text-muted)}
+.sorts{margin-left:auto;display:flex;gap:4px}
+.sortbtn{border:none;background:none;font-size:12px;color:var(--text-muted);padding:3px 7px;border-radius:6px}
+.sortbtn[aria-pressed="true"]{color:var(--text-primary);font-weight:600;background:var(--surface-0)}
 
-  /* 모바일(1단)에서는 폰 이미지를 조금 작게 + 가운데 정렬 */
-  @media (max-width: 1023px) {
-    .hero-phone-img { max-width: min(238px, 60vw); }
-    .hero-section { min-height: auto; }   /* 세로로 길어지므로 강제 100vh 해제 */
-  }
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(132px,1fr));gap:16px 13px}
+.card{background:none;border:none;padding:0;text-align:left;display:block;width:100%}
+.thumb{width:100%;aspect-ratio:2/3;border-radius:9px;position:relative;overflow:hidden;
+ display:flex;align-items:flex-end;padding:9px;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.07);
+ transition:transform .16s ease}
+.card:hover .thumb{transform:translateY(-3px)}
+.thumb .tt{font-size:12.5px;font-weight:650;line-height:1.32;color:rgba(255,255,255,.97);
+ text-shadow:0 1px 4px rgba(0,0,0,.4);display:-webkit-box;-webkit-line-clamp:3;
+ -webkit-box-orient:vertical;overflow:hidden;padding-right:16px}
+.thumb .wm{position:absolute;right:8px;bottom:8px;font-size:11px;color:rgba(255,255,255,.55)}
+.thumb .pct{position:absolute;left:8px;top:8px;font-size:10px;font-weight:700;padding:2px 6px;
+ border-radius:6px;background:rgba(255,255,255,.9);color:#1A2330}
+html[data-theme="dark"] .thumb .pct{background:rgba(20,28,40,.85);color:#EAF0F7}
+.thumb .est{position:absolute;right:8px;top:8px;width:6px;height:6px;border-radius:50%;
+ background:rgba(255,255,255,.55)}
+.meta{margin-top:7px}
+.badge{font-size:10px;padding:1px 6px;border-radius:6px}
+.b-웹툰{background:var(--bg-accent);color:var(--text-accent)}
+.b-드라마{background:var(--bg-success);color:var(--text-success)}
+.b-영화{background:var(--bg-neutral);color:var(--text-neutral)}
+.b-웹소설{background:var(--bg-neutral);color:var(--text-neutral)}
+body.teal .b-영화{background:#DCF0EF;color:#2E7A7A}
+html[data-theme="dark"] body.teal .b-영화{background:#123434;color:#5FBDBB}
+.meta .ti{font-size:12px;font-weight:600;margin-top:4px;line-height:1.35;
+ display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta .yr{font-size:11px;color:var(--text-muted);margin-top:2px}
 
-  /* 데스크탑(≥1024px): 좌우 2단 — 텍스트 왼쪽, 폰 오른쪽 */
-  @media (min-width: 1024px) {
-    .hero-grid {
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-    .hero-text  { order: 1; }
-    .hero-phone { order: 2; justify-content: flex-end; }
-  }
+.state{padding:60px 20px;text-align:center;color:var(--text-muted);font-size:13px;
+ background:var(--surface-1);border:.5px dashed var(--border-strong);border-radius:12px;line-height:1.7}
+.state b{display:block;color:var(--text-primary);font-size:14px;margin-bottom:8px}
+.state code{background:var(--surface-0);padding:2px 6px;border-radius:4px;font-size:12px}
+.skel{background:var(--surface-0);border-radius:9px;aspect-ratio:2/3;
+ animation:pulse 1.3s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.45}}
 
-  /* ── HERO ANIM ── */
-  .hero-eyebrow { opacity:0; transform:translateY(20px); animation: fade-up .8s .2s forwards; }
-  .hero-h1      { opacity:0; transform:translateY(30px); animation: fade-up .9s .4s forwards; }
-  .hero-sub     { opacity:0; transform:translateY(20px); animation: fade-up .8s .7s forwards; }
-  .hero-form    { opacity:0; transform:translateY(20px); animation: fade-up .8s .95s forwards; }
-  .scroll-hint  { opacity:0; animation: fade-up .8s 1.4s forwards; }
-  @keyframes fade-up { to { opacity:1; transform:translateY(0); } }
+.mask{position:fixed;inset:0;background:rgba(15,22,32,.45);display:none;z-index:50}
+.mask.on{display:block}
+.sheet{position:fixed;right:0;top:0;bottom:0;width:380px;max-width:92vw;background:var(--surface-1);
+ border-left:.5px solid var(--border);z-index:51;transform:translateX(100%);
+ transition:transform .22s ease;overflow-y:auto;padding:18px}
+.sheet.on{transform:none}
+.sheet .x{position:absolute;right:14px;top:14px;border:none;background:none;font-size:18px;color:var(--text-muted)}
+.reason{background:var(--bg-accent);border-radius:10px;padding:13px;margin-top:14px}
+.reason .h{font-size:13px;font-weight:600;color:var(--text-accent);margin-bottom:8px}
+.reason ul{margin:0;padding-left:16px;font-size:12px;color:var(--text-accent);line-height:1.75}
+.warnbox{margin-top:12px;padding:10px 12px;border-radius:9px;font-size:11.5px;line-height:1.6;
+ background:var(--bg-neutral);color:var(--text-neutral)}
 
-  /* ── SCROLL HINT ── */
-  .scroll-line {
-    width:40px; height:1px;
-    background:#555; position:relative; overflow:hidden;
-  }
-  .scroll-line::after {
-    content:''; position:absolute; top:0; left:-100%;
-    width:100%; height:100%; background:#ff5c2b;
-    animation: slide-right 1.6s 1.6s ease-in-out infinite;
-  }
-  @keyframes slide-right { 0%{left:-100%} 50%{left:0} 100%{left:100%} }
-
-  /* ── EMAIL FORM ── */
-  .form-input {
-    flex:1; min-width:0;
-    background:#181818; border:1px solid #2a2a2a;
-    color:#f0ede8;
-    font-family:'Noto Sans KR',sans-serif;
-    font-size:15px;
-    padding:15px 18px;
-    outline:none;
-    border-radius:6px 0 0 6px;
-    transition:border-color .2s;
-    -webkit-appearance: none;
-  }
-  .form-input::placeholder { color:#555; }
-  .form-input:focus { border-color:#ff5c2b; }
-  .form-btn {
-    background:#ff5c2b; border:1px solid #ff5c2b; color:#fff;
-    font-family:'Noto Sans KR',sans-serif;
-    font-size:14px; font-weight:500;
-    padding:15px 22px; cursor:pointer;
-    border-radius:0 6px 6px 0;
-    white-space:nowrap;
-    letter-spacing:.5px;
-    transition:background .2s, transform .15s;
-    -webkit-appearance: none;
-  }
-  .form-btn:hover { background:#e04a1a; transform:translateX(2px); }
-
-  .success-msg {
-    display:none; margin-top:14px;
-    padding:14px 20px;
-    background:rgba(255,92,43,.08);
-    border:1px solid rgba(255,92,43,.25);
-    border-radius:6px;
-    font-size:14px; color:#ffb347;
-    line-height:1.6;
-  }
-
-  /* ── MARQUEE ── */
-  .marquee-track {
-    display:flex;
-    gap:48px;
-    animation:marquee 28s linear infinite;
-    white-space:nowrap;
-    align-items:center;
-  }
-  @keyframes marquee {
-    from{transform:translateX(0)}
-    to{transform:translateX(-50%)}
-  }
-  .marquee-item {
-    font-family:'Bebas Neue', sans-serif;
-    font-size:14px;
-    letter-spacing:4px;
-    color:#888;
-    display:inline-flex;
-    align-items:center;
-    gap:48px;
-    flex-shrink:0;
-  }
-  .m-dot {
-    width:4px; height:4px;
-    border-radius:50%;
-    background:#ff5c2b;
-    display:inline-block;
-  }
-
-  /* ── FEATURE CARD ── */
-  .feat-card {
-    position:relative;
-    overflow:hidden;
-    transition:background .3s;
-  }
-  .feat-card::before {
-    content:''; position:absolute; top:0; left:0; right:0; height:2px;
-    background:#ff5c2b; transform:scaleX(0); transform-origin:left;
-    transition:transform .4s;
-  }
-  .feat-card:hover::before { transform:scaleX(1); }
-  .feat-card:hover { background:#1e1e1e; }
-  .feat-num {
-    font-family:'Bebas Neue',sans-serif;
-    font-size:60px;
-    color:#2a2a2a;
-    line-height:1;
-    margin-bottom:14px;
-    transition:color .3s;
-  }
-  .feat-card:hover .feat-num { color:rgba(255,92,43,.15); }
-
-  /* ── HOW STEP ── */
-  .how-step {
-    opacity:.5;
-    transition:opacity .3s;
-  }
-  .how-step:hover, .how-step:active { opacity:1; }
-
-  /* ── TAG ── */
-  .tag {
-    transition:all .2s;
-    cursor:pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .tag:hover, .tag.active {
-    border-color:#ff5c2b !important;
-    color:#ff5c2b !important;
-    background:rgba(255,92,43,.06);
-  }
-
-  /* 카테고리 그룹 라벨 */
-  .tag-group-label {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    font-size: 13px;
-    letter-spacing: 4px;
-    color: #ff5c2b;
-    text-transform: uppercase;
-    font-weight: 600;
-    margin: 52px 0 18px;
-  }
-  .tag-group-label::before,
-  .tag-group-label::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #2a2a2a;
-  }
-  .tag-group-label:first-child { margin-top: 0; }
-
-  /* ── CTA ── */
-  .cta-glow {
-    position:absolute; top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    width:600px; height:600px;
-    background:radial-gradient(circle, rgba(255,92,43,.07) 0%, transparent 70%);
-    pointer-events:none;
-  }
-  .cta-title {
-    font-family:'Bebas Neue', 'Noto Sans KR', sans-serif;
-    font-size:clamp(44px, 9vw, 110px);
-    line-height:1.0;
-    word-break: keep-all;
-  }
-  .cta-outline {
-    background:linear-gradient(120deg, #ff5c2b 0%, #ffb347 100%);
-    -webkit-background-clip:text;
-    background-clip:text;
-    -webkit-text-fill-color:transparent;
-    color:transparent;
-    text-shadow:0 0 40px rgba(255,92,43,.25);
-  }
-
-  /* ── REVEAL ── */
-  .reveal { opacity:0; transform:translateY(30px); transition:opacity .7s, transform .7s; }
-  .reveal.visible { opacity:1; transform:translateY(0); }
-
-  /* ── 모바일 폼: 세로 스택 ── */
-  @media(max-width:640px){
-    .form-row {
-      flex-direction:column;
-      gap: 8px;
-    }
-    .form-input {
-      border-radius: 6px;
-      width: 100%;
-      font-size:16px;     /* iOS zoom 방지 */
-    }
-    .form-btn {
-      border-radius: 6px;
-      width: 100%;
-      padding: 16px 22px;
-      font-size:15px;
-    }
-  }
-
-  /* ── 한국어 줄바꿈 최적화 ── */
-  .ko-text {
-    word-break: keep-all;
-    overflow-wrap: break-word;
-  }
+@media (max-width:640px){
+  .grid{grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:14px 10px}
+  .hd nav a{display:none}
+  .lens .note{width:100%;margin-left:0}
+  .fgroup>span.lbl{width:100%}
+}
 </style>
 </head>
 <body>
 
-<!-- ══ NAV ══ -->
-<nav id="navbar" class="fixed top-0 left-0 right-0 z-50 flex justify-between items-center px-6 sm:px-12 py-4 sm:py-5 border-b border-transparent">
-  <a href="#" class="font-display text-2xl sm:text-3xl tracking-widest text-textmain no-underline">
-    찰<span class="text-accent">픽</span>
-  </a>
-  <a href="#cta" class="text-xs sm:text-sm font-medium text-accent border border-accent px-4 sm:px-5 py-2 rounded no-underline hover:bg-accent hover:text-white transition-all duration-200" style="letter-spacing:.5px">
-    사전 등록
-  </a>
-</nav>
+<header>
+  <div class="hd">
+    <div class="logo">찰<em>픽</em></div>
+    <nav>
+      <a href="#">로그인</a><a href="#">회원가입</a><a href="#">마이페이지</a>
+      <button class="tglbtn" id="theme">다크</button>
+      <button class="tglbtn" id="teal">영화 청록</button>
+    </nav>
+  </div>
+</header>
 
-<!-- ══ HERO ══ -->
-<section class="hero-section relative min-h-screen grid place-items-center px-6 sm:px-12 pt-28 sm:pt-32 pb-20 overflow-hidden">
-  <div class="hero-orb"></div>
+<div class="wrap">
 
-  <!-- 좌우 2단 그리드: lg 이상 2단(텍스트+폰), 그 미만 1단 -->
-  <div class="hero-grid">
+  <!-- ① 취향 시점 (자유검색 위) -->
+  <div class="lens">
+    <span class="lb">누구의 취향으로 볼까요</span>
+    <button class="lensbtn cat" data-seg="S1" aria-pressed="true">🐈 느긋관찰 고양이</button>
+    <button class="lensbtn dol" data-seg="S4" aria-pressed="false">🌊 사이다점프 돌고래</button>
+    <span class="note">시점을 바꾸면 같은 검색 결과가 다시 정렬됩니다</span>
+  </div>
 
-    <!-- ── 좌측: 텍스트 영역 (모바일에서 순서 1) ── -->
-    <div class="hero-text">
-      <p class="hero-eyebrow text-[10px] sm:text-xs font-medium text-accent mb-6 sm:mb-8 ko-text" style="letter-spacing:3px; text-transform:uppercase">
-        콘텐츠 큐레이션 서비스 · COMING SOON
-      </p>
-
-      <h1 class="hero-h1 hero-title">
-        찰떡같이<br>
-        <span class="title-outline">PICK</span>
-        <span class="title-accent">하다</span>
-      </h1>
-
-      <p class="hero-sub mt-8 sm:mt-10 text-base sm:text-lg text-muted max-w-lg ko-text" style="line-height:1.85">
-        수백만 개의 콘텐츠 중에서<br>
-        <strong class="text-textmain font-medium">지금 당신에게 딱 맞는 것</strong>만 골라드립니다.<br class="hidden sm:block">
-        <span class="block sm:inline mt-1 sm:mt-0">웹툰 · 영화 · OTT · 웹소설까지 한곳에서.</span>
-      </p>
-
-      <div class="hero-form mt-10 sm:mt-14 w-full max-w-md">
-        <label class="block mb-3 text-[11px] text-muted ko-text" style="letter-spacing:3px; text-transform:uppercase" for="email1">출시 알림 신청</label>
-        <div class="form-row flex">
-          <input type="email" id="email1" class="form-input" placeholder="이메일 주소를 입력하세요" autocomplete="email" inputmode="email">
-          <button class="form-btn" onclick="handleSubmit('email1','success1')">알림 받기 →</button>
-        </div>
-        <p class="mt-3 text-xs text-dim ko-text leading-relaxed">
-          ✓ 스팸 없음 &nbsp;·&nbsp; ✓ 언제든 해지 가능<br class="sm:hidden">
-          <span class="hidden sm:inline">&nbsp;·&nbsp;</span>
-          <span class="text-accent">출시 시 가장 먼저 알려드려요</span>
-        </p>
-        <div class="success-msg" id="success1">🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.</div>
-      </div>
+  <!-- ② 검색 -->
+  <div class="searchbox">
+    <div class="freebar">
+      <span class="ico">⌕</span>
+      <input id="q" placeholder="제목, 작가, 등장인물 — 한 곳에서 검색">
     </div>
 
-    <!-- ── 우측: 스마트폰 이미지 (모바일에서 순서 2, 텍스트 아래로) ── -->
-    <div class="hero-phone">
-      <img src="smtp.png" alt="찰픽 앱 미리보기"
-           class="hero-phone-img"
-           loading="eager" decoding="async">
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" data-cat="genre"  aria-selected="true">장르<span class="n" id="n-genre"></span></button>
+      <button class="tab" role="tab" data-cat="world"  aria-selected="false">소재·배경<span class="n" id="n-world"></span></button>
+      <button class="tab" role="tab" data-cat="people" aria-selected="false">인물·관계<span class="n" id="n-people"></span></button>
     </div>
+    <div class="panel" id="panel"></div>
+    <div class="active" id="active"></div>
 
+    <div class="filters">
+      <div class="fgroup" id="mediaF"><span class="lbl">유형</span></div>
+      <div class="fgroup" id="platF"><span class="lbl">플랫폼</span></div>
+    </div>
   </div>
 
-  <div class="scroll-hint hidden lg:flex absolute bottom-10 left-12 items-center gap-3 text-xs text-muted" style="letter-spacing:3px; text-transform:uppercase">
-    <span class="scroll-line"></span>
-    <span>Scroll</span>
+  <div class="resbar">
+    <strong id="cnt">—</strong>
+    <span class="sub" id="subline"></span>
+    <div class="sorts">
+      <button class="sortbtn" data-sort="match" aria-pressed="true">취향순</button>
+      <button class="sortbtn" data-sort="year"  aria-pressed="false">최신순</button>
+      <button class="sortbtn" data-sort="title" aria-pressed="false">가나다순</button>
+    </div>
   </div>
-</section>
 
-<!-- ══ MARQUEE ══ -->
-<div class="border-t border-b border-border py-4 overflow-hidden bg-surface">
-  <div class="marquee-track">
-    <span class="marquee-item">네이버웹툰<span class="m-dot"></span></span>
-    <span class="marquee-item">영화<span class="m-dot"></span></span>
-    <span class="marquee-item">드라마<span class="m-dot"></span></span>
-    <span class="marquee-item">넷플릭스<span class="m-dot"></span></span>
-    <span class="marquee-item">디즈니+<span class="m-dot"></span></span>
-    <span class="marquee-item">티빙<span class="m-dot"></span></span>
-    <span class="marquee-item">카카오페이지<span class="m-dot"></span></span>
-    <span class="marquee-item">네이버시리즈<span class="m-dot"></span></span>
-    <span class="marquee-item">웨이브<span class="m-dot"></span></span>
-    <span class="marquee-item">리디<span class="m-dot"></span></span>
-    <!-- duplicate for seamless loop -->
-    <span class="marquee-item">네이버웹툰<span class="m-dot"></span></span>
-    <span class="marquee-item">영화<span class="m-dot"></span></span>
-    <span class="marquee-item">드라마<span class="m-dot"></span></span>
-    <span class="marquee-item">넷플릭스<span class="m-dot"></span></span>
-    <span class="marquee-item">디즈니+<span class="m-dot"></span></span>
-    <span class="marquee-item">티빙<span class="m-dot"></span></span>
-    <span class="marquee-item">카카오페이지<span class="m-dot"></span></span>
-    <span class="marquee-item">네이버시리즈<span class="m-dot"></span></span>
-    <span class="marquee-item">웨이브<span class="m-dot"></span></span>
-    <span class="marquee-item">리디<span class="m-dot"></span></span>
-  </div>
+  <div class="grid" id="grid"></div>
 </div>
 
-<!-- ══ FEATURES ══ -->
-<section class="max-w-6xl mx-auto px-6 sm:px-12 py-20 sm:py-28">
-  <span class="reveal block text-[10px] sm:text-xs font-medium text-accent mb-4 sm:mb-5 ko-text" style="letter-spacing:3px; text-transform:uppercase">왜 찰픽인가</span>
-  <h2 class="reveal font-serif text-3xl sm:text-5xl font-bold leading-tight max-w-lg mb-12 sm:mb-20 ko-text" style="line-height:1.35">
-    콘텐츠 과부하로 생기는<br>혼란의 시간을 끝냅니다
-  </h2>
-
-  <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
-    <!-- 01 -->
-    <div class="feat-card reveal bg-card p-8 sm:p-12 rounded-lg">
-      <div class="feat-num">01</div>
-      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">취향을 읽는 4가지 질문</h3>
-      <p class="text-sm text-muted ko-text" style="line-height:1.85">
-        당신이 본 작품을 템포·분위기·결말·세계관 네 가지로 분석합니다. 막연한 추천이 아니라, 당신이 왜 그 작품을 좋아했는지를 읽어냅니다.
-      </p>
-    </div>
-
-    <!-- 02 -->
-    <div class="feat-card reveal bg-card p-8 sm:p-12 rounded-lg">
-      <div class="feat-num">02</div>
-      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">플랫폼 경계를 지웁니다</h3>
-      <p class="text-sm text-muted ko-text" style="line-height:1.85">
-        웹툰, 영화, OTT, 웹소설, 전자책, 예능, 다큐. 흩어진 콘텐츠를 한곳에서. 어디서 보든, 찾는 건 한 번이면 됩니다.
-      </p>
-    </div>
-
-    <!-- 03 -->
-    <div class="feat-card reveal bg-card p-8 sm:p-12 rounded-lg">
-      <div class="feat-num">03</div>
-      <h3 class="text-lg font-medium text-textmain mb-3 ko-text">당신에게 별명을 붙입니다</h3>
-      <p class="text-sm text-muted ko-text" style="line-height:1.85">
-        '멸망 엔딩 기다리는 까마귀'부터 <br>'맥주 한캔에 행복한 곰'까지. 당신의 취향에 별명이 생깁니다. 그리고 그 취향에 딱 맞는 작품이 따라옵니다.
-      </p>
-    </div>
-  </div>
-</section>
-
-<!-- ══ HOW IT WORKS ══ -->
-<section class="bg-surface border-t border-b border-border py-20 sm:py-28">
-  <div class="max-w-6xl mx-auto px-6 sm:px-12 grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 items-start">
-
-    <div>
-      <span class="reveal block text-[10px] sm:text-xs font-medium text-accent mb-4 sm:mb-5 ko-text" style="letter-spacing:3px; text-transform:uppercase">사용 방법</span>
-      <h2 class="reveal font-serif text-3xl sm:text-5xl font-bold ko-text" style="line-height:1.35">
-        1분이면<br>편해집니다.
-      </h2>
-    </div>
-
-    <div class="flex flex-col">
-
-      <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7 border-b border-border">
-        <span class="font-display text-xl text-accent min-w-[28px] pt-1">01</span>
-        <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">취향 진단은 단 1분</h4>
-          <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            가입하면서 작품 몇 개에 좋아요만 누르세요. 그 자리에서 당신의 취향 라벨이 만들어지고, 첫 추천이 바로 준비됩니다.
-          </p>
-        </div>
-      </div>
-
-      <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7 border-b border-border">
-        <span class="font-display text-xl text-accent min-w-[28px] pt-1">02</span>
-        <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">장르 × 포맷 한 번에 검색</h4>
-          <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            웹툰·영화·OTT·웹소설 등 포맷과 로맨스·판타지·미스터리 등 장르를 함께 골라 검색하세요. 플랫폼은 신경 쓰지 마세요.
-          </p>
-        </div>
-      </div>
-
-      <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7 border-b border-border">
-        <span class="font-display text-xl text-accent min-w-[28px] pt-1">03</span>
-        <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">흩어진 작품이 한눈에</h4>
-          <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            플랫폼과 포맷에 상관없이, 원하는 장르의 작품이 찰픽 화면 하나에 모입니다. 더 이상 앱을 옮겨 다닐 필요가 없습니다.
-          </p>
-        </div>
-      </div>
-
-      <div class="how-step reveal flex gap-4 sm:gap-6 py-6 sm:py-7">
-        <span class="font-display text-xl text-accent min-w-[28px] pt-1">04</span>
-        <div class="flex-1">
-          <h4 class="text-base font-medium text-textmain mb-2 ko-text">보고, 모으고, 다시 추천받고</h4>
-          <p class="text-sm text-muted ko-text" style="line-height:1.85">
-            마음에 든 작품은 보관함에 저장하세요. 당신이 본 작품은 매일 취향에 반영되어, 내일은 더 정확한 추천이 기다립니다.
-          </p>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- ══ CATEGORIES ══ -->
-<section class="max-w-4xl mx-auto px-6 sm:px-12 py-20 sm:py-24 space-y-16">
-
-  <p class="reveal font-serif text-xl sm:text-2xl text-muted mb-12 sm:mb-14 text-center ko-text" style="line-height:1.6">
-    <strong class="text-textmain">어떤 취향이든</strong> 찰픽이<br class="sm:hidden"> 찾아드립니다
-  </p>
-
-  <!-- 장르 -->
-  <div class="reveal">
-    <p class="tag-group-label">장르</p>
-    <div class="flex flex-wrap gap-2.5 justify-center">
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full active">🌸 로맨스</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">⚔️ 액션·무협</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">✨ 판타지·SF</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🔍 미스터리·공포</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">😄 코미디·일상</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">💔 드라마·감동</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📜 역사·시대극</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🎌 이세계·전생</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🏫 학원·청춘</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🏆 스포츠</span>
-    </div>
-  </div>
-
-  <!-- 콘텐츠 유형 -->
-  <div class="reveal">
-    <p class="tag-group-label">콘텐츠 유형</p>
-    <div class="flex flex-wrap gap-2.5 justify-center">
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📖 웹툰</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🎬 영화</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📺 드라마·OTT</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📝 웹소설</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📚 전자책</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">😂 예능·버라이어티</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🎙 다큐·교양</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🎌 애니메이션</span>
-    </div>
-  </div>
-
-  <!-- 플랫폼 -->
-  <div class="reveal">
-    <p class="tag-group-label">플랫폼</p>
-    <div class="flex flex-wrap gap-2.5 justify-center">
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🟢 네이버웹툰</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🔴 넷플릭스</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🔵 디즈니+</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🟣 티빙</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🟡 카카오페이지</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">🎥 영화관</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📗 밀리의서재</span>
-      <span class="tag text-base border border-border text-muted px-5 py-2.5 rounded-full">📕 리디</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══ CTA ══ -->
-<section class="relative py-24 sm:py-36 px-6 sm:px-12 text-center overflow-hidden" id="cta">
-  <div class="cta-glow"></div>
-
-  <p class="reveal text-[10px] sm:text-xs text-accent mb-5 sm:mb-6 ko-text" style="letter-spacing:3px; text-transform:uppercase">얼리어답터 모집 중</p>
-
-  <h2 class="reveal cta-title mb-10 sm:mb-12">
-    지금 신청하면<br>
-    <span class="cta-outline">무료 프리미엄</span>
-  </h2>
-
-  <div class="reveal max-w-md mx-auto">
-    <div class="form-row flex">
-      <input type="email" id="email2" class="form-input" placeholder="이메일 주소를 입력하세요" autocomplete="email" inputmode="email">
-      <button class="form-btn" onclick="handleSubmit('email2','success2')">사전 등록하기</button>
-    </div>
-    <div class="success-msg text-left" id="success2">🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.</div>
-    <p class="mt-4 text-xs text-dim ko-text" style="line-height:1.7">
-      얼리어답터 <span class="text-accent">특별한 선물/쿠폰</span> 제공 예정<br class="sm:hidden">
-      <span class="hidden sm:inline"> · </span>선착순 1,000명
-    </p>
-  </div>
-</section>
-
-<!-- ══ FOOTER ══ -->
-<footer class="border-t border-border px-6 sm:px-12 py-8 sm:py-10 flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-4">
-  <a href="#" class="font-display text-xl sm:text-2xl tracking-widest text-muted no-underline">
-    찰<span class="text-accent">픽</span>
-  </a>
-  <span class="text-[11px] sm:text-xs text-dim ko-text text-center" style="letter-spacing:.5px">
-    © 2025 찰픽 · 모든 콘텐츠를 찰나에 픽
-  </span>
-</footer>
-
+<div class="mask" id="mask"></div>
+<aside class="sheet" id="sheet"></aside>
 <script>
-  // Nav scroll
-  const navbar = document.getElementById('navbar');
-  window.addEventListener('scroll', () => {
-    navbar.classList.toggle('scrolled', window.scrollY > 60);
-  }, { passive: true });
+/* ════════════════════════════════════════════════════════════
+   ① 여기 두 줄만 채우면 됩니다
+   Supabase 대시보드 → Project Settings → API Keys
+   ──────────────────────────────────────────────────────────
+   SUPABASE_KEY 는 publishable(sb_publishable_...) 또는
+   legacy anon 키를 넣습니다. secret / service_role 키는
+   절대 넣지 마세요 — RLS를 우회하고 이 파일은 공개됩니다.
+   ════════════════════════════════════════════════════════════ */
+const SUPABASE_URL = "https://lzfnrqpsdtgkzzyoojsl.supabase.co";
+const SUPABASE_KEY = "sb_publishable_GAI92kBGywJT6HqdR_3SzA_pvznkdEA";
+/* ══════════════════════════════════════════════════════════ */
 
-  // Scroll reveal
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach((e, i) => {
-      if (e.isIntersecting) {
-        setTimeout(() => e.target.classList.add('visible'), i * 60);
-        observer.unobserve(e.target);
-      }
-    });
-  }, { threshold: 0.08, rootMargin: '0px 0px -50px 0px' });
-  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
-
-  // Tag toggle
-  document.querySelectorAll('.tag').forEach(tag => {
-    tag.addEventListener('click', () => tag.classList.toggle('active'));
-  });
-
-  // ── 이메일 수집: Formspree 연동 ──
-  const FORMSPREE_URL = 'https://formspree.io/f/xnjwaglo';
-
-  function handleSubmit(inputId, successId) {
-    const input = document.getElementById(inputId);
-    const successEl = document.getElementById(successId);
-    const btn = input.nextElementSibling;
-    const email = input.value.trim();
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    // 이메일 형식 검증
-    if (!re.test(email)) {
-      input.style.borderColor = '#ff3b30';
-      input.focus();
-      setTimeout(() => input.style.borderColor = '', 1500);
-      return;
-    }
-
-    // 버튼 로딩 상태
-    const originalText = btn.textContent;
-    btn.disabled = true;
-    btn.style.opacity = '0.7';
-    btn.style.cursor = 'wait';
-    btn.textContent = '전송 중...';
-
-    // Formspree로 AJAX 전송 (페이지 이동/팝업 없음)
-    fetch(FORMSPREE_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({
-        email: email,
-        source: inputId === 'email1' ? '히어로 알림 신청' : 'CTA 사전 등록',
-        location: window.location.href,
-        timestamp: new Date().toISOString()
-      })
-    })
-    .then(response => {
-      if (response.ok) {
-        // 성공
-        input.value = '';
-        successEl.innerHTML = '🎉 신청 완료! 찰픽이 오픈되면 가장 먼저 연락드릴게요.';
-        successEl.style.color = '';
-        successEl.style.display = 'block';
-      } else {
-        throw new Error('전송 실패');
-      }
-    })
-    .catch(err => {
-      // 에러 시 사용자에게 알림
-      successEl.innerHTML = '⚠️ 전송 중 오류가 발생했습니다. 잠시 후 다시 시도해주세요.';
-      successEl.style.color = '#ff8c5a';
-      successEl.style.display = 'block';
-    })
-    .finally(() => {
-      btn.disabled = false;
-      btn.style.opacity = '';
-      btn.style.cursor = '';
-      btn.textContent = originalText;
-    });
+/* ── Supabase REST ──────────────────────────────────────── */
+function headers(){
+  const h = { apikey: SUPABASE_KEY, Accept: "application/json" };
+  // 신규 sb_ 키는 apikey 헤더 전용. legacy anon(JWT)만 Authorization 필요.
+  if (!SUPABASE_KEY.startsWith("sb_")) h.Authorization = "Bearer " + SUPABASE_KEY;
+  return h;
+}
+async function rest(path){
+  const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, { headers: headers() });
+  if(!res.ok) throw new Error("[" + res.status + "] " + (await res.text()).slice(0,200));
+  return res.json();
+}
+// PostgREST 기본 페이지 한계를 넘길 수 있으므로 range 로 끊어 받는다
+async function restAll(path, step = 1000){
+  let out = [], from = 0;
+  for(;;){
+    const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, {
+      headers: { ...headers(), Range: from + "-" + (from + step - 1) } });
+    if(!res.ok) throw new Error("[" + res.status + "] " + (await res.text()).slice(0,200));
+    const chunk = await res.json();
+    out = out.concat(chunk);
+    if(chunk.length < step) return out;
+    from += step;
   }
+}
+
+/* ── 취향 계산 (lib/match.ts 와 동일 로직) ──────────────── */
+const USERS = {
+  S1:{ name:"느긋관찰 고양이", emo:"🐈", v:{tempo:40,mood:45,resolve:30,unusual:11} },
+  S4:{ name:"사이다점프 돌고래", emo:"🌊", v:{tempo:44,mood:40,resolve:57,unusual:78} }
+};
+const AX = ["tempo","mood","resolve","unusual"];
+const PRI = { unusual:0, resolve:1, mood:2, tempo:3 };
+const PH = {
+  tempo:{low:"느긋한 호흡으로 천천히 쌓이는", high:"몰아치는 전개로 긴장감 있는"},
+  mood:{low:"밝고 유쾌하게 즐기는", high:"묵직하고 진한 정서의"},
+  resolve:{low:"여운이 길게 남는", high:"속 시원하게 풀리는"},
+  unusual:{low:"우리 일상 옆에 있을 법한 이야기", high:"현실과 먼 완전히 다른 세계의 이야기"}
+};
+const match = (u,w) => Math.round((1 - Math.sqrt(AX.reduce((s,a)=>s+(u[a]-w[a])**2,0))/200)*100);
+function reasons(u,w){
+  const c = AX.map(a=>({a, d:Math.abs(u[a]-w[a]), v:w[a]}))
+              .filter(x=>x.d<=20)
+              .sort((x,y)=>x.d-y.d || PRI[x.a]-PRI[y.a]);
+  const out=[];
+  for(const x of c){ if(x.v<45) out.push(PH[x.a].low); else if(x.v>55) out.push(PH[x.a].high); }
+  const t = out.slice(0,3);
+  return t.length<2 ? {lines:["네 취향과 여러 결이 두루 맞는 작품"], fb:true} : {lines:t, fb:false};
+}
+function grad(w){
+  const h = ((30 - (w.unusual/100)*125) % 360 + 360) % 360;
+  const dark = document.documentElement.dataset.theme === "dark";
+  const s = dark?38:46, l = dark ? 52-(w.mood/100)*26 : 76-(w.mood/100)*34;
+  return `linear-gradient(148deg,hsl(${(h+12)%360} ${s}% ${l+9}%),hsl(${((h-16)%360+360)%360} ${s}% ${l-11}%))`;
+}
+const MEDIA_ICON = {"웹툰":"▤","드라마":"▶","영화":"▣","웹소설":"❝"};
+const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ── 상태 ───────────────────────────────────────────────── */
+let DB = { works:[], tags:[] };
+let ST = { cat:"genre", tags:new Set(), media:new Set(), plat:new Set(),
+           seg:"S1", sort:"match", q:"", expand:false, dedupe:true };
+let TAGCOUNT = {}, MEDIACOUNT = {}, PLATCOUNT = {}, PLATFORMS = [], TAGORDER = {};
+
+/* ── 로드 ───────────────────────────────────────────────── */
+async function load(){
+  const g = document.getElementById("grid");
+  g.style.display = "grid";
+  g.innerHTML = Array.from({length:12}, () => '<div class="skel"></div>').join("");
+
+  if(SUPABASE_URL.includes("YOUR-PROJECT") || SUPABASE_KEY.startsWith("YOUR_")){
+    return fail("연결 정보가 비어 있습니다",
+      "이 파일 <code>&lt;script&gt;</code> 첫 부분의 <code>SUPABASE_URL</code> 과 " +
+      "<code>SUPABASE_KEY</code> 를 채우고 새로고침하세요.");
+  }
+  try{
+    const [tags, works] = await Promise.all([
+      restAll("tags?select=slug,name,category,sort_order&order=sort_order"),
+      restAll("contents?select=id,title,media,platforms,tempo,mood,resolve,unusual," +
+              "tier,year,confidence,is_anchor,analysis_note,content_tags(tag_slug)&order=id")
+    ]);
+    DB.tags  = tags;
+    DB.works = works.map(w => ({ ...w, tags:(w.content_tags||[]).map(t=>t.tag_slug) }));
+    DB.tags.forEach((t,i) => TAGORDER[t.slug] = t.sort_order ?? i);
+    // 전체 플랫폼 목록은 한 번만 확정 (필터로 사라지지 않도록)
+    PLATFORMS = [...new Set(DB.works.flatMap(w => w.platforms||[]))];
+    render();
+  }catch(e){
+    fail("데이터를 불러오지 못했습니다", esc(e.message) +
+      "<br><br>확인할 것 — ① URL·키 오타 ② tags·contents·content_tags 에 " +
+      "SELECT 정책이 있는지 ③ <code>file://</code> 로 열었다면 로컬 서버로 여세요 " +
+      "(<code>npx serve .</code>)");
+  }
+}
+function fail(t, msg){
+  const g = document.getElementById("grid");
+  g.style.display = "block";
+  g.innerHTML = `<div class="state"><b>${t}</b>${msg}</div>`;
+  document.getElementById("cnt").textContent = "—";
+}
+
+/* ── 필터 ───────────────────────────────────────────────────
+   skip 에 넣은 그룹은 무시하고 거른다.
+   · 태그는 AND 조합 → 자기 그룹도 그대로 적용해야
+     "로맨스 + 로코 = 0" 이 카운트에 드러난다.
+   · 유형·플랫폼은 그룹 내부가 OR → 자기 그룹을 빼고 세어야
+     하나를 고른 뒤에도 나머지를 추가로 켤 수 있다.
+   ─────────────────────────────────────────────────────────── */
+function filtered(skip){
+  skip = skip || "";
+  const q = ST.q.trim();
+  return DB.works.filter(w => {
+    if(ST.dedupe && w.title.endsWith("(소설)")) return false;
+    if(q && !w.title.includes(q)) return false;
+    if(skip !== "tags"  && ST.tags.size && ![...ST.tags].every(t => w.tags.includes(t))) return false;
+    if(skip !== "media" && ST.media.size && !ST.media.has(w.media)) return false;
+    if(skip !== "plat"  && ST.plat.size && !(w.platforms||[]).some(p => ST.plat.has(p))) return false;
+    return true;
+  });
+}
+
+/* ── 패싯 카운트 ────────────────────────────────────────── */
+function computeFacets(){
+  TAGCOUNT = {}; MEDIACOUNT = {}; PLATCOUNT = {};
+  for(const w of filtered())        w.tags.forEach(t => TAGCOUNT[t] = (TAGCOUNT[t]||0)+1);
+  for(const w of filtered("media")) MEDIACOUNT[w.media] = (MEDIACOUNT[w.media]||0)+1;
+  for(const w of filtered("plat"))  (w.platforms||[]).forEach(p => PLATCOUNT[p] = (PLATCOUNT[p]||0)+1);
+}
+// 선택된 것 먼저 → 개수 많은 순 → 원래 순서
+function facetSort(items, key, counts, selected, order){
+  return [...items].sort((a,b) => {
+    const ka = key(a), kb = key(b);
+    const sa = selected.has(ka) ? 0 : 1, sb = selected.has(kb) ? 0 : 1;
+    if(sa !== sb) return sa - sb;
+    const ca = counts[ka]||0, cb = counts[kb]||0;
+    if(ca !== cb) return cb - ca;
+    return (order ? order(a) - order(b) : 0);
+  });
+}
+
+/* ── 렌더 ───────────────────────────────────────────────── */
+function render(){
+  computeFacets();
+  renderTabCounts();
+  renderPanel();
+  renderActive();
+  renderFilters();
+  renderGrid();
+}
+
+/* 지금 걸려 있는 조건을 항상 보여준다.
+   태그가 3개 탭에 흩어져 있어 다른 탭 선택이 화면에서 사라지는 문제를 막는다. */
+function renderActive(){
+  const host = document.getElementById("active");
+  const items = [
+    ...[...ST.tags].map(s => {
+      const t = DB.tags.find(x=>x.slug===s) || {};
+      const g = {genre:"장르", world:"소재·배경", people:"인물·관계"}[t.category] || "";
+      return { key:"tags", val:s, label:t.name || s, group:g };
+    }),
+    ...[...ST.media].map(v => ({ key:"media", val:v, label:v, group:"유형" })),
+    ...[...ST.plat].map(v  => ({ key:"plat",  val:v, label:v, group:"플랫폼" })),
+  ];
+  if(ST.q.trim()) items.unshift({ key:"q", val:"", label:'"'+ST.q.trim()+'"', group:"검색어" });
+
+  if(!items.length){ host.className = "active"; host.innerHTML = ""; return; }
+  host.className = "active on";
+  host.innerHTML = `<span class="lbl">적용 중</span>` +
+    items.map((it,i) => `<button class="actchip" data-i="${i}">
+      <span class="g">${esc(it.group)}</span>${esc(it.label)}<span class="x">✕</span></button>`).join("") +
+    `<button class="clearall" id="clearall">전체 해제</button>`;
+
+  host.querySelectorAll(".actchip").forEach(b => b.onclick = () => {
+    const it = items[+b.dataset.i];
+    if(it.key === "q"){ ST.q = ""; document.getElementById("q").value = ""; }
+    else ST[it.key].delete(it.val);
+    render();
+  });
+  document.getElementById("clearall").onclick = () => {
+    ST.tags.clear(); ST.media.clear(); ST.plat.clear();
+    ST.q = ""; document.getElementById("q").value = "";
+    render();
+  };
+}
+
+function renderTabCounts(){
+  for(const c of ["genre","world","people"]){
+    const list = DB.tags.filter(t=>t.category===c);
+    const live = list.filter(t=>(TAGCOUNT[t.slug]||0)>0).length;
+    const on   = list.filter(t=>ST.tags.has(t.slug)).length;
+    const el = document.getElementById("n-"+c);
+    el.textContent = live + "/" + list.length;
+    const tab = el.closest(".tab");
+    tab.querySelectorAll(".dot").forEach(d=>d.remove());
+    if(on){
+      const d = document.createElement("span");
+      d.className = "dot"; d.textContent = on;
+      d.title = "이 탭에서 선택한 태그 " + on + "개";
+      tab.appendChild(d);
+    }
+  }
+}
+
+function renderPanel(){
+  const list = facetSort(
+    DB.tags.filter(t=>t.category===ST.cat),
+    t => t.slug, TAGCOUNT, ST.tags, t => TAGORDER[t.slug]);
+  const shown = ST.expand ? list : list.slice(0,18);
+  const p = document.getElementById("panel");
+  p.innerHTML = `<div class="chips">` + shown.map(t=>{
+      const n = TAGCOUNT[t.slug]||0, on = ST.tags.has(t.slug);
+      const dead = n===0 && !on;
+      return `<button class="chip${dead?" dead":""}" data-tag="${esc(t.slug)}"
+        aria-pressed="${on}"${dead?" disabled":""}>${esc(t.name)}<span class="c">${n}</span></button>`;
+    }).join("") + `</div>` +
+    (list.length>18 ? `<button class="more" id="more">${
+      ST.expand ? "접기"
+                : "더보기 +" + (list.length-18) +
+                  (list.filter(t=>(TAGCOUNT[t.slug]||0)===0).length
+                    ? " (결과 없는 태그 " + list.filter(t=>(TAGCOUNT[t.slug]||0)===0).length + "개 포함)" : "")
+    }</button>` : "");
+
+  p.querySelectorAll(".chip").forEach(b => b.onclick = () => {
+    const s = b.dataset.tag;
+    ST.tags.has(s) ? ST.tags.delete(s) : ST.tags.add(s);
+    render();
+  });
+  const m = document.getElementById("more");
+  if(m) m.onclick = () => { ST.expand = !ST.expand; renderPanel(); };
+}
+
+function renderFilters(){
+  const build = (host, items, key, counts) => {
+    host.querySelectorAll(".pill,.dedupe").forEach(e=>e.remove());
+    facetSort(items, v=>v, counts, ST[key], null).forEach(v => {
+      const n = counts[v]||0, on = ST[key].has(v);
+      const b = document.createElement("button");
+      b.className = "pill" + (n===0 && !on ? " dead" : "");
+      b.innerHTML = esc(v) + `<span class="c">${n}</span>`;
+      b.setAttribute("aria-pressed", on);
+      if(n===0 && !on) b.disabled = true;
+      b.onclick = () => { on ? ST[key].delete(v) : ST[key].add(v); render(); };
+      host.appendChild(b);
+    });
+  };
+  build(document.getElementById("mediaF"), ["웹툰","웹소설","영화","드라마"], "media", MEDIACOUNT);
+  build(document.getElementById("platF"), PLATFORMS, "plat", PLATCOUNT);
+
+  const d = document.createElement("label");
+  d.className = "dedupe";
+  d.innerHTML = `<input type="checkbox" id="dd" ${ST.dedupe?"checked":""}> 동일 IP 중복판 숨기기`;
+  document.getElementById("platF").appendChild(d);
+  d.querySelector("#dd").onchange = e => { ST.dedupe = e.target.checked; render(); };
+}
+
+function renderGrid(){
+  const u = USERS[ST.seg].v;
+  let list = filtered().map(w => ({...w, pct: match(u,w)}));
+  if(ST.sort==="match") list.sort((a,b)=>b.pct-a.pct || a.id-b.id);
+  if(ST.sort==="year")  list.sort((a,b)=>String(b.year).localeCompare(String(a.year)));
+  if(ST.sort==="title") list.sort((a,b)=>a.title.localeCompare(b.title,"ko"));
+
+  document.getElementById("cnt").textContent = list.length + "편";
+  const names = [...ST.tags].map(s => (DB.tags.find(t=>t.slug===s)||{}).name).filter(Boolean);
+  const fl = [...ST.media, ...ST.plat];
+  document.getElementById("subline").textContent =
+    [names.join(" + ") || "전체", fl.join("·")].filter(Boolean).join(" · ") + " · " +
+    ({match:USERS[ST.seg].name+" 취향순", year:"최신순", title:"가나다순"})[ST.sort];
+
+  const g = document.getElementById("grid");
+  if(!list.length){
+    g.style.display="block";
+    g.innerHTML = `<div class="state"><b>조건에 맞는 작품이 없습니다</b>
+      태그를 하나 줄이거나 유형·플랫폼 필터를 풀어보세요.</div>`;
+    return;
+  }
+  g.style.display="grid";
+  g.innerHTML = list.map(w => `
+    <button class="card" data-id="${w.id}">
+      <div class="thumb" style="background:${grad(w)}">
+        ${ST.sort==="match" ? `<span class="pct">${w.pct}%</span>` : ""}
+        ${w.confidence==="추정" ? `<span class="est" title="추정 점수"></span>` : ""}
+        <span class="tt">${esc(w.title)}</span><span class="wm">${MEDIA_ICON[w.media]||""}</span>
+      </div>
+      <div class="meta">
+        <span class="badge b-${esc(w.media)}">${esc(w.media)}</span>
+        <div class="ti">${esc(w.title)}</div>
+        <div class="yr">${esc(w.year)} · ${esc((w.platforms||[])[0]||"")}</div>
+      </div>
+    </button>`).join("");
+  g.querySelectorAll(".card").forEach(b => b.onclick = () => openSheet(+b.dataset.id));
+}
+
+/* ── 상세 시트 ──────────────────────────────────────────── */
+function openSheet(id){
+  const w = DB.works.find(x=>x.id===id), u = USERS[ST.seg];
+  const pct = match(u.v,w), r = reasons(u.v,w);
+  document.getElementById("sheet").innerHTML = `
+    <button class="x" id="closeS">✕</button>
+    <div style="width:120px;aspect-ratio:2/3;border-radius:10px;background:${grad(w)};
+      display:flex;align-items:flex-end;padding:10px;margin-bottom:14px">
+      <span style="font-size:13px;font-weight:650;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.4)">${esc(w.title)}</span>
+    </div>
+    <span class="badge b-${esc(w.media)}">${esc(w.media)}</span>
+    <div style="font-size:18px;font-weight:600;margin:7px 0 3px">${esc(w.title)}</div>
+    <div style="font-size:12px;color:var(--text-muted)">
+      ${esc(w.year)} · ${esc((w.platforms||[]).join(", "))}
+    </div>
+    <div style="margin-top:11px;display:flex;flex-wrap:wrap;gap:5px">
+      ${w.tags.map(s=>{const t=DB.tags.find(x=>x.slug===s);
+        return `<span class="chip" style="pointer-events:none">${esc(t?t.name:s)}</span>`;}).join("")}
+    </div>
+    <div class="reason">
+      <div class="h">${u.emo} ${u.name}인 너와 ${pct}% 일치</div>
+      ${r.fb ? `<div style="font-size:12px;color:var(--text-accent)">${r.lines[0]}</div>`
+             : `<ul>${r.lines.map(l=>`<li>${l}</li>`).join("")}</ul>`}
+    </div>
+    ${pct<75 ? `<div class="warnbox"><b>⚠ 개발 노트</b><br>
+      매치율 ${pct}% 인데 근거 블록이 "잘 맞는 이유"를 그대로 출력합니다.
+      R3 알고리즘이 매치율을 보지 않기 때문입니다. 게이트 필요.</div>` : ""}
+`;
+  document.getElementById("sheet").classList.add("on");
+  document.getElementById("mask").classList.add("on");
+  document.getElementById("closeS").onclick = closeSheet;
+}
+function closeSheet(){
+  document.getElementById("sheet").classList.remove("on");
+  document.getElementById("mask").classList.remove("on");
+}
+
+/* ── 이벤트 ─────────────────────────────────────────────── */
+document.getElementById("mask").onclick = closeSheet;
+document.addEventListener("keydown", e => { if(e.key==="Escape") closeSheet(); });
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x=>x.setAttribute("aria-selected", x===b));
+  ST.cat = b.dataset.cat; ST.expand = false; renderPanel();
+});
+document.querySelectorAll(".lensbtn").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".lensbtn").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  ST.seg = b.dataset.seg; renderGrid();
+});
+document.querySelectorAll(".sortbtn").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".sortbtn").forEach(x=>x.setAttribute("aria-pressed", x===b));
+  ST.sort = b.dataset.sort; renderGrid();
+});
+document.getElementById("q").oninput = e => { ST.q = e.target.value; render(); };
+document.getElementById("q").addEventListener("keydown", e => {
+  if(e.key === "Escape"){ ST.q = ""; e.target.value = ""; render(); }
+});
+document.getElementById("theme").onclick = e => {
+  const d = document.documentElement.dataset.theme === "dark";
+  document.documentElement.dataset.theme = d ? "light" : "dark";
+  e.target.textContent = d ? "다크" : "라이트";
+  if(DB.works.length) render();
+};
+document.getElementById("teal").onclick = e => {
+  document.body.classList.toggle("teal");
+  e.target.textContent = document.body.classList.contains("teal") ? "영화 보라" : "영화 청록";
+};
+
+load();
 </script>
 </body>
 </html>
