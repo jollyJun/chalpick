@@ -234,8 +234,8 @@ html[data-theme="dark"] body.teal .b-영화{background:#123434;color:#5FBDBB}
    legacy anon 키를 넣습니다. secret / service_role 키는
    절대 넣지 마세요 — RLS를 우회하고 이 파일은 공개됩니다.
    ════════════════════════════════════════════════════════════ */
-const SUPABASE_URL = "https://lzfnrqpsdtgkzzyoojsl.supabase.co";
-const SUPABASE_KEY = "sb_publishable_GAI92kBGywJT6HqdR_3SzA_pvznkdEA";
+const SUPABASE_URL = "https://YOUR-PROJECT.supabase.co";
+const SUPABASE_KEY = "YOUR_PUBLISHABLE_OR_ANON_KEY";
 /* ══════════════════════════════════════════════════════════ */
 
 /* ── Supabase REST ──────────────────────────────────────── */
@@ -277,7 +277,11 @@ const PH = {
   resolve:{low:"여운이 길게 남는", high:"속 시원하게 풀리는"},
   unusual:{low:"우리 일상 옆에 있을 법한 이야기", high:"현실과 먼 완전히 다른 세계의 이야기"}
 };
-const match = (u,w) => Math.round((1 - Math.sqrt(AX.reduce((s,a)=>s+(u[a]-w[a])**2,0))/200)*100);
+/* 4축 등가중 유클리드 거리 — 정렬의 기준값(연속) */
+const distance = (u,w) => Math.sqrt(AX.reduce((s,a)=>s+(u[a]-w[a])**2,0));
+/* 화면 표시용 정수 매치율. 200 = sqrt(4*100^2)
+   ※ 정렬에는 쓰지 않는다. 반올림하면 436편이 50단계로 뭉개져 동점이 대량 발생한다. */
+const match = (u,w) => Math.round((1 - distance(u,w)/200)*100);
 function reasons(u,w){
   const c = AX.map(a=>({a, d:Math.abs(u[a]-w[a]), v:w[a]}))
               .filter(x=>x.d<=20)
@@ -495,10 +499,14 @@ function renderFilters(){
 
 function renderGrid(){
   const u = USERS[ST.seg].v;
-  let list = filtered().map(w => ({...w, pct: match(u,w)}));
-  if(ST.sort==="match") list.sort((a,b)=>b.pct-a.pct || a.id-b.id);
-  if(ST.sort==="year")  list.sort((a,b)=>String(b.year).localeCompare(String(a.year)));
-  if(ST.sort==="title") list.sort((a,b)=>a.title.localeCompare(b.title,"ko"));
+  const yr = w => parseInt(String(w.year).slice(0,4), 10) || 0;   // '2019경' → 2019
+  let list = filtered().map(w => ({...w, d: distance(u,w), pct: match(u,w)}));
+
+  // 취향순: 반올림된 %가 아니라 실수 거리로 정렬한다(오름차순 = 가까운 순)
+  if(ST.sort==="match") list.sort((a,b)=> a.d - b.d || a.title.localeCompare(b.title,"ko"));
+  // 최신순: 연도 숫자 내림차순, 같은 해면 취향이 가까운 순
+  if(ST.sort==="year")  list.sort((a,b)=> yr(b) - yr(a) || a.d - b.d);
+  if(ST.sort==="title") list.sort((a,b)=> a.title.localeCompare(b.title,"ko"));
 
   document.getElementById("cnt").textContent = list.length + "편";
   const names = [...ST.tags].map(s => (DB.tags.find(t=>t.slug===s)||{}).name).filter(Boolean);
