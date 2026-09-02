@@ -103,10 +103,25 @@ header{background:var(--surface-1);border-bottom:.5px solid var(--border);positi
  border-radius:7px;padding:4px 10px;font-size:12px}
 .pill[aria-pressed="true"]{background:var(--surface-0);color:var(--text-primary);border-color:var(--text-muted)}
 .pill .c{font-size:10px;opacity:.55;margin-left:3px}
-.dedupe{margin-left:auto;font-size:11px;color:var(--text-muted);display:flex;align-items:center;gap:5px}
+.badges{display:flex;gap:4px;flex-wrap:wrap;align-items:center}
+.ipmore{font-size:10px;font-weight:600;padding:2px 7px;border-radius:7px;
+ background:var(--surface-0);color:var(--text-secondary)}
+.vers{margin-top:16px;border-top:.5px solid var(--border);padding-top:14px}
+.vers h4{margin:0 0 9px;font-size:12px;font-weight:600;color:var(--text-secondary)}
+.ver{display:flex;align-items:center;gap:10px;width:100%;padding:8px;border-radius:9px;
+ border:.5px solid var(--border);background:transparent;margin-bottom:6px;text-align:left}
+.ver:hover{border-color:var(--border-strong);background:var(--surface-2)}
+.ver[aria-current="true"]{background:var(--bg-accent);border-color:var(--border-accent)}
+.ver .vt{flex:1;min-width:0}
+.ver .vn{font-size:12px;font-weight:600;color:var(--text-primary);
+ white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ver .vy{font-size:11px;color:var(--text-muted);margin-top:2px}
+.ver .vp{font-size:13px;font-weight:700;color:var(--text-accent);flex-shrink:0}
 
 .resbar{display:flex;align-items:baseline;gap:10px;margin:18px 0 12px;flex-wrap:wrap}
-.resbar strong{font-size:15px}
+.resbar strong{font-size:15px;display:flex;align-items:baseline;gap:4px}
+.resbar .unit{font-size:13px;font-weight:500;margin-left:1px}
+.resbar .sub2{font-size:11px;font-weight:400;color:var(--text-muted);margin-left:3px}
 .resbar .sub{font-size:11px;color:var(--text-muted)}
 .sorts{margin-left:auto;display:flex;gap:4px}
 .sortbtn{border:none;background:none;font-size:12px;color:var(--text-muted);padding:3px 7px;border-radius:6px}
@@ -311,7 +326,7 @@ const esc = s => String(s??"").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",
 /* ── 상태 ───────────────────────────────────────────────── */
 let DB = { works:[], tags:[] };
 let ST = { cat:"genre", tags:new Set(), media:new Set(), plat:new Set(),
-           seg:"S1", sort:"match", q:"", expand:false, dedupe:true };
+           seg:"S1", sort:"match", q:"", expand:false };
 let TAGCOUNT = {}, MEDIACOUNT = {}, PLATCOUNT = {}, PLATFORMS = [], TAGORDER = {};
 
 /* ── 로드 ───────────────────────────────────────────────── */
@@ -329,13 +344,13 @@ async function load(){
     const [tags, works] = await Promise.all([
       restAll("tags?select=slug,name,category,sort_order&order=sort_order"),
       restAll("contents?select=id,title,media,platforms,tempo,mood,resolve,unusual," +
-              "tier,year,confidence,is_anchor,analysis_note,content_tags(tag_slug)&order=id")
+              "year,confidence,ip_key,content_tags(tag_slug)&order=id")
     ]);
     DB.tags  = tags;
     DB.works = works.map(w => ({ ...w, tags:(w.content_tags||[]).map(t=>t.tag_slug) }));
     DB.tags.forEach((t,i) => TAGORDER[t.slug] = t.sort_order ?? i);
-    // 전체 플랫폼 목록은 한 번만 확정 (필터로 사라지지 않도록)
     PLATFORMS = [...new Set(DB.works.flatMap(w => w.platforms||[]))];
+    buildGroups();
     render();
   }catch(e){
     fail("데이터를 불러오지 못했습니다", esc(e.message) +
@@ -344,6 +359,31 @@ async function load(){
       "(<code>npx serve .</code>)");
   }
 }
+/* ── IP 그룹 ────────────────────────────────────────────────
+   같은 원작에서 나온 웹툰·웹소설·드라마·영화를 한 덩어리로 묶는다.
+   ip_key 컬럼이 있으면 그것을, 없으면 접미사를 뗀 제목을 키로 쓴다
+   (마이그레이션 전에도 화면이 동작하도록). */
+const ipKeyOf = w => w.ip_key ||
+  String(w.title).replace(/\s*\((소설|드라마|재|드라마화 없음)\)\s*$/, "").trim();
+
+function buildGroups(){
+  const m = new Map();
+  for(const w of DB.works){
+    const k = ipKeyOf(w);
+    if(!m.has(k)) m.set(k, { key:k, works:[] });
+    m.get(k).works.push(w);
+  }
+  DB.groups = [...m.values()].map(g => {
+    g.works.sort((a,b) => a.id - b.id);
+    g.title     = ipKeyOf(g.works[0]);
+    g.medias    = [...new Set(g.works.map(w => w.media))];
+    g.platforms = [...new Set(g.works.flatMap(w => w.platforms||[]))];
+    g.tags      = [...new Set(g.works.flatMap(w => w.tags))];
+    g.year      = g.works.map(w => String(w.year)).sort()[0];
+    return g;
+  });
+}
+
 function fail(t, msg){
   const g = document.getElementById("grid");
   g.style.display = "block";
@@ -358,15 +398,16 @@ function fail(t, msg){
    · 유형·플랫폼은 그룹 내부가 OR → 자기 그룹을 빼고 세어야
      하나를 고른 뒤에도 나머지를 추가로 켤 수 있다.
    ─────────────────────────────────────────────────────────── */
+/* 필터는 IP 그룹 단위로 판정한다.
+   유미의 세포들처럼 웹툰+드라마가 묶인 IP 는 '드라마' 필터에도 걸린다. */
 function filtered(skip){
   skip = skip || "";
   const q = ST.q.trim();
-  return DB.works.filter(w => {
-    if(ST.dedupe && w.title.endsWith("(소설)")) return false;
-    if(q && !w.title.includes(q)) return false;
-    if(skip !== "tags"  && ST.tags.size && ![...ST.tags].every(t => w.tags.includes(t))) return false;
-    if(skip !== "media" && ST.media.size && !ST.media.has(w.media)) return false;
-    if(skip !== "plat"  && ST.plat.size && !(w.platforms||[]).some(p => ST.plat.has(p))) return false;
+  return (DB.groups||[]).filter(g => {
+    if(q && !g.works.some(w => w.title.includes(q))) return false;
+    if(skip !== "tags"  && ST.tags.size && ![...ST.tags].every(t => g.tags.includes(t))) return false;
+    if(skip !== "media" && ST.media.size && !g.medias.some(m => ST.media.has(m))) return false;
+    if(skip !== "plat"  && ST.plat.size && !g.platforms.some(p => ST.plat.has(p))) return false;
     return true;
   });
 }
@@ -374,9 +415,9 @@ function filtered(skip){
 /* ── 패싯 카운트 ────────────────────────────────────────── */
 function computeFacets(){
   TAGCOUNT = {}; MEDIACOUNT = {}; PLATCOUNT = {};
-  for(const w of filtered())        w.tags.forEach(t => TAGCOUNT[t] = (TAGCOUNT[t]||0)+1);
-  for(const w of filtered("media")) MEDIACOUNT[w.media] = (MEDIACOUNT[w.media]||0)+1;
-  for(const w of filtered("plat"))  (w.platforms||[]).forEach(p => PLATCOUNT[p] = (PLATCOUNT[p]||0)+1);
+  for(const g of filtered())        g.tags.forEach(t => TAGCOUNT[t] = (TAGCOUNT[t]||0)+1);
+  for(const g of filtered("media")) g.medias.forEach(m => MEDIACOUNT[m] = (MEDIACOUNT[m]||0)+1);
+  for(const g of filtered("plat"))  g.platforms.forEach(p => PLATCOUNT[p] = (PLATCOUNT[p]||0)+1);
 }
 // 선택된 것 먼저 → 개수 많은 순 → 원래 순서
 function facetSort(items, key, counts, selected, order){
@@ -483,7 +524,7 @@ function renderPanel(){
 
 function renderFilters(){
   const build = (host, items, key, counts) => {
-    host.querySelectorAll(".pill,.dedupe").forEach(e=>e.remove());
+    host.querySelectorAll(".pill").forEach(e=>e.remove());
     facetSort(items, v=>v, counts, ST[key], null).forEach(v => {
       const n = counts[v]||0, on = ST[key].has(v);
       const b = document.createElement("button");
@@ -497,18 +538,17 @@ function renderFilters(){
   };
   build(document.getElementById("mediaF"), ["웹툰","웹소설","영화","드라마"], "media", MEDIACOUNT);
   build(document.getElementById("platF"), PLATFORMS, "plat", PLATCOUNT);
-
-  const d = document.createElement("label");
-  d.className = "dedupe";
-  d.innerHTML = `<input type="checkbox" id="dd" ${ST.dedupe?"checked":""}> 동일 IP 중복판 숨기기`;
-  document.getElementById("platF").appendChild(d);
-  d.querySelector("#dd").onchange = e => { ST.dedupe = e.target.checked; render(); };
 }
 
 function renderGrid(){
   const u = USERS[ST.seg].v;
-  const yr = w => parseInt(String(w.year).slice(0,4), 10) || 0;   // '2019경' → 2019
-  let list = filtered().map(w => ({...w, d: distance(u,w), pct: match(u,w)}));
+  const yr = g => parseInt(String(g.year).slice(0,4), 10) || 0;   // '2019경' → 2019
+
+  // 그룹의 대표작 = 그 IP 안에서 지금 시점 사용자와 가장 가까운 버전
+  let list = filtered().map(g => {
+    const scored = g.works.map(w => ({ w, d: distance(u,w) })).sort((a,b)=>a.d-b.d);
+    return { ...g, lead: scored[0].w, d: scored[0].d, pct: match(u, scored[0].w) };
+  });
 
   // 취향순: 반올림된 %가 아니라 실수 거리로 정렬한다(오름차순 = 가까운 순)
   if(ST.sort==="match") list.sort((a,b)=> a.d - b.d || a.title.localeCompare(b.title,"ko"));
@@ -516,7 +556,12 @@ function renderGrid(){
   if(ST.sort==="year")  list.sort((a,b)=> yr(b) - yr(a) || a.d - b.d);
   if(ST.sort==="title") list.sort((a,b)=> a.title.localeCompare(b.title,"ko"));
 
-  document.getElementById("cnt").textContent = list.length + "편";
+  // 카드는 IP 단위, 실제 작품 수는 그 안의 버전을 모두 센다.
+  // 둘이 다른 이유(웹툰+드라마가 한 장으로 접힘)를 화면에서 바로 읽히게 한다.
+  const works = list.reduce((n,g) => n + g.works.length, 0);
+  const cnt = document.getElementById("cnt");
+  cnt.innerHTML = list.length + "<span class=\"unit\">개 작품</span>" +
+    (works > list.length ? `<span class="sub2">· 전 매체 ${works}편</span>` : "");
   const names = [...ST.tags].map(s => (DB.tags.find(t=>t.slug===s)||{}).name).filter(Boolean);
   const fl = [...ST.media, ...ST.plat];
   document.getElementById("subline").textContent =
@@ -531,19 +576,25 @@ function renderGrid(){
     return;
   }
   g.style.display="grid";
-  g.innerHTML = list.map(w => `
+  const ORDER = ["웹툰","웹소설","드라마","영화"];
+  g.innerHTML = list.map(it => {
+    const w = it.lead;
+    const medias = ORDER.filter(m => it.medias.includes(m));
+    return `
     <button class="card" data-id="${w.id}">
       <div class="thumb" style="background:${grad(w)}">
-        ${ST.sort==="match" ? `<span class="pct">${w.pct}%</span>` : ""}
+        ${ST.sort==="match" ? `<span class="pct">${it.pct}%</span>` : ""}
         ${w.confidence==="추정" ? `<span class="est" title="추정 점수"></span>` : ""}
-        <span class="tt">${esc(w.title)}</span><span class="wm">${MEDIA_ICON[w.media]||""}</span>
+        <span class="tt">${esc(it.title)}</span><span class="wm">${MEDIA_ICON[w.media]||""}</span>
       </div>
       <div class="meta">
-        <span class="badge b-${esc(w.media)}">${esc(w.media)}</span>
-        <div class="ti">${esc(w.title)}</div>
-        <div class="yr">${esc(w.year)} · ${esc((w.platforms||[])[0]||"")}</div>
+        <div class="badges">${medias.map(m =>
+          `<span class="badge b-${esc(m)}">${esc(m)}</span>`).join("")}</div>
+        <div class="ti">${esc(it.title)}</div>
+        <div class="yr">${esc(it.year)} · ${esc(it.platforms.slice(0,2).join(", "))}</div>
       </div>
-    </button>`).join("");
+    </button>`;
+  }).join("");
   g.querySelectorAll(".card").forEach(b => b.onclick = () => openSheet(+b.dataset.id));
 }
 
@@ -551,6 +602,10 @@ function renderGrid(){
 function openSheet(id){
   const w = DB.works.find(x=>x.id===id), u = USERS[ST.seg];
   const pct = match(u.v,w), r = reasons(u.v,w);
+  // 같은 IP 의 모든 버전 (웹툰 → 웹소설 → 드라마 → 영화 순)
+  const VORDER = { "웹툰":0, "웹소설":1, "드라마":2, "영화":3 };
+  const sib = DB.works.filter(x => ipKeyOf(x) === ipKeyOf(w))
+                      .sort((a,b) => (VORDER[a.media]??9) - (VORDER[b.media]??9) || a.id - b.id);
   document.getElementById("sheet").innerHTML = `
     <button class="x" id="closeS">✕</button>
     <div style="width:120px;aspect-ratio:2/3;border-radius:10px;background:${grad(w)};
@@ -574,10 +629,22 @@ function openSheet(id){
     ${pct<75 ? `<div class="warnbox"><b>⚠ 개발 노트</b><br>
       매치율 ${pct}% 인데 근거 블록이 "잘 맞는 이유"를 그대로 출력합니다.
       R3 알고리즘이 매치율을 보지 않기 때문입니다. 게이트 필요.</div>` : ""}
+    ${sib.length > 1 ? `<div class="vers">
+      <h4>같은 작품의 다른 매체 ${sib.length}편 — 이 카드 한 장에 묶여 있습니다</h4>
+      ${sib.map(v => `<button class="ver" data-vid="${v.id}" aria-current="${v.id===w.id}">
+        <span class="badge b-${esc(v.media)}">${esc(v.media)}</span>
+        <span class="vt">
+          <span class="vn">${esc(v.title)}</span>
+          <span class="vy">${esc(v.year)} · ${esc((v.platforms||[]).join(", "))}</span>
+        </span>
+        <span class="vp">${match(u.v, v)}%</span>
+      </button>`).join("")}
+    </div>` : ""}
 `;
   document.getElementById("sheet").classList.add("on");
   document.getElementById("mask").classList.add("on");
   document.getElementById("closeS").onclick = closeSheet;
+  document.querySelectorAll(".ver").forEach(b => b.onclick = () => openSheet(+b.dataset.vid));
 }
 function closeSheet(){
   document.getElementById("sheet").classList.remove("on");
