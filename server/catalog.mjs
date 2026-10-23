@@ -1,8 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import { buildCatalog } from './catalog-model.mjs';
+import { readBoundedJSON, SECURITY_HEADERS } from './security.mjs';
 
 const PAGE_SIZE = 500;
 const MAX_RESPONSE_BYTES = 4_000_000;
+const MAX_OFFSET = 1_000_000;
 const dictionaryCache = new Map();
 const ageRatingsPromise = readFile(new URL('./catalog-age-ratings.json', import.meta.url), 'utf8').then(JSON.parse);
 const fields = {
@@ -43,7 +45,7 @@ async function readPage(table, parameters, offset, limit, options) {
     signal: AbortSignal.timeout(20_000)
   });
   if (!response.ok) throw new Error(`catalog_upstream_${response.status}`);
-  const rows = await response.json();
+  const rows = await readBoundedJSON(response, MAX_RESPONSE_BYTES);
   if (!Array.isArray(rows) || rows.length > limit) throw new Error('catalog_invalid_rows');
   return { rows, total: rangeInfo(response.headers.get('content-range'), rows.length, offset) };
 }
@@ -112,11 +114,11 @@ export async function loadCatalogPage(offset, options = {}) {
 }
 
 export async function handleCatalog(request, options = {}) {
-  const headers = { 'Cache-Control': 'private, no-store', 'Content-Type': 'application/json; charset=utf-8', 'X-Content-Type-Options': 'nosniff' };
+  const headers = { ...SECURITY_HEADERS, 'Cache-Control': 'private, no-store', 'Content-Type': 'application/json; charset=utf-8' };
   if (request.method !== 'GET') return Response.json({ error: 'method_not_allowed' }, { status: 405, headers: { ...headers, Allow: 'GET' } });
   const url = new URL(request.url);
   const offsetText = url.searchParams.get('offset') || '0';
-  if (!/^(0|[1-9]\d*)$/.test(offsetText) || !Number.isSafeInteger(Number(offsetText)) || [...url.searchParams.keys()].some(key => key !== 'offset') || url.searchParams.getAll('offset').length > 1) {
+  if (request.url.length > 8192 || !/^(0|[1-9]\d*)$/.test(offsetText) || !Number.isSafeInteger(Number(offsetText)) || Number(offsetText) > MAX_OFFSET || [...url.searchParams.keys()].some(key => key !== 'offset') || url.searchParams.getAll('offset').length > 1) {
     return Response.json({ error: 'invalid_offset' }, { status: 400, headers });
   }
   try {

@@ -1,4 +1,5 @@
 import { createCipheriv, createDecipheriv, randomBytes, timingSafeEqual } from 'node:crypto';
+import { readBoundedJSON, SECURITY_HEADERS } from './security.mjs';
 
 const PROVIDERS = Object.freeze({
   naver: { name: '네이버', authorize: 'https://nid.naver.com/oauth2.0/authorize', token: 'https://nid.naver.com/oauth2.0/token', profile: 'https://openapi.naver.com/v1/nid/me', clientId: 'NAVER_CLIENT_ID', clientSecret: 'NAVER_CLIENT_SECRET' },
@@ -6,7 +7,7 @@ const PROVIDERS = Object.freeze({
 });
 const STATE_SECONDS = 600;
 const SESSION_SECONDS = 86400;
-const BASE_HEADERS = { 'Cache-Control': 'no-store, private', Pragma: 'no-cache', 'X-Content-Type-Options': 'nosniff', 'Referrer-Policy': 'no-referrer' };
+const BASE_HEADERS = { ...SECURITY_HEADERS, 'Cache-Control': 'no-store, private', Pragma: 'no-cache', 'Referrer-Policy': 'no-referrer' };
 
 function configuration(env) {
   let origin = null;
@@ -108,7 +109,7 @@ function callbackURL(config, provider) {
 async function fetchJSON(fetchImpl, url, options) {
   const result = await fetchImpl(url, { ...options, redirect: 'error', signal: AbortSignal.timeout(8000) });
   if (!result.ok) throw new Error('provider_http_error');
-  const data = await result.json();
+  const data = await readBoundedJSON(result, 262_144);
   if (!data || typeof data !== 'object' || Array.isArray(data)) throw new Error('provider_invalid_response');
   return data;
 }
@@ -139,6 +140,7 @@ async function authenticate(provider, code, state, config, fetchImpl) {
 
 /** Web Request/Response handler, shared by Vercel and the local Node adapter. */
 export async function handleAuth(request, { env = process.env, fetchImpl = globalThis.fetch, now = () => Date.now() } = {}) {
+  if (request.url.length > 8192) return response({ error: 'invalid_request' }, 414);
   const config = configuration(env);
   const timestamp = Math.floor(now() / 1000);
   const url = new URL(request.url);

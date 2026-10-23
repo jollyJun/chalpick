@@ -2037,11 +2037,35 @@
           "catalogId": null,
           "sourceTitleId": "82682380",
           "status": "available",
-          "url": "https://www.netflix.com/kr/title/82682380",
+          "url": "https://www.netflix.com/kr/title/82682379",
           "matchMethod": "unmatched",
           "localizedTitle": "닥터X: 하얀 마피아의 시대",
           "titleVerificationUrl": "https://www.netflix.com/kr/title/82682380",
-          "titleObservedAt": "2026-10-22T10:01:16.175Z"
+          "titleObservedAt": "2026-10-22T10:01:16.175Z",
+          "seriesTitleId": "82682379",
+          "animation": false,
+          "adult": false,
+          "age": 15,
+          "verification": {
+            "checkedDate": "2026-10-23",
+            "sources": [
+              "https://www.netflix.com/kr/title/82682379"
+            ],
+            "basis": "넷플릭스 공식 작품 소개: 메디컬 시리즈, 김지원·이정은·손현주 출연, 15세 이상."
+          },
+          "editionWarning": "원본 인기 집계는 시즌·파트 단위이며, 이 링크는 작품의 시리즈 전체 공식 페이지입니다. 원본 집계 ID와 순위는 보존합니다.",
+          "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABRXFDBYWCsgniYGR7pZxEf4m9EervKM5JPNCF8kTLYkklr-OHeQXKvoKTJvrlCSef5JLboVqrEserLJzwkG03VqHw8xKv7oE-ppv.jpg?r=fe5",
+          "imageVerification": {
+            "sourcePage": "https://www.netflix.com/kr/title/82682379",
+            "titleId": "82682379",
+            "title": "닥터X: 하얀 마피아의 시대",
+            "imageURL": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABRXFDBYWCsgniYGR7pZxEf4m9EervKM5JPNCF8kTLYkklr-OHeQXKvoKTJvrlCSef5JLboVqrEserLJzwkG03VqHw8xKv7oE-ppv.jpg?r=fe5",
+            "checkedDate": "2026-10-23",
+            "httpStatus": 200,
+            "contentType": "image/jpeg",
+            "method": "공식 작품 페이지의 작품 헤더 대표 이미지",
+            "scope": "시리즈 전체 대표 이미지이며 특정 시즌·파트 전용 표지로 주장하지 않습니다."
+          }
         },
         {
           "rank": 2,
@@ -2049,23 +2073,59 @@
           "catalogId": null,
           "sourceTitleId": "82682434",
           "status": "available",
-          "url": "https://www.netflix.com/kr/title/82682434",
+          "url": "https://www.netflix.com/kr/title/82682433",
           "matchMethod": "unmatched",
           "localizedTitle": "100일의 거짓말",
           "titleVerificationUrl": "https://www.netflix.com/kr/title/82682434",
-          "titleObservedAt": "2026-10-22T10:01:16.631Z"
+          "titleObservedAt": "2026-10-22T10:01:16.631Z",
+          "seriesTitleId": "82682433",
+          "animation": false,
+          "adult": false,
+          "age": 15,
+          "verification": {
+            "checkedDate": "2026-10-23",
+            "sources": [
+              "https://www.netflix.com/kr/title/82682433"
+            ],
+            "basis": "넷플릭스 공식 작품 소개: 드라마 시리즈, 김유정·박진영·김현주 출연, 15세 이상."
+          },
+          "editionWarning": "원본 인기 집계는 시즌·파트 단위이며, 이 링크는 작품의 시리즈 전체 공식 페이지입니다. 원본 집계 ID와 순위는 보존합니다.",
+          "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABZWCIUq3QVPoNcL3HaRYXNYVn5h7KOEf3foqOkk2xz_Bwxk3amQp9vbitMG8WQFAntbR1-zEXIeYd4IDxoETySK1nQ_Wr0Ej_bgH.jpg?r=4a1",
+          "imageVerification": {
+            "sourcePage": "https://www.netflix.com/kr/title/82682433",
+            "titleId": "82682433",
+            "title": "100일의 거짓말",
+            "imageURL": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABZWCIUq3QVPoNcL3HaRYXNYVn5h7KOEf3foqOkk2xz_Bwxk3amQp9vbitMG8WQFAntbR1-zEXIeYd4IDxoETySK1nQ_Wr0Ej_bgH.jpg?r=4a1",
+            "checkedDate": "2026-10-23",
+            "httpStatus": 200,
+            "contentType": "image/jpeg",
+            "method": "공식 작품 페이지의 작품 헤더 대표 이미지",
+            "scope": "시리즈 전체 대표 이미지이며 특정 시즌·파트 전용 표지로 주장하지 않습니다."
+          }
         },
         {
           "rank": 3,
           "title": "I am Solo: Part 34",
-          "catalogId": null,
+          "catalogId": 7339,
           "sourceTitleId": "83179885",
           "status": "available",
-          "url": "https://www.netflix.com/kr/title/83179885",
-          "matchMethod": "unmatched",
+          "url": "https://www.netflix.com/kr/title/81551819",
+          "matchMethod": "verified-series-identity",
           "localizedTitle": "나는 솔로",
           "titleVerificationUrl": "https://www.netflix.com/kr/title/83179885",
-          "titleObservedAt": "2026-10-22T10:01:16.350Z"
+          "titleObservedAt": "2026-10-22T10:01:16.350Z",
+          "seriesTitleId": "81551819",
+          "animation": false,
+          "adult": false,
+          "age": 15,
+          "verification": {
+            "checkedDate": "2026-10-23",
+            "sources": [
+              "https://www.netflix.com/kr/title/81551819"
+            ],
+            "basis": "넷플릭스 공식 작품 소개: 리얼리티 시리즈, 데프콘·송해나 출연, 15세 이상. 카탈로그 ID 7339는 시리즈 전체."
+          },
+          "editionWarning": "원본 인기 집계는 시즌·파트 단위이며, 이 링크는 작품의 시리즈 전체 공식 페이지입니다. 원본 집계 ID와 순위는 보존합니다."
         },
         {
           "rank": 4,
@@ -2073,11 +2133,37 @@
           "catalogId": null,
           "sourceTitleId": "82016403",
           "status": "available",
-          "url": "https://www.netflix.com/kr/title/82016403",
+          "url": "https://www.netflix.com/kr/title/82016402",
           "matchMethod": "unmatched",
           "localizedTitle": "나를 충전해줘",
           "titleVerificationUrl": "https://www.netflix.com/kr/title/82016403",
-          "titleObservedAt": "2026-10-22T10:01:16.344Z"
+          "titleObservedAt": "2026-10-22T10:01:16.344Z",
+          "seriesTitleId": "82016402",
+          "animation": false,
+          "adult": false,
+          "age": 15,
+          "verification": {
+            "checkedDate": "2026-10-23",
+            "sources": [
+              "https://www.netflix.com/kr/title/82016402",
+              "https://qr.netflix.com/kr/title/82016402",
+              "https://about.netflix.com/ko/news/take-charge-of-my-heart-premieres-october-9"
+            ],
+            "basis": "넷플릭스 공식 작품 소개 및 보도자료: 로맨스 시리즈, 김영광·채수빈 출연, 15세 이상."
+          },
+          "editionWarning": "원본 인기 집계는 시즌·파트 단위이며, 이 링크는 작품의 시리즈 전체 공식 페이지입니다. 원본 집계 ID와 순위는 보존합니다.",
+          "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABbeou3fX6Sb2bx_Z_MrtaI-Zk4VYGslpSOLIxas0QlZn0FvHBZ91rcxT47FBhHk2lGm7Zz-AGTTFzG06Cn_g0XdfiY8HYyopMA89.jpg?r=fd6",
+          "imageVerification": {
+            "sourcePage": "https://www.netflix.com/kr/title/82016402",
+            "titleId": "82016402",
+            "title": "나를 충전해줘",
+            "imageURL": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABbeou3fX6Sb2bx_Z_MrtaI-Zk4VYGslpSOLIxas0QlZn0FvHBZ91rcxT47FBhHk2lGm7Zz-AGTTFzG06Cn_g0XdfiY8HYyopMA89.jpg?r=fd6",
+            "checkedDate": "2026-10-23",
+            "httpStatus": 200,
+            "contentType": "image/jpeg",
+            "method": "공식 작품 페이지의 작품 헤더 대표 이미지",
+            "scope": "시리즈 전체 대표 이미지이며 특정 시즌·파트 전용 표지로 주장하지 않습니다."
+          }
         },
         {
           "rank": 5,
@@ -2085,11 +2171,35 @@
           "catalogId": null,
           "sourceTitleId": "83226074",
           "status": "available",
-          "url": "https://www.netflix.com/kr/title/83226074",
+          "url": "https://www.netflix.com/kr/title/82087012",
           "matchMethod": "unmatched",
           "localizedTitle": "우리들의 발라드",
           "titleVerificationUrl": "https://www.netflix.com/kr/title/83226074",
-          "titleObservedAt": "2026-10-22T10:01:16.040Z"
+          "titleObservedAt": "2026-10-22T10:01:16.040Z",
+          "seriesTitleId": "82087012",
+          "animation": false,
+          "adult": false,
+          "age": 12,
+          "verification": {
+            "checkedDate": "2026-10-23",
+            "sources": [
+              "https://www.netflix.com/kr/title/82087012"
+            ],
+            "basis": "넷플릭스 공식 작품 소개: 음악 경연 리얼리티, 정재형·차태현 출연, 12세 이상."
+          },
+          "editionWarning": "원본 인기 집계는 시즌·파트 단위이며, 이 링크는 작품의 시리즈 전체 공식 페이지입니다. 원본 집계 ID와 순위는 보존합니다.",
+          "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABUlQ1eaJ6yNK_-uTLXZ1jID3-kBAHLL92-dcCL3I6oPkHhms7hzHvXYU-IEMSyAXE1yZY8krBI3vr0U-HuZT-enptREdalihMv4v.jpg?r=f35",
+          "imageVerification": {
+            "sourcePage": "https://www.netflix.com/kr/title/82087012",
+            "titleId": "82087012",
+            "title": "우리들의 발라드",
+            "imageURL": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABUlQ1eaJ6yNK_-uTLXZ1jID3-kBAHLL92-dcCL3I6oPkHhms7hzHvXYU-IEMSyAXE1yZY8krBI3vr0U-HuZT-enptREdalihMv4v.jpg?r=f35",
+            "checkedDate": "2026-10-23",
+            "httpStatus": 200,
+            "contentType": "image/jpeg",
+            "method": "공식 작품 페이지의 작품 헤더 대표 이미지",
+            "scope": "시리즈 전체 대표 이미지이며 특정 시즌·파트 전용 표지로 주장하지 않습니다."
+          }
         },
         {
           "rank": 6,
@@ -2153,7 +2263,8 @@
           "editionWarning": "원본 순위는 시즌 3(83050560), 찰픽 연결은 시리즈 전체(81712068)입니다. 시즌별 항목을 동일 판본으로 간주하지 않습니다.",
           "titleObservedAt": "2026-10-22T10:01:16.345Z"
         }
-      ]
+      ],
+      "note": "넷플릭스 한국 주간 TV 인기 목록 중 공식 작품 소개에서 실사·비성인 등급을 확인한 작품을 표시합니다. 1~5는 화면 표시 순서이며, 원본 집계 순위·시즌·파트는 별도로 보존합니다."
     },
     {
       "id": "netflix-kr-tv-animation-weekly",

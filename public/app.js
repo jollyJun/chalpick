@@ -1,7 +1,9 @@
-import {PROFILE_KEY,loadProfile,saveProfile,activateSampleProfile,tasteMatch,sortByTaste,similarPicks,discoveryPicks,discoveryReason,immersivePicks,themeById,matchesTheme,sameCreatorWorks,sameNameCreatorCandidates} from './recommendation.js';
+import {PROFILE_KEY,loadProfile,saveProfile,activateSampleProfile,tasteMatch,sortByTaste,similarPicks,discoveryPicks,discoveryReason,immersivePicks,themeById,matchesTheme} from './recommendation.js';
 import {chooseVisitTheme} from './context.js';
 import {initAuth} from './auth.js';
-import {matchesSelectedTags,facetCounts} from './facets.js';
+import {matchesSelectedTags,facetCounts,PLATFORM_FILTERS,displayPlatforms} from './facets.js';
+import {preparePopularLists,detailConnections,popularCoverSymbol,popularCoverItem} from './catalog-display.js';
+import {readNavigation,writeNavigation} from './navigation.js';
 import {loadFastCatalog,normalizeCatalogItem,catalogCountLabel,safePublicURL,safeImageURL} from './catalog-client.js';
 import './performance.js';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
@@ -9,19 +11,21 @@ const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt
 const safeURL=safePublicURL;
 const norm=v=>String(v||'').normalize('NFKC').toLocaleLowerCase('ko').replace(/\s+/g,'');
 const getStorage=()=>{try{return globalThis.localStorage;}catch{return null;}},heroPageSize=()=>window.innerWidth<=600?1:window.innerWidth<=850?2:3;
-const BOOKMARK_KEY='chalpick-main-bookmarks-v1',TYPES=['웹툰','웹소설','드라마·OTT','영화'],HIDDEN_PLATFORMS=new Set(['문피아','미스터블루']);
+const BOOKMARK_KEY='chalpick-main-bookmarks-v1',TYPES=['웹툰','웹소설','드라마·OTT','영화'];
 const GROUPS=[{id:'genre',label:'장르'},{id:'setting',label:'소재·배경'},{id:'relationship',label:'인물·관계'}],actorRoles=new Set(['LEAD_ACTOR','SUPPORT_ACTOR']);
 const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4Z"/></svg>';
 let items=[],byId=new Map(),taxonomy={groups:[]},popular={lists:[]},results=[],visibleCount=12,heroPage=0,heroItems=[],renderedHeroPageSize=heroPageSize(),profile=loadProfile(getStorage()),saved=new Set(),toastTimer,previousFocus,popularTab='',visitContext=null,weatherContext=null,contextPromise=null;
-let catalogMeta=null,catalogLoading=false,coverImages=[];
+let catalogMeta=null,catalogLoading=false,coverImages=[],currentWorkId=null;
+const startupAnchor=location.hash==='#discover'?'discover':'';
+const getSessionStorage=()=>{try{return globalThis.sessionStorage;}catch{return null;}};
 const dialogStack=[];
 try{const v=JSON.parse(localStorage.getItem(BOOKMARK_KEY)||'[]');if(Array.isArray(v))saved=new Set(v.filter(Number.isInteger));}catch{}
 const state={types:[],platforms:[],tags:{genre:[],setting:[],relationship:[]},query:'',sort:'taste',tab:'genre',expanded:false,theme:'',mode:'all',person:''};
 const media=item=>['드라마','OTT'].includes(item.type)?'드라마·OTT':item.type, format=v=>Number(v).toLocaleString('ko-KR'), groupTags=(item,g)=>item.tagGroups?.[g]||[];
 function uniqueIPs(list){const seen=new Set();return list.filter(item=>{const key=item.ipId||norm(item.title.replace(/\(소설\)$/,''));if(seen.has(key))return false;seen.add(key);return true;});}
 function notify(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2600);}
-function readLocation(){const p=new URLSearchParams(location.search);state.types=p.getAll('type').filter(t=>TYPES.includes(t)).slice(0,1);state.platforms=p.getAll('platform').filter(p=>!HIDDEN_PLATFORMS.has(p));for(const g of GROUPS)state.tags[g.id]=p.getAll(g.id);state.query=(p.get('q')||'').slice(0,200);state.sort=['taste','latest','title'].includes(p.get('sort'))?p.get('sort'):'taste';state.theme=themeById(p.get('theme'))?.id||'';state.mode=['discovery','immersive'].includes(p.get('mode'))?p.get('mode'):'all';state.person=(p.get('cast')||'').slice(0,80);}
-function syncLocation(workId=null,replace=false){const u=new URL(location.href);for(const k of ['type','genre','setting','relationship','platform','q','sort','theme','mode','cast','work'])u.searchParams.delete(k);for(const v of state.types)u.searchParams.append('type',v);for(const v of state.platforms)u.searchParams.append('platform',v);for(const g of GROUPS)for(const t of state.tags[g.id])u.searchParams.append(g.id,t);for(const[k,v]of [['q',state.query],['sort',state.sort==='taste'?'':state.sort],['theme',state.theme],['mode',state.mode==='all'?'':state.mode],['cast',state.person],['work',workId]])if(v)u.searchParams.set(k,v);if(u.href!==location.href)history[replace?'replaceState':'pushState']({},'',u);}
+function readLocation(historyState=history.state,restoreSession=true){const restored=readNavigation({href:location.href,historyState,storage:restoreSession?getSessionStorage():null});Object.assign(state,restored.filters);state.theme=themeById(state.theme)?.id||'';currentWorkId=restored.workId;}
+function syncLocation(workId=null,replace=false){currentWorkId=workId;writeNavigation({filters:state,workId,history,location,storage:getSessionStorage(),replace});}
 function image(item,className='cover-image',eager=false){const src=safeImageURL(item.image);return src?`<img class="${className}" src="${E(src)}" alt="${E(item.title)} 표지" loading="${eager?'eager':'lazy'}" decoding="async" ${className==='hero-art'?'fetchpriority="high"':''} referrerpolicy="no-referrer">`:'';}
 function card(item,{badge='',tags=false,eager=false,discovery=false}={}){const m=tasteMatch(item,profile);return `<article class="work-card" data-card-id="${item.id}"><button class="cover-button" data-work="${item.id}" aria-label="${E(item.title)} 상세 보기"><span class="cover-fallback" aria-hidden="true"><span class="fallback-mark">✦</span>${E(item.title)}</span>${image(item,'cover-image',eager)}<span class="cover-badge ${badge?'editor':''}">${E(badge||item.type)}</span></button><button class="bookmark" data-save="${item.id}" aria-pressed="${saved.has(item.id)}" aria-label="${E(item.title)} ${saved.has(item.id)?'보관 취소':'보관하기'}">${icon}</button><button class="card-title" data-work="${item.id}" title="${E(item.title)}">${E(item.title)}</button><p class="card-meta">${E(item.type)} · ${E(item.creators.slice(0,2).join(' / ')||item.genre||'')}</p>${discovery?`<p class="discovery-reason">${E(discoveryReason(item,profile))}</p>`:tags?`<p class="card-tags">${item.tags.slice(0,2).map(t=>'#'+E(t)).join(' ')}</p>`:''}${m.matched.length?`<p class="taste-match" title="${E(m.matched.join(' · '))}">✦ 취향 키워드 ${m.matched.length}개 일치</p>`:''}</article>`;}
 function renderHero(){
@@ -40,13 +44,13 @@ function baseCandidates(){return state.mode==='discovery'?discoveryPicks(items,p
 function matches(item){
   if(item.adult===true)return false;
   if(state.types.length&&!state.types.includes(media(item)))return false;
-  if(state.platforms.length&&!item.platforms.some(p=>state.platforms.includes(p.name)))return false;
+  if(state.platforms.length&&!displayPlatforms(item).some(p=>state.platforms.includes(p.name)))return false;
   if(!matchesSelectedTags(item,state.tags))return false;
   if(state.theme&&!matchesTheme(item,themeById(state.theme)))return false;
   if(state.person&&!item.credits.some(c=>actorRoles.has(c.role)&&norm(c.name)===norm(state.person)))return false;
   return !state.query||item.searchText.includes(norm(state.query));
 }
-function chip(label,count,dimension,selected){const unavailable=count===0&&!selected&&dimension!=='platform';return `<button class="facet-chip ${selected?'active':''} ${count===0?'is-empty':''}" data-facet="${dimension}" data-value="${E(label)}" data-count="${count}" aria-pressed="${selected}" ${unavailable?'disabled':''} title="현재 결과 중 ${E(label)} ${format(count)}개${unavailable?' · 다른 조건을 해제하면 선택할 수 있어요.':''}">${E(label)} <span>${format(count)}</span></button>`;}
+function chip(label,count,dimension,selected){const unavailable=count===0&&!selected;return `<button class="facet-chip ${selected?'active':''} ${count===0?'is-empty':''}" data-facet="${dimension}" data-value="${E(label)}" data-count="${count}" aria-pressed="${selected}" ${unavailable?'disabled':''} title="현재 결과 중 ${E(label)} ${format(count)}개${unavailable?' · 다른 조건을 해제하면 선택할 수 있어요.':''}">${E(label)} <span>${format(count)}</span></button>`;}
 function renderFilters(pool=baseCandidates()){
   if(!catalogMeta)return;
   const matchedItems=pool.filter(i=>matches(i));
@@ -57,7 +61,7 @@ function renderFilters(pool=baseCandidates()){
   $('#facet-chips').innerHTML=(state.expanded?tags:tags.slice(0,16)).map(t=>chip(t.label,counts[state.tab].get(t.label)||0,state.tab,state.tags[state.tab].includes(t.label))).join('');
   $('#facet-more').hidden=tags.length<=16;$('#facet-more').textContent=state.expanded?'접기':`더 보기 +${tags.length-16}`;$('#facet-more').setAttribute('aria-expanded',String(state.expanded));
   const pc=facetCounts('platform',matchedItems);
-  const platforms=[...new Set(items.filter(i=>!i.adult).flatMap(i=>i.platforms.map(p=>p.name)))].filter(p=>!HIDDEN_PLATFORMS.has(p)).sort((a,b)=>(pc.get(b)||0)-(pc.get(a)||0)||a.localeCompare(b,'ko'));
+  const platforms=PLATFORM_FILTERS;
   $('#platform-chips').innerHTML=platforms.map(t=>chip(t,pc.get(t)||0,'platform',state.platforms.includes(t))).join('');
   $('#search').value=state.query;$('#catalog-search').value=state.query;$('#sort').value=state.sort;
   $('#sort option[value="taste"]').textContent=state.mode==='discovery'?'발견픽 추천순':'취향순';
@@ -83,12 +87,12 @@ function renderBrowsing(scroll=false){if(!catalogMeta){setCatalogStatus('화면�
 function resetState(){Object.assign(state,{types:[],platforms:[],tags:{genre:[],setting:[],relationship:[]},query:'',sort:'taste',theme:'',mode:'all',person:'',expanded:false});visibleCount=12;}
 function changeFilter(key,value){const values=key==='type'?state.types:key==='platform'?state.platforms:state.tags[key];const index=values.indexOf(value);if(index<0)values.push(value);else values.splice(index,1);visibleCount=12;syncLocation();renderBrowsing();}
 function renderPopular(){
-  const lists=popular.lists.filter(l=>l.media!=='애니메이션'&&l.status==='available'&&l.entries?.length);if(!lists.length){$('#side-picks').innerHTML='<p class="storage-note">공식 순위를 준비하고 있어요.</p>';return;}
-  const list=lists.find(l=>l.id===popularTab)||lists[0];popularTab=list.id;
-  $('#popular-tabs').innerHTML=lists.map(l=>`<button data-popular="${E(l.id)}" aria-pressed="${l.id===popularTab}">${E(l.media)}</button>`).join('');
-  $('#side-picks').innerHTML=list.entries.filter(e=>!byId.get(e.catalogId)?.adult).slice(0,5).map(e=>{const item=byId.get(e.catalogId),title=e.localizedTitle||e.title,url=safeURL(e.url)||safeURL(list.sourceUrl),season=e.editionWarning&&e.title.match(/(?:Season|시즌)\s*(\d+)/i),edition=season?`시즌 ${season[1]} · 공식 플랫폼`:'공식 플랫폼에서 확인';const content=`<span class="side-rank">${e.rank}</span><span class="popular-cover">${item?.image?image(item,''):E(title.slice(0,1))}</span><span class="side-info"><strong>${E(title)}</strong><small>${E(e.editionWarning?edition:item?item.genre:list.media)}${!item||e.editionWarning?' ↗':''}</small></span>`;return item&&!e.editionWarning?`<button class="side-pick" data-work="${item.id}">${content}</button>`:`<a class="side-pick" href="${E(url)}" ${e.editionWarning?`title="${E(e.editionWarning)}"`:''} target="_blank" rel="noopener noreferrer">${content}</a>`;}).join('');
-  const observed=new Date(list.observedAt).toLocaleDateString('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric'});
-  $('#popular-source').innerHTML=`<a href="${E(safeURL(list.sourceUrl))}" target="_blank" rel="noopener noreferrer">${E(list.sourceLabel)} ↗</a><p>${E(list.period?.label||'공식 집계 기준')}<br>${observed} 확인 · 플랫폼 원본 순위</p>${list.scope?`<p>${E(list.scope)}</p>`:''}${list.note?`<p>${E(list.note)}</p>`:''}`;
+  const lists=popular.lists.filter(list=>list.status==='available'&&list.media!=='애니메이션');if(!lists.length){$('#popular-tabs').innerHTML='';$('#side-picks').innerHTML='<p class="storage-note">확인된 인기 작품을 준비하고 있어요.</p>';return;}
+  const list=lists.find(entry=>entry.id===popularTab)||lists[0];popularTab=list.id;
+  $('#popular-tabs').innerHTML=lists.map(entry=>`<button data-popular="${E(entry.id)}" aria-pressed="${entry.id===popularTab}">${E(entry.media)}</button>`).join('');
+  $('#side-picks').innerHTML=list.entries.slice(0,5).map((entry,index)=>{const item=byId.get(entry.catalogId),title=entry.localizedTitle||entry.title,url=safeURL(entry.url),external=!item||!!entry.editionWarning,cover=popularCoverItem(entry,item);const content=`<span class="side-rank" title="표시 순서 ${index+1} · 원본 집계 ${E(entry.rank)}위">${index+1}</span><span class="popular-cover">${cover?image(cover,''):`<span aria-hidden="true">${E(popularCoverSymbol(list.media,title))}</span>`}</span><span class="side-info"><strong>${E(title)}</strong><small>${external?'공식 플랫폼에서 확인 ↗':E(item.genre)}</small></span>`;return external?(url?`<a class="side-pick" href="${E(url)}" title="${E(entry.editionWarning||'등록된 상세 정보가 없어 공식 작품 페이지로 이동합니다.')}" target="_blank" rel="noopener noreferrer">${content}</a>`:''):`<button class="side-pick" data-work="${item.id}">${content}</button>`;}).join('')||'<p class="storage-note">비성인·비애니메이션 여부가 확인된 작품을 준비하고 있어요.</p>';
+  const observed=Number.isFinite(Date.parse(list.observedAt))?new Date(list.observedAt).toLocaleDateString('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric'}):'조회일 미표기',sourceURL=safeURL(list.sourceUrl);
+  $('#popular-source').innerHTML=`${sourceURL?`<a href="${E(sourceURL)}" target="_blank" rel="noopener noreferrer">${E(list.sourceLabel)} ↗</a>`:E(list.sourceLabel)}<p>${E(list.period?.label||'공식 집계 기준')}<br>${E(observed)} 확인 · 공식 인기 목록에서 발췌<br>1~5는 표시 순서입니다. 원본 순위는 숫자 설명에서 확인하세요.</p>${list.scope?`<p>원본 집계 범위: ${E(list.scope)}</p>`:''}<p>표시 목록: 애니메이션·성인 작품 제외</p>${list.note?`<p>${E(list.note)}</p>`:''}`;
 }
 function renderContext(){
   const t=visitContext?.theme,box=$('.context-card');
@@ -116,9 +120,9 @@ function closeAllDialogs(){dialogStack.length=0;$$('dialog[open]').forEach(d=>d.
 function detailShelf(title,list,note=''){return `<section class="detail-shelf"><h3>${E(title)}</h3>${note?`<p class="shelf-note">${E(note)}</p>`:''}${list.length?`<div class="related-grid">${list.slice(0,6).map(i=>card(i)).join('')}</div>`:'<p class="storage-note">현재 등록된 작품에서 확인할 수 있는 연결 정보가 없어요.</p>'}</section>`;}
 function openDetail(id,updateURL=true){
   const item=byId.get(id);if(!item||item.adult===true){if(updateURL)notify('현재 표시할 수 없는 작품입니다.');return;}
-  const links=item.platforms.filter(p=>safeURL(p.url)),screen=['영화','드라마','OTT','애니메이션'].includes(item.type),people=item.credits.filter(c=>screen?c.role==='DIRECTOR':['STORY_WRITER','LEAD_ARTIST','ORIGINAL_AUTHOR','ADAPTATION_WRITER'].includes(c.role));
-  const same=sameCreatorWorks(item,items),candidates=sameNameCreatorCandidates(item,items),cast=item.credits.filter(c=>actorRoles.has(c.role));
-  $('#detail-content').innerHTML=`<div class="detail-top"><div>${image(item,'detail-poster',true)||`<div class="detail-poster cover-fallback" style="position:relative">${E(item.title)}</div>`}</div><div class="detail-info"><div class="detail-type"><span>${E(item.type)}</span><span>·</span><span>${E(item.genre||'작품')}</span>${item.age!=null?`<span>·</span><span>${item.age===0?'전체 이용가':item.age+'세 이상'}</span>`:''}</div><h2 class="detail-title" id="detail-title">${E(item.title)}</h2><p class="detail-meta">${E(people.map(c=>c.roleLabel+' '+c.name).join(' · ')||item.creators.slice(0,3).join(' · '))}${item.year?'<br>'+item.year+'년 공개':''}</p><p class="detail-description">${E(item.description||'작품의 더 자세한 이야기는 공식 플랫폼에서 만나보세요.')}</p><div class="detail-actions">${links.length?`<a class="primary-button" href="${E(safeURL(links[0].url))}" target="_blank" rel="noopener noreferrer">공식 플랫폼에서 보기 ↗</a>`:''}<button class="outline-button detail-save" data-save="${id}" aria-pressed="${saved.has(id)}">${icon}${saved.has(id)?'보관한 작품':'보관하기'}</button></div></div></div><div class="detail-body"><div class="detail-tags">${item.tags.map(t=>`<button class="detail-tag" data-detail-tag="${E(t)}">#${E(t)}</button>`).join('')}</div><h3>어디서 볼 수 있나요?</h3><div class="platform-links">${links.map(p=>`<a class="platform-link" href="${E(safeURL(p.url))}" target="_blank" rel="noopener noreferrer">${E(p.name)}<span>↗</span></a>`).join('')||'<p class="storage-note">공식 감상처를 확인하고 있어요.</p>'}</div><p class="availability-note">감상 가능 여부와 이용 요금은 각 플랫폼에서 확인해주세요.</p>${detailShelf('유사픽 · 이 이야기의 다음 장',similarPicks(item,items,profile,6),'장르·소재·인물 관계의 공통점에 현재 취향을 더했어요.')}${detailShelf(screen?'같은 감독의 작품':'같은 작가·제작진의 작품',same.map(r=>r.item),same.length?[...new Set(same.flatMap(r=>r.matches.map(c=>c.name)))].join(' · '):'확인된 인물 연결을 기준으로 표시합니다.')}${candidates.length?detailShelf(screen?'같은 이름의 감독으로 찾은 작품':'같은 이름의 작가로 찾은 작품',candidates.map(r=>r.item),'이름과 역할이 같은 작품입니다. 인물 정보가 확인되지 않아 동명이인이 포함될 수 있어요.'):''}${screen?`<section class="detail-shelf"><h3>출연배우</h3>${cast.length?`<div class="cast-grid">${cast.map(c=>`<button class="cast-person" data-cast="${E(c.name)}"><span class="cast-avatar">${E(c.name.slice(0,1))}</span><span><strong>${E(c.name)}</strong><small>${E(c.roleLabel)} · 출연작 보기 ↗</small></span></button>`).join('')}</div>`:'<p class="storage-note">등록된 출연진 정보가 없어요.</p>'}</section>`:''}</div>`;
+  const links=displayPlatforms(item).filter(p=>safeURL(p.url)),screen=['영화','드라마','OTT','드라마·OTT'].includes(item.type),people=item.credits.filter(c=>screen?c.role==='DIRECTOR':['STORY_WRITER','LEAD_ARTIST','ORIGINAL_AUTHOR','ADAPTATION_WRITER'].includes(c.role));
+  const {sameCreators:same,cast}=detailConnections(item,items);
+  $('#detail-content').innerHTML=`<div class="detail-top"><div>${image(item,'detail-poster',true)||`<div class="detail-poster cover-fallback" style="position:relative">${E(item.title)}</div>`}</div><div class="detail-info"><div class="detail-type"><span>${E(item.type)}</span><span>·</span><span>${E(item.genre||'작품')}</span>${item.age!=null?`<span>·</span><span>${item.age===0?'전체 이용가':E(item.age)+'세 이상'}</span>`:''}</div><h2 class="detail-title" id="detail-title">${E(item.title)}</h2><p class="detail-meta">${E(people.map(c=>c.roleLabel+' '+c.name).join(' · ')||item.creators.slice(0,3).join(' · '))}${item.year?'<br>'+E(item.year)+'년 공개':''}</p><p class="detail-description">${E(item.description||'작품의 더 자세한 이야기는 공식 플랫폼에서 만나보세요.')}</p><div class="detail-actions">${links.length?`<a class="primary-button" href="${E(safeURL(links[0].url))}" target="_blank" rel="noopener noreferrer">공식 플랫폼에서 보기 ↗</a>`:''}<button class="outline-button detail-save" data-save="${id}" aria-pressed="${saved.has(id)}">${icon}${saved.has(id)?'보관한 작품':'보관하기'}</button></div></div></div><div class="detail-body"><div class="detail-tags">${item.tags.map(t=>`<button class="detail-tag" data-detail-tag="${E(t)}">#${E(t)}</button>`).join('')}</div><h3>어디서 볼 수 있나요?</h3><div class="platform-links">${links.map(p=>`<a class="platform-link" href="${E(safeURL(p.url))}" target="_blank" rel="noopener noreferrer">${E(p.name)}<span>↗</span></a>`).join('')||'<p class="storage-note">공식 감상처를 확인하고 있어요.</p>'}</div><p class="availability-note">감상 가능 여부와 이용 요금은 각 플랫폼에서 확인해주세요.</p>${detailShelf('유사픽 · 이 이야기의 다음 장',similarPicks(item,items,profile,6),'장르·소재·인물 관계의 공통점에 현재 취향을 더했어요.')}${same.length?detailShelf(screen?'같은 감독의 작품':'같은 작가·제작진의 작품',same.map(r=>r.item),[...new Set(same.flatMap(r=>r.matches.map(c=>c.name)))].join(' · ')):''}${screen&&cast.length?`<section class="detail-shelf"><h3>출연배우</h3>${cast.length?`<div class="cast-grid">${cast.map(c=>`<button class="cast-person" data-cast="${E(c.name)}"><span class="cast-avatar">${E(c.name.slice(0,1))}</span><span><strong>${E(c.name)}</strong><small>${E(c.roleLabel)} · 출연작 보기 ↗</small></span></button>`).join('')}</div>`:'<p class="storage-note">등록된 출연진 정보가 없어요.</p>'}</section>`:''}</div>`;
   openDialog($('#detail-dialog'));updateSavedUI();if(updateURL)syncLocation(id);
 }
 function renderLibrary(){const list=[...saved].reverse().map(id=>byId.get(id)).filter(i=>i&&!i.adult);$('#library-grid').innerHTML=list.length?list.map(i=>card(i,{tags:true})).join(''):'<div class="empty-state"><h3>나만의 이야기를 모아보세요</h3><p>작품 표지의 책갈피를 누르면<br>여기에서 다시 만날 수 있어요.</p><button class="primary-button" data-action="browse-from-library">작품 둘러보기</button></div>';}
@@ -127,10 +131,11 @@ function refreshRecommendations(){heroPage=0;renderHero();renderShelves();visibl
 function applySearch(value){resetState();state.query=value.trim().slice(0,200);syncLocation();renderBrowsing(true);}
 document.addEventListener('click',event=>{
   const b=event.target.closest('button,a');if(!b)return;
+  if(b.matches('a[href^="#"]')){const target=document.getElementById(b.getAttribute('href').slice(1));if(target){event.preventDefault();closeAllDialogs();syncLocation();target.scrollIntoView({behavior:'instant',block:'start'});return;}}
   if(b.dataset.work)return openDetail(Number(b.dataset.work));
   if(b.dataset.save)return toggleSaved(Number(b.dataset.save));
   if(b.dataset.media){state.types=b.dataset.media==='전체'?[]:[b.dataset.media];visibleCount=12;syncLocation();renderBrowsing();$(`[data-media="${b.dataset.media}"]`).focus({preventScroll:true});return;}
-  if(b.dataset.tab){state.tab=b.dataset.tab;state.expanded=false;renderFilters();$(`[data-tab="${state.tab}"]`).focus();return;}
+  if(b.dataset.tab){state.tab=b.dataset.tab;state.expanded=false;syncLocation();renderFilters();$(`[data-tab="${state.tab}"]`).focus();return;}
   if(b.dataset.facet)return changeFilter(b.dataset.facet,b.dataset.value);
   if(b.dataset.clear){const key=b.dataset.clear;if(['type','platform',...GROUPS.map(g=>g.id)].includes(key))return changeFilter(key,b.dataset.value);state[key]=key==='mode'?'all':'';visibleCount=12;syncLocation();return renderBrowsing();}
   if(b.dataset.popular){popularTab=b.dataset.popular;return renderPopular();}
@@ -142,7 +147,7 @@ document.addEventListener('click',event=>{
     case 'hero-next':heroPage++;renderHero();break;
     case 'curated-more':case 'discovery-more':resetState();state.mode=b.dataset.action==='discovery-more'?'discovery':'immersive';syncLocation();renderBrowsing(true);break;
     case 'reset':resetState();syncLocation();renderBrowsing();break;
-    case 'facet-more':state.expanded=!state.expanded;renderFilters();$('#facet-more').focus();break;
+    case 'facet-more':state.expanded=!state.expanded;syncLocation();renderFilters();$('#facet-more').focus();break;
     case 'load-more':{const previous=visibleCount;visibleCount+=12;renderResults();$$('#browse-grid .cover-button')[previous]?.focus({preventScroll:true});break;}
     case 'library':renderLibrary();openDialog($('#library-dialog'));break;
     case 'about':openDialog($('#about-dialog'));break;
@@ -156,11 +161,11 @@ document.addEventListener('click',event=>{
 });
 for(const [form,input]of [['search-form','search'],['catalog-search-form','catalog-search']]){$('#'+form).addEventListener('submit',e=>{e.preventDefault();applySearch($('#'+input).value);});$('#'+input).addEventListener('search',()=>{if(!$('#'+input).value&&state.query){state.query='';visibleCount=12;syncLocation();renderBrowsing();}});}
 $('#sort').addEventListener('change',e=>{state.sort=e.target.value;visibleCount=12;syncLocation();renderBrowsing();});
-$('#facet-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const index=GROUPS.findIndex(g=>g.id===state.tab);state.tab=GROUPS[e.key==='Home'?0:e.key==='End'?2:(index+(e.key==='ArrowRight'?1:2))%3].id;state.expanded=false;renderFilters();$(`[data-tab="${state.tab}"]`).focus();});
+$('#facet-tabs').addEventListener('keydown',e=>{if(!['ArrowLeft','ArrowRight','Home','End'].includes(e.key))return;e.preventDefault();const index=GROUPS.findIndex(g=>g.id===state.tab);state.tab=GROUPS[e.key==='Home'?0:e.key==='End'?2:(index+(e.key==='ArrowRight'?1:2))%3].id;state.expanded=false;syncLocation();renderFilters();$(`[data-tab="${state.tab}"]`).focus();});
 $('#profile-form').addEventListener('submit',e=>{e.preventDefault();try{profile=saveProfile({id:'local-taste-reader',name:'나의 취향',temporary:false,preferredTags:$('#preferred-tags').value.split(',')},getStorage());closeDialog($('#profile-dialog'));refreshRecommendations();notify('바뀐 취향으로 추천을 정렬했어요.');}catch(error){notify(error.message);}});
 document.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement){e.target.classList.add('failed');e.target.setAttribute('aria-hidden','true');if(!e.target.classList.contains('cover-image'))e.target.style.visibility='hidden';}},true);
 $$('dialog').forEach(d=>{d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)closeDialog(d);}});d.addEventListener('cancel',e=>{e.preventDefault();closeDialog(d);});});
-window.addEventListener('popstate',()=>{if(!items.length)return;readLocation();visibleCount=12;renderBrowsing();const id=Number(new URLSearchParams(location.search).get('work'));if(id)openDetail(id,false);else closeAllDialogs();});
+window.addEventListener('popstate',event=>{readLocation(event.state,false);const id=currentWorkId;syncLocation(id,true);visibleCount=12;if(items.length)renderBrowsing();if(id)openDetail(id,false);else closeAllDialogs();});
 window.addEventListener('storage',e=>{if(e.key===BOOKMARK_KEY){try{const value=JSON.parse(e.newValue||'[]');saved=new Set(Array.isArray(value)?value.filter(Number.isInteger):[]);updateSavedUI();if($('#library-dialog').open)renderLibrary();}catch{}}if(e.key===PROFILE_KEY){profile=loadProfile(getStorage());refreshRecommendations();}});
 window.addEventListener('resize',()=>{const size=heroPageSize();if(items.length&&size!==renderedHeroPageSize){heroPage=Math.floor(heroPage*renderedHeroPageSize/size);renderHero();}});
 function setCatalogStatus(message,error=false){const status=$('#catalog-status');if(!status)return;status.hidden=!message;status.classList.toggle('is-error',error);status.textContent=message;if(error){const button=document.createElement('button');button.dataset.action='retry';button.textContent='다시 불러오기';status.append(' ',button);}}
@@ -170,22 +175,23 @@ async function loadCatalog(){
   if(catalogLoading)return;
   catalogLoading=true;document.documentElement.dataset.catalogState='loading';
   const bootstrap=readBootstrap();
-  if(!catalogMeta&&bootstrap){coverImages=Array.isArray(bootstrap.coverImages)?bootstrap.coverImages:[];items=bootstrap.items.map(normalizeCatalogItem).filter(item=>item.adult!==true).map(searchableItem);byId=new Map(items.map(item=>[item.id,item]));popular=bootstrap.popular;readLocation();updateSavedUI();}
+  if(!catalogMeta&&bootstrap){coverImages=Array.isArray(bootstrap.coverImages)?bootstrap.coverImages:[];items=bootstrap.items.map(normalizeCatalogItem).filter(item=>item.adult!==true).map(searchableItem);byId=new Map(items.map(item=>[item.id,item]));popular=bootstrap.popular;updateSavedUI();}
   setCatalogStatus('추천은 바로 확인하세요. 전체 검색을 준비하고 있어요.');
   if(!bootstrap&&!catalogMeta){$('#results-count').textContent='작품 검색 자료를 불러오고 있어요';$('#empty-state').hidden=true;}
   const rankingsReady=bootstrap?Promise.resolve(bootstrap.popular):(async()=>{try{const response=await fetch('/data/popular.json',{signal:AbortSignal.timeout(5000)});return response.ok?await response.json():{lists:[]};}catch{return {lists:[]};}})();
   try{
     const data=await loadFastCatalog({release:bootstrap?.release});
     items=data.items.map(searchableItem);byId=new Map(items.map(item=>[item.id,item]));taxonomy=data.taxonomy;catalogMeta=data.meta;
-    readLocation();renderHero();renderShelves();renderBrowsing();renderPopular();updateSavedUI();
+    popular=preparePopularLists(popular,items);renderHero();renderShelves();renderBrowsing();renderPopular();updateSavedUI();
     visitContext=chooseVisitTheme({items,storage:getStorage()});renderContext();void prepareContext();
     setCatalogStatus('');document.documentElement.dataset.catalogState='ready';document.documentElement.dataset.catalogReadyMs=String(Math.round(performance.now()));
-    const id=Number(new URLSearchParams(location.search).get('work'));if(id)openDetail(id,false);
-    void rankingsReady.then(rankings=>{if(Array.isArray(rankings?.lists)){popular=rankings;renderPopular();}});
+    if(currentWorkId)openDetail(currentWorkId,false);
+    if(startupAnchor)document.getElementById(startupAnchor)?.scrollIntoView({behavior:'instant',block:'start'});
+    void rankingsReady.then(rankings=>{if(Array.isArray(rankings?.lists)){popular=preparePopularLists(rankings,items);renderPopular();}});
   }catch(error){
     console.error('찰픽 전체 작품 검색 자료를 불러오지 못했습니다.',error);document.documentElement.dataset.catalogState='error';
     setCatalogStatus('전체 검색을 연결하지 못했어요. 보이는 추천은 DB 반영일 기준입니다.',true);
     if(!bootstrap&&!catalogMeta){$('#results-count').textContent='전체 작품 검색을 연결하지 못했어요';$('#empty-state').hidden=false;$('#empty-state').innerHTML='<h3>작품 검색 자료를 불러오지 못했어요</h3><p>네트워크 연결을 확인한 뒤 다시 시도해주세요.</p><button class="primary-button" data-action="retry">다시 불러오기</button>';}
   }finally{catalogLoading=false;}
 }
-initAuth();loadCatalog();
+initAuth();readLocation();syncLocation(currentWorkId,true);loadCatalog();

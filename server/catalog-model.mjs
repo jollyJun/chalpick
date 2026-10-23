@@ -107,10 +107,11 @@ function creditsFor(values, persons) {
     const name = text(person?.name);
     if (!name || !positiveId(person.id)) continue;
     const role = text(credit.creator_role);
+    const roleLabel = role === 'SUPPORT_ACTOR' && credit.verification_status === 'verified_cast_billing_unspecified' ? '출연' : Object.hasOwn(ROLE_LABELS,role) ? ROLE_LABELS[role] : role;
     const collective = person.external_person_id === 'naver_artist_305532';
     const identityKey = collective ? null : optionalText(person.external_person_id);
     credits.push({
-      id:positiveId(person.id),name,role,roleLabel:Object.hasOwn(ROLE_LABELS,role) ? ROLE_LABELS[role] : role,
+      id:positiveId(person.id),name,role,roleLabel,
       identityKey,identityConfidence:collective ? 'collective_account' : identityKey ? 'verified_external_id' : 'content_scoped',
       candidateKey:collective ? null : `${role}:${text(person.normalized_name) || name}`,
       sourceUrl:sourceUrl(credit.source_url)

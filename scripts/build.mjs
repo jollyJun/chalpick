@@ -6,7 +6,7 @@ import { readCatalogRelease, refreshCatalogRelease } from './catalog-release.mjs
 const root = new URL('../', import.meta.url);
 const projectPath=path.resolve(fileURLToPath(root));
 const publicPath=path.resolve(projectPath,'public');
-const excludedFiles=new Set(['data/catalog.json','data/catalog-manifest.json','data/taxonomy.json','data/context-tags.json']);
+const excludedFiles=new Set(['data/catalog.json','data/catalog-manifest.json','data/taxonomy.json','data/context-tags.json','assets/promo-wide.webp','assets/promo-sidebar.webp']);
 const hasConfiguration=Boolean(process.env.SUPABASE_URL || process.env.SUPABASE_PUBLISHABLE_KEY || process.env.SUPABASE_ANON_KEY);
 if(process.env.VERCEL && !hasConfiguration) throw new Error('Vercel 배포에는 SUPABASE_URL과 공개 키를 등록해야 합니다. 이전 DB 파일로 배포를 우회하지 않습니다.');
 const {catalog,manifest}=hasConfiguration

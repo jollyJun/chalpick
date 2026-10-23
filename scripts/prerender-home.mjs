@@ -2,11 +2,11 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {SAMPLE_PROFILE,sortByTaste,tasteMatch,immersivePicks,discoveryPicks,discoveryReason} from '../public/recommendation.js';
 import {currentThemeIds,themeById,matchesTheme} from '../public/context.js';
-import {facetCounts} from '../public/facets.js';
+import {facetCounts,PLATFORM_FILTERS} from '../public/facets.js';
+import {preparePopularLists,popularCoverSymbol,popularCoverItem} from '../public/catalog-display.js';
 import {safePublicURL,catalogCountLabel} from '../public/catalog-client.js';
 
 const GROUPS=[{id:'genre',label:'장르'},{id:'setting',label:'소재·배경'},{id:'relationship',label:'인물·관계'}];
-const HIDDEN_PLATFORMS=new Set(['문피아','미스터블루']);
 const LOCAL_COVER=/^\/assets\/covers\/[a-f0-9]{16,64}\.webp$/;
 const BOOKMARK='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4Z"/></svg>';
 const escapeHTML=value=>String(value??'').replace(/[&<>"']/g,character=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]));
@@ -52,7 +52,7 @@ function heroCard(item,index){
 }
 
 function chip(label,count,dimension){
-  const unavailable=count===0&&dimension!=='platform';
+  const unavailable=count===0;
   return `<button class="facet-chip ${count===0?'is-empty':''}" data-facet="${dimension}" data-value="${escapeHTML(label)}" data-count="${count}" aria-pressed="false" ${unavailable?'disabled':''} title="현재 결과 중 ${escapeHTML(label)} ${formatCount(count)}개">${escapeHTML(label)} <span>${formatCount(count)}</span></button>`;
 }
 
@@ -60,25 +60,20 @@ function dateLabel(value){
   return new Intl.DateTimeFormat('ko-KR',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).format(new Date(value));
 }
 
-function safePopular(popular,byId){
-  return {updatedAt:popular?.updatedAt||null,schemaVersion:1,lists:(popular?.lists||[]).filter(list=>list.media!=='애니메이션'&&list.status==='available'&&Array.isArray(list.entries)).map(list=>({...list,entries:list.entries.filter(entry=>byId.has(entry.catalogId))})).filter(list=>list.entries.length)};
-}
-
 function popularRegions(popular,byId){
   const lists=popular.lists,list=lists[0];
-  if(!list)return {tabs:'',picks:'<p class="storage-note">공식 순위를 준비하고 있어요.</p>',source:'',items:[]};
+  if(!list)return {tabs:'',picks:'<p class="storage-note">확인된 인기 작품을 준비하고 있어요.</p>',source:'',items:[]};
   const entries=list.entries.slice(0,5);
-  const picks=entries.map(entry=>{
-    const item=byId.get(entry.catalogId),title=entry.localizedTitle||entry.title;
-    const url=safePublicURL(entry.url)||safePublicURL(list.sourceUrl);
-    const season=entry.editionWarning&&entry.title.match(/(?:Season|시즌)\s*(\d+)/i);
-    const edition=season?`시즌 ${season[1]} · 공식 플랫폼`:'공식 플랫폼에서 확인';
-    const content=`<span class="side-rank">${escapeHTML(entry.rank)}</span><span class="popular-cover">${image(item,'')||escapeHTML(title.slice(0,1))}</span><span class="side-info"><strong>${escapeHTML(title)}</strong><small>${escapeHTML(entry.editionWarning?edition:item.genre)}${entry.editionWarning?' ↗':''}</small></span>`;
-    return entry.editionWarning&&url?`<a class="side-pick" href="${escapeHTML(url)}" title="${escapeHTML(entry.editionWarning)}" target="_blank" rel="noopener noreferrer">${content}</a>`:`<button class="side-pick" data-work="${item.id}">${content}</button>`;
-  }).join('');
+  const picks=entries.map((entry,index)=>{
+    const item=byId.get(entry.catalogId),title=entry.localizedTitle||entry.title,url=safePublicURL(entry.url),external=!item||!!entry.editionWarning,cover=popularCoverItem(entry,item);
+    const fallback=`<span aria-hidden="true">${escapeHTML(popularCoverSymbol(list.media,title))}</span>`;
+    const content=`<span class="side-rank" title="표시 순서 ${index+1} · 원본 집계 ${escapeHTML(entry.rank)}위">${index+1}</span><span class="popular-cover">${cover?image(cover,'')||fallback:fallback}</span><span class="side-info"><strong>${escapeHTML(title)}</strong><small>${external?'공식 플랫폼에서 확인 ↗':escapeHTML(item.genre)}</small></span>`;
+    return external?(url?`<a class="side-pick" href="${escapeHTML(url)}" title="${escapeHTML(entry.editionWarning||'등록된 상세 정보가 없어 공식 작품 페이지로 이동합니다.')}" target="_blank" rel="noopener noreferrer">${content}</a>`:''):`<button class="side-pick" data-work="${item.id}">${content}</button>`;
+  }).join('')||'<p class="storage-note">비성인·비애니메이션 여부가 확인된 작품을 준비하고 있어요.</p>';
   const observed=Number.isFinite(Date.parse(list.observedAt))?new Date(list.observedAt).toLocaleDateString('ko-KR',{timeZone:'Asia/Seoul',month:'numeric',day:'numeric'}):'조회일 미표기';
-  const source=`<a href="${escapeHTML(safePublicURL(list.sourceUrl))}" target="_blank" rel="noopener noreferrer">${escapeHTML(list.sourceLabel)} ↗</a><p>${escapeHTML(list.period?.label||'공식 집계 기준')}<br>${escapeHTML(observed)} 확인 · 플랫폼 원본 순위</p>${list.scope?`<p>${escapeHTML(list.scope)}</p>`:''}${list.note?`<p>${escapeHTML(list.note)}</p>`:''}`;
-  return {tabs:lists.map(entry=>`<button data-popular="${escapeHTML(entry.id)}" aria-pressed="${entry.id===list.id}">${escapeHTML(entry.media)}</button>`).join(''),picks,source,items:entries.map(entry=>byId.get(entry.catalogId))};
+  const sourceURL=safePublicURL(list.sourceUrl);
+  const source=`${sourceURL?`<a href="${escapeHTML(sourceURL)}" target="_blank" rel="noopener noreferrer">${escapeHTML(list.sourceLabel)} ↗</a>`:escapeHTML(list.sourceLabel)}<p>${escapeHTML(list.period?.label||'공식 집계 기준')}<br>${escapeHTML(observed)} 확인 · 공식 인기 목록에서 발췌<br>1~5는 표시 순서입니다. 원본 순위는 숫자 설명에서 확인하세요.</p>${list.scope?`<p>원본 집계 범위: ${escapeHTML(list.scope)}</p>`:''}<p>표시 목록: 애니메이션·성인 작품 제외</p>${list.note?`<p>${escapeHTML(list.note)}</p>`:''}`;
+  return {tabs:lists.map(entry=>`<button data-popular="${escapeHTML(entry.id)}" aria-pressed="${entry.id===list.id}">${escapeHTML(entry.media)}</button>`).join(''),picks,source,items:entries.map(entry=>byId.get(entry.catalogId)).filter(Boolean)};
 }
 
 function contextRegion(items,generatedAt){
@@ -114,14 +109,14 @@ export async function prerenderHome({html,catalog,popular={lists:[]},publicPath,
   const byId=new Map(items.map(item=>[item.id,item]));
   const ranked=sortByTaste(items,SAMPLE_PROFILE),hero=uniqueIPs(ranked.filter(item=>safeImage(item.image))).slice(0,6);
   const curated=uniqueIPs(immersivePicks(items,SAMPLE_PROFILE,30)).slice(0,6),browse=ranked.slice(0,12),discovery=uniqueIPs(discoveryPicks(items,SAMPLE_PROFILE,12)).slice(0,6);
-  const rankings=safePopular(popular,byId),sidebar=popularRegions(rankings,byId),context=contextRegion(items,generatedAt);
+  const rankings=preparePopularLists(popular,sourceItems),sidebar=popularRegions(rankings,byId),context=contextRegion(items,generatedAt);
   const selected=[...new Map([...hero,...curated,...browse,...sidebar.items,...context.items,...discovery].map(item=>[item.id,item])).values()];
   if(selected.length>40)throw new Error('Homepage bootstrap selection exceeds budget');
   const counts=Object.fromEntries(GROUPS.map(group=>[group.id,facetCounts(group.id,items)]));
   const taxonomy={...catalog.taxonomy,groups:catalog.taxonomy.groups.map(group=>({...group,tags:group.tags.map(tag=>({...tag,count:counts[group.id]?.get(tag.label)||0}))}))};
   const tabs=GROUPS.map(group=>`<button role="tab" id="facet-tab-${group.id}" aria-controls="facet-tag-panel" aria-selected="${group.id==='genre'}" tabindex="${group.id==='genre'?0:-1}" data-tab="${group.id}">${group.label} <span>${counts[group.id].size}/${taxonomy.groups.find(entry=>entry.id===group.id)?.tags.length||0}</span></button>`).join('');
   const genres=[...(taxonomy.groups.find(group=>group.id==='genre')?.tags||[])].sort((left,right)=>(counts.genre.get(right.label)||0)-(counts.genre.get(left.label)||0)||left.label.localeCompare(right.label,'ko'));
-  const platforms=[...facetCounts('platform',items)].filter(([label])=>!HIDDEN_PLATFORMS.has(label)).sort((left,right)=>right[1]-left[1]||left[0].localeCompare(right[0],'ko'));
+  const platformCounts=facetCounts('platform',items),platforms=PLATFORM_FILTERS.map(label=>[label,platformCounts.get(label)||0]);
   const date=`DB 확인: <time datetime="${escapeHTML(generatedAt)}">${escapeHTML(dateLabel(generatedAt))} KST</time> · 배포본`;
   const bootstrap={schemaVersion:1,source:'supabase',generatedAt,meta,taxonomy,items:selected,popular:rankings,coverImages,...(release?{release}:{} )};
   const regions={

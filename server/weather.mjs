@@ -1,3 +1,5 @@
+import { readBoundedJSON, SECURITY_HEADERS } from './security.mjs';
+
 // City-level weather context. User IPs, precise locations and cookies never go to MET.
 const MET_URL = 'https://api.met.no/weatherapi/locationforecast/2.0/compact';
 const HOUR = 60 * 60 * 1000;
@@ -97,7 +99,7 @@ async function fetchForecast(location, options) {
         remember(cache, key, { payload: null, expires: failureExpiry(response, now()) });
         return null;
       }
-      const payload = await response.json();
+      const payload = await readBoundedJSON(response, 524_288);
       if (!Array.isArray(payload?.properties?.timeseries)) throw new Error('Invalid forecast');
       remember(cache, key, { payload, lastModified: response.headers.get('last-modified'), expires: expiry(response, now()) });
       return payload;
@@ -112,7 +114,7 @@ async function fetchForecast(location, options) {
 
 export async function handleWeather(request, options = {}) {
   const env = options.env || process.env;
-  const headers = { 'Cache-Control': 'private, no-store', 'Content-Type': 'application/json; charset=utf-8', 'X-Content-Type-Options': 'nosniff' };
+  const headers = { ...SECURITY_HEADERS, 'Cache-Control': 'private, no-store', 'Content-Type': 'application/json; charset=utf-8' };
   if (request.method !== 'GET') return Response.json({ error: 'Method not allowed' }, { status: 405, headers: { ...headers, Allow: 'GET' } });
   const location = visitorRegion(request, env);
   if (!location) return Response.json(unavailable('region_unavailable'), { headers });

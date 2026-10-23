@@ -4,6 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#ffffff">
+  <meta name="chalpick-build" content="v7-20261023">
   <meta name="description" content="웹툰부터 영화까지, 취향에 꼭 맞는 다음 이야기. 찰픽에서 작품을 발견하고 감상할 플랫폼을 한눈에 확인하세요.">
   <title>찰픽 — 취향에 꼭 맞는 다음 이야기</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -11,6 +12,7 @@
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/context.css">
   <link rel="stylesheet" href="/fast.css">
+  <link rel="stylesheet" href="/promo.css">
   <script src="/app.js" type="module"></script>
 </head>
 <body>
@@ -38,7 +40,7 @@
       <div class="section-heading"><div class="title-with-note"><h2 id="curated-title">한번 시작하면, 멈출 수 없는</h2><button class="basis-link" data-action="criteria" data-section="immersive">취향에 맞는 액션·무협·스릴러 ⓘ</button></div><button class="text-link" data-action="curated-more">더 둘러보기 <span aria-hidden="true">→</span></button></div>
       <div class="poster-grid curated-grid" id="curated-grid"><!-- prerender:curated:start --><!-- prerender:curated:end --></div>
     </section>
-    <button type="button" class="advertisement ad-wide promo-banner" data-action="profile" aria-label="찰픽에서 내 취향 찾기"><img src="/assets/promo-wide.webp" alt="취향에 꼭 맞는 다음 이야기. 웹툰 · 웹소설 · 드라마 · 영화. 내 취향 찾기" width="1500" height="501" loading="lazy" decoding="async"></button>
+    <button type="button" class="advertisement ad-wide promo-banner promo-original" data-action="profile" aria-label="찰픽에서 내 취향 찾기"><img class="promo-art" src="/assets/promo-abstract-v7.webp" alt="" width="1200" height="800" loading="lazy" decoding="async"><span class="promo-copy"><img class="promo-brand" src="/assets/logo.png" alt="찰픽" width="128" height="54" loading="lazy"><strong class="promo-headline">취향에 꼭 맞는<br><em>다음 이야기</em></strong><span class="promo-media">웹툰 · 웹소설 · 드라마 · 영화</span><span class="promo-cta">내 취향 찾기 <span aria-hidden="true">→</span></span></span></button>
     <div class="content-layout">
       <section id="discover" class="discover-section" aria-labelledby="discover-title">
         <div class="section-heading"><div><p class="eyebrow">FIND YOUR PICK</p><h2 id="discover-title">취향이 닿는 곳</h2></div><button class="reset-button" id="reset-filters" data-action="reset" hidden>필터 초기화 ↺</button></div>
@@ -65,7 +67,7 @@
       </section>
       <aside class="sidebar">
         <section class="sidebar-picks" aria-labelledby="sidebar-title"><div class="section-heading"><h2 id="sidebar-title">매체별 인기 작품</h2><span class="small-pick-label">TOP</span></div><div class="popular-tabs" id="popular-tabs" aria-label="인기 작품 매체"><!-- prerender:popular-tabs:start --><!-- prerender:popular-tabs:end --></div><div id="side-picks"><!-- prerender:popular:start --><!-- prerender:popular:end --></div><div class="popular-source" id="popular-source"><!-- prerender:popular-source:start --><!-- prerender:popular-source:end --></div></section>
-        <button type="button" class="advertisement ad-square promo-banner" data-action="profile" aria-label="찰픽에서 내 취향 찾기"><img src="/assets/promo-sidebar.webp" alt="오늘의 한 편, 찰픽에서 발견하세요. 고르는 시간은 짧게, 몰입은 깊게." width="720" height="600" loading="lazy" decoding="async"></button>
+        <button type="button" class="advertisement ad-square promo-banner promo-original" data-action="profile" aria-label="찰픽에서 내 취향 찾기"><img class="promo-art" src="/assets/promo-abstract-v7.webp" alt="" width="1200" height="800" loading="lazy" decoding="async"><span class="promo-copy"><span class="promo-kicker">CHALPICK</span><strong class="promo-headline">오늘의 한 편,<br><em>찰픽에서 발견하세요.</em></strong><span class="promo-description">고르는 시간은 짧게,<br>몰입은 깊게.</span><span class="promo-cta">취향으로 만나보기 <span aria-hidden="true">→</span></span></span></button>
         <!-- prerender:context:start --><section class="collection-card context-card" aria-labelledby="context-title"><p class="eyebrow">A STORY FOR THIS MOMENT</p><h2 id="context-title">지금 이 순간의 이야기</h2><div id="context-content" aria-live="polite"></div></section><!-- prerender:context:end -->
       </aside>
     </div>
