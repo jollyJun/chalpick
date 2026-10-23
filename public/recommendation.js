@@ -12,23 +12,33 @@ export function tasteMatch(item,profile){const terms=profile?.preferredTags||[];
 function quality(item){return Number(Boolean(item.image))*2+Number(Boolean(item.description));}
 function tie(a,b){return quality(b)-quality(a)||Number(a.id)-Number(b.id);}
 export function isEligible(item,profile){return item.adult!==true&&!(profile?.excludedTags||[]).some(tag=>matchesTag(item,tag));}
-export function sortByTaste(items,profile){return items.filter(item=>isEligible(item,profile)).slice().sort((a,b)=>tasteMatch(b,profile).score-tasteMatch(a,profile).score||tie(a,b));}
+function tasteEvaluator(profile){
+  const terms=profile?.preferredTags||[],normalized=new Map(),rules=new Map(),itemTags=new Map(),matches=new Map();
+  const normalize=value=>{if(!normalized.has(value))normalized.set(value,norm(value));return normalized.get(value);};
+  const rule=term=>{if(!rules.has(term))rules.set(term,[term,...(aliases[term]||[])].map(normalize));return rules.get(term);};
+  const tagsFor=item=>{if(!itemTags.has(item))itemTags.set(item,new Set((item.tags||[]).map(normalize)));return itemTags.get(item);};
+  const has=(item,term)=>rule(term).some(tag=>tagsFor(item).has(tag));
+  const match=item=>{if(!matches.has(item)){const matched=terms.filter(term=>has(item,term));matches.set(item,{score:terms.length?matched.length/terms.length:0,matched,total:terms.length});}return matches.get(item);};
+  return {match,eligible:item=>item.adult!==true&&!(profile?.excludedTags||[]).some(term=>has(item,term)),hasAny:(item,keywords)=>keywords.some(term=>has(item,term)),preferredTag:tag=>terms.some(term=>rule(term).includes(normalize(tag)))};
+}
+function tasteOrder(items,evaluator){return items.filter(item=>evaluator.eligible(item)).map(item=>({item,score:evaluator.match(item).score})).sort((left,right)=>right.score-left.score||tie(left.item,right.item)).map(row=>row.item);}
+export function sortByTaste(items,profile){return tasteOrder(items,tasteEvaluator(profile));}
 function similarity(a,b){const ga=a.tagGroups||{genre:[a.genre].filter(Boolean),setting:a.tags||[],relationship:[]};const gb=b.tagGroups||{genre:[b.genre].filter(Boolean),setting:b.tags||[],relationship:[]};let score=0;for(const [group,weight]of [['genre',.5],['setting',.3],['relationship',.2]]){const left=new Set(ga[group]||[]),right=new Set(gb[group]||[]),union=new Set([...left,...right]);const common=[...left].filter(tag=>right.has(tag)).length;if(union.size)score+=weight*common/union.size;}return score;}
-export function similarPicks(seed,items,profile,limit=6){return items.filter(item=>item.id!==seed.id&&isEligible(item,profile)).map(item=>({item,similarity:similarity(seed,item)})).filter(row=>row.similarity>0).sort((a,b)=>(b.similarity*.8+tasteMatch(b.item,profile).score*.2)-(a.similarity*.8+tasteMatch(a.item,profile).score*.2)||tie(a.item,b.item)).slice(0,limit).map(row=>row.item);}
+export function similarPicks(seed,items,profile,limit=6){const evaluator=tasteEvaluator(profile);return items.filter(item=>item.id!==seed.id&&evaluator.eligible(item)).map(item=>({item,similarity:similarity(seed,item)})).filter(row=>row.similarity>0).map(row=>({...row,score:row.similarity*.8+evaluator.match(row.item).score*.2})).sort((left,right)=>right.score-left.score||tie(left.item,right.item)).slice(0,limit).map(row=>row.item);}
 export function discoveryPicks(items,profile,limit=6){
-  const eligible=sortByTaste(items,profile);
+  const evaluator=tasteEvaluator(profile),eligible=tasteOrder(items,evaluator);
   const familiarCount=Math.min(24,Math.max(1,Math.floor(eligible.length/3)));
   const familiar=eligible.slice(0,familiarCount), familiarIds=new Set(familiar.map(item=>item.id));
   const primaryType=familiar.reduce((map,item)=>map.set(item.type,(map.get(item.type)||0)+1),new Map());
   const dominant=[...primaryType].sort((a,b)=>b[1]-a[1])[0]?.[0];
-  const candidates=eligible.filter(item=>!familiarIds.has(item.id)).map(item=>{const match=tasteMatch(item,profile);const novelGenre=!(item.tagGroups?.genre||[item.genre]).some(tag=>(profile?.preferredTags||[]).some(term=>[term,...(aliases[term]||[])].map(norm).includes(norm(tag))));const novelType=item.type!==dominant;return{item,match,novelGenre,novelType,score:match.score*.65+(novelGenre?.2:0)+(novelType?.15:0)};}).filter(row=>row.match.score>0&&(row.match.matched.length<row.match.total||(row.match.total===1&&(row.novelGenre||row.novelType))));
+  const candidates=eligible.filter(item=>!familiarIds.has(item.id)).map(item=>{const match=evaluator.match(item);const novelGenre=!(item.tagGroups?.genre||[item.genre]).some(tag=>evaluator.preferredTag(tag));const novelType=item.type!==dominant;return{item,match,novelGenre,novelType,score:match.score*.65+(novelGenre?.2:0)+(novelType?.15:0)};}).filter(row=>row.match.score>0&&(row.match.matched.length<row.match.total||(row.match.total===1&&(row.novelGenre||row.novelType))));
   candidates.sort((a,b)=>b.score-a.score||tie(a.item,b.item));
   const chosen=[],typeCounts=new Map(),genreCounts=new Map();
   const pickDiverse=(strict)=>{for(const row of candidates){if(chosen.length>=limit)break;if(chosen.some(item=>item.id===row.item.id))continue;if(strict&&((typeCounts.get(row.item.type)||0)>=2||(genreCounts.get(row.item.genre)||0)>=2))continue;chosen.push(row.item);typeCounts.set(row.item.type,(typeCounts.get(row.item.type)||0)+1);genreCounts.set(row.item.genre,(genreCounts.get(row.item.genre)||0)+1);}};
   pickDiverse(true);pickDiverse(false);return chosen;
 }
 export function discoveryReason(item,profile){const match=tasteMatch(item,profile);const unfamiliar=(item.tagGroups?.genre||[item.genre]).find(tag=>!(profile.preferredTags||[]).some(term=>[term,...(aliases[term]||[])].map(norm).includes(norm(tag))));return `${match.matched.slice(0,2).join('·')||'관심 키워드'} → ${unfamiliar||item.type}`;}
-export function immersivePicks(items,profile,limit=6){return sortByTaste(items.filter(item=>['액션','무협','생존','스릴러','미스터리','복수극'].some(tag=>matchesTag(item,tag))),profile).slice(0,limit);}
+export function immersivePicks(items,profile,limit=6){const evaluator=tasteEvaluator(profile),keywords=['액션','무협','생존','스릴러','미스터리','복수극'];return tasteOrder(items.filter(item=>evaluator.hasAny(item,keywords)),evaluator).slice(0,limit);}
 export function themePicks(items,profile,id){return sortByTaste(items.filter(item=>matchesTheme(item,themeById(id))),profile);}
 const screenTypes=new Set(['영화','드라마','OTT','애니메이션']);
 const textTypes=new Set(['웹툰','웹소설']);

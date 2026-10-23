@@ -2,7 +2,8 @@ import {PROFILE_KEY,loadProfile,saveProfile,activateSampleProfile,tasteMatch,sor
 import {chooseVisitTheme} from './context.js';
 import {initAuth} from './auth.js';
 import {matchesSelectedTags,facetCounts} from './facets.js';
-import {loadLiveCatalog,catalogCountLabel,safePublicURL,safeImageURL} from './catalog-client.js';
+import {loadFastCatalog,normalizeCatalogItem,catalogCountLabel,safePublicURL,safeImageURL} from './catalog-client.js';
+import './performance.js';
 const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
 const E=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeURL=safePublicURL;
@@ -12,7 +13,7 @@ const BOOKMARK_KEY='chalpick-main-bookmarks-v1',TYPES=['웹툰','웹소설','드
 const GROUPS=[{id:'genre',label:'장르'},{id:'setting',label:'소재·배경'},{id:'relationship',label:'인물·관계'}],actorRoles=new Set(['LEAD_ACTOR','SUPPORT_ACTOR']);
 const icon='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 4h12v17l-6-4-6 4Z"/></svg>';
 let items=[],byId=new Map(),taxonomy={groups:[]},popular={lists:[]},results=[],visibleCount=12,heroPage=0,heroItems=[],renderedHeroPageSize=heroPageSize(),profile=loadProfile(getStorage()),saved=new Set(),toastTimer,previousFocus,popularTab='',visitContext=null,weatherContext=null,contextPromise=null;
-let catalogMeta=null,catalogLoading=false;
+let catalogMeta=null,catalogLoading=false,coverImages=[];
 const dialogStack=[];
 try{const v=JSON.parse(localStorage.getItem(BOOKMARK_KEY)||'[]');if(Array.isArray(v))saved=new Set(v.filter(Number.isInteger));}catch{}
 const state={types:[],platforms:[],tags:{genre:[],setting:[],relationship:[]},query:'',sort:'taste',tab:'genre',expanded:false,theme:'',mode:'all',person:''};
@@ -21,9 +22,19 @@ function uniqueIPs(list){const seen=new Set();return list.filter(item=>{const ke
 function notify(message){clearTimeout(toastTimer);$('#toast').textContent=message;$('#toast').classList.add('visible');toastTimer=setTimeout(()=>$('#toast').classList.remove('visible'),2600);}
 function readLocation(){const p=new URLSearchParams(location.search);state.types=p.getAll('type').filter(t=>TYPES.includes(t)).slice(0,1);state.platforms=p.getAll('platform').filter(p=>!HIDDEN_PLATFORMS.has(p));for(const g of GROUPS)state.tags[g.id]=p.getAll(g.id);state.query=(p.get('q')||'').slice(0,200);state.sort=['taste','latest','title'].includes(p.get('sort'))?p.get('sort'):'taste';state.theme=themeById(p.get('theme'))?.id||'';state.mode=['discovery','immersive'].includes(p.get('mode'))?p.get('mode'):'all';state.person=(p.get('cast')||'').slice(0,80);}
 function syncLocation(workId=null,replace=false){const u=new URL(location.href);for(const k of ['type','genre','setting','relationship','platform','q','sort','theme','mode','cast','work'])u.searchParams.delete(k);for(const v of state.types)u.searchParams.append('type',v);for(const v of state.platforms)u.searchParams.append('platform',v);for(const g of GROUPS)for(const t of state.tags[g.id])u.searchParams.append(g.id,t);for(const[k,v]of [['q',state.query],['sort',state.sort==='taste'?'':state.sort],['theme',state.theme],['mode',state.mode==='all'?'':state.mode],['cast',state.person],['work',workId]])if(v)u.searchParams.set(k,v);if(u.href!==location.href)history[replace?'replaceState':'pushState']({},'',u);}
-function image(item,className='cover-image',eager=false){const src=safeImageURL(item.image);return src?`<img class="${className}" src="${E(src)}" alt="${E(item.title)} 표지" loading="${eager?'eager':'lazy'}" decoding="async" referrerpolicy="no-referrer">`:'';}
+function image(item,className='cover-image',eager=false){const src=safeImageURL(item.image);return src?`<img class="${className}" src="${E(src)}" alt="${E(item.title)} 표지" loading="${eager?'eager':'lazy'}" decoding="async" ${className==='hero-art'?'fetchpriority="high"':''} referrerpolicy="no-referrer">`:'';}
 function card(item,{badge='',tags=false,eager=false,discovery=false}={}){const m=tasteMatch(item,profile);return `<article class="work-card" data-card-id="${item.id}"><button class="cover-button" data-work="${item.id}" aria-label="${E(item.title)} 상세 보기"><span class="cover-fallback" aria-hidden="true"><span class="fallback-mark">✦</span>${E(item.title)}</span>${image(item,'cover-image',eager)}<span class="cover-badge ${badge?'editor':''}">${E(badge||item.type)}</span></button><button class="bookmark" data-save="${item.id}" aria-pressed="${saved.has(item.id)}" aria-label="${E(item.title)} ${saved.has(item.id)?'보관 취소':'보관하기'}">${icon}</button><button class="card-title" data-work="${item.id}" title="${E(item.title)}">${E(item.title)}</button><p class="card-meta">${E(item.type)} · ${E(item.creators.slice(0,2).join(' / ')||item.genre||'')}</p>${discovery?`<p class="discovery-reason">${E(discoveryReason(item,profile))}</p>`:tags?`<p class="card-tags">${item.tags.slice(0,2).map(t=>'#'+E(t)).join(' ')}</p>`:''}${m.matched.length?`<p class="taste-match" title="${E(m.matched.join(' · '))}">✦ 취향 키워드 ${m.matched.length}개 일치</p>`:''}</article>`;}
-function renderHero(){heroItems=uniqueIPs(sortByTaste(items.filter(i=>i.image),profile)).slice(0,6);renderedHeroPageSize=heroPageSize();const pages=Math.max(1,Math.ceil(heroItems.length/renderedHeroPageSize));heroPage%=pages;$('#hero-grid').innerHTML=heroItems.slice(heroPage*renderedHeroPageSize,(heroPage+1)*renderedHeroPageSize).map((item,i)=>{const m=tasteMatch(item,profile);return `<button class="hero-card ${['featured','rose','teal'][i]}" data-work="${item.id}" aria-label="${E(item.title)} 상세 보기"><span class="hero-text"><span class="hero-kicker">${E(m.matched.join(' · ')||item.genre)}</span><h2>${E(item.title.replace(/\(소설\)$/, ''))}</h2><span class="hero-subtitle">${E(i===0?(item.description||'').slice(0,72)+((item.description||'').length>72?'…':''):`${item.type} · ${item.genre}`)}</span><span class="hero-cta">작품 만나보기 <span class="arrow" aria-hidden="true">↗</span></span></span>${image(item,'hero-art',true)}</button>`;}).join('');$('#hero-page').innerHTML=`<b>${String(heroPage+1).padStart(2,'0')}</b> / ${String(pages).padStart(2,'0')}`;$('#profile-caption').textContent=`${profile.name} · 취향 추천`;$('.temporary-label').textContent=profile.temporary?'임시 취향':'내 취향';}
+function renderHero(){
+  heroItems=uniqueIPs(sortByTaste(items.filter(item=>item.image),profile)).slice(0,6);renderedHeroPageSize=heroPageSize();
+  const pages=Math.max(1,Math.ceil(heroItems.length/renderedHeroPageSize));heroPage%=pages;
+  const visible=heroItems.slice(heroPage*renderedHeroPageSize,(heroPage+1)*renderedHeroPageSize),existing=$$('#hero-grid .hero-card');
+  const textFor=(item,index)=>({kicker:tasteMatch(item,profile).matched.join(' · ')||item.genre,title:item.title.replace(/\(소설\)$/,''),subtitle:index===0?(item.description||'').slice(0,72)+((item.description||'').length>72?'…':''):`${item.type} · ${item.genre}`});
+  if(existing.length>=visible.length&&existing.slice(0,visible.length).every((element,index)=>Number(element.dataset.work)===visible[index].id&&$('.hero-art',element)?.getAttribute('src')===safeImageURL(visible[index].image))){
+    existing.slice(0,visible.length).forEach((element,index)=>{const text=textFor(visible[index],index);for(const [selector,value]of [['.hero-kicker',text.kicker],['h2',text.title],['.hero-subtitle',text.subtitle]]){const target=$(selector,element);if(target.textContent!==value)target.textContent=value;}});
+    existing.slice(visible.length).forEach(element=>element.remove());
+  }else $('#hero-grid').innerHTML=visible.map((item,index)=>{const text=textFor(item,index);return `<button class="hero-card ${['featured','rose','teal'][index]}" data-work="${item.id}" aria-label="${E(item.title)} 상세 보기"><span class="hero-text"><span class="hero-kicker">${E(text.kicker)}</span><h2>${E(text.title)}</h2><span class="hero-subtitle">${E(text.subtitle)}</span><span class="hero-cta">작품 만나보기 <span class="arrow" aria-hidden="true">↗</span></span></span>${image(item,'hero-art',true)}</button>`;}).join('');
+  $('#hero-page').innerHTML=`<b>${String(heroPage+1).padStart(2,'0')}</b> / ${String(pages).padStart(2,'0')}`;$('#profile-caption').textContent=`${profile.name} · 취향 추천`;$('.temporary-label').textContent=profile.temporary?'임시 취향':'내 취향';
+}
 function renderShelves(){$('#curated-grid').innerHTML=uniqueIPs(immersivePicks(items,profile,30)).slice(0,6).map(i=>card(i,{badge:'취향 PICK',tags:true,eager:true})).join('');$('#discovery-grid').innerHTML=uniqueIPs(discoveryPicks(items,profile,12)).slice(0,6).map(i=>card(i,{badge:'발견 PICK',discovery:true})).join('');}
 function baseCandidates(){return state.mode==='discovery'?discoveryPicks(items,profile,items.length):state.mode==='immersive'?immersivePicks(items,profile,items.length):items;}
 function matches(item){
@@ -68,7 +79,7 @@ function renderResults(candidates=baseCandidates()){
   $('#empty-state').hidden=!!results.length;$('#empty-state').innerHTML='<h3>아직 꼭 맞는 이야기를 찾지 못했어요</h3><p>키워드나 필터를 조금 넓혀보세요.</p><button class="primary-button" data-action="reset">필터 초기화</button>';
   $('#load-more').hidden=visibleCount>=results.length;$('#load-more').textContent=`작품 더 보기 · ${format(Math.max(0,results.length-visibleCount))}편 남음 ⌄`;updateSavedUI();
 }
-function renderBrowsing(scroll=false){const pool=baseCandidates();renderFilters(pool);renderResults(pool);if(scroll)$('#discover').scrollIntoView({behavior:'instant',block:'start'});}
+function renderBrowsing(scroll=false){if(!catalogMeta){setCatalogStatus('화면은 바로 볼 수 있어요. 전체 검색을 준비하고 있습니다.');return;}const pool=baseCandidates();renderFilters(pool);renderResults(pool);if(scroll)$('#discover').scrollIntoView({behavior:'instant',block:'start'});}
 function resetState(){Object.assign(state,{types:[],platforms:[],tags:{genre:[],setting:[],relationship:[]},query:'',sort:'taste',theme:'',mode:'all',person:'',expanded:false});visibleCount=12;}
 function changeFilter(key,value){const values=key==='type'?state.types:key==='platform'?state.platforms:state.tags[key];const index=values.indexOf(value);if(index<0)values.push(value);else values.splice(index,1);visibleCount=12;syncLocation();renderBrowsing();}
 function renderPopular(){
@@ -152,13 +163,29 @@ $$('dialog').forEach(d=>{d.addEventListener('click',e=>{if(e.target===d){const r
 window.addEventListener('popstate',()=>{if(!items.length)return;readLocation();visibleCount=12;renderBrowsing();const id=Number(new URLSearchParams(location.search).get('work'));if(id)openDetail(id,false);else closeAllDialogs();});
 window.addEventListener('storage',e=>{if(e.key===BOOKMARK_KEY){try{const value=JSON.parse(e.newValue||'[]');saved=new Set(Array.isArray(value)?value.filter(Number.isInteger):[]);updateSavedUI();if($('#library-dialog').open)renderLibrary();}catch{}}if(e.key===PROFILE_KEY){profile=loadProfile(getStorage());refreshRecommendations();}});
 window.addEventListener('resize',()=>{const size=heroPageSize();if(items.length&&size!==renderedHeroPageSize){heroPage=Math.floor(heroPage*renderedHeroPageSize/size);renderHero();}});
-async function loadCatalog(){if(catalogLoading)return;catalogLoading=true;catalogMeta=null;items=[];byId=new Map();results=[];visitContext=null;contextPromise=null;
-  $('#results-count').textContent='최신 DB에서 전체 작품을 확인하고 있어요';$('#empty-state').hidden=true;$('#load-more').hidden=true;$('.context-card').hidden=true;
-  for(const selector of ['#hero-grid','#curated-grid','#discovery-grid','#browse-grid','#facet-tabs','#facet-chips','#platform-chips','#popular-tabs','#side-picks','#popular-source'])$(selector).innerHTML='';
-try{
-  const fetchRankings=async()=>{try{const response=await fetch('/data/popular.json',{signal:AbortSignal.timeout(10000)});return response.ok?await response.json():{lists:[]};}catch{return {lists:[]};}};
-  const [data,rankings]=await Promise.all([loadLiveCatalog({onProgress:({loaded,total})=>{$('#results-count').textContent=`최신 DB 확인 중 · ${format(loaded)} / ${format(total)}편`;}}),fetchRankings()]);
-  items=data.items.map(item=>({...item,searchText:norm([item.title,...item.creators,...item.credits.map(credit=>credit.name),...item.tags,...item.contextTags.map(tag=>themeById(tag)?.label||tag),item.description].join(' '))}));byId=new Map(items.map(item=>[item.id,item]));taxonomy=data.taxonomy;popular=Array.isArray(rankings?.lists)?rankings:{lists:[]};catalogMeta=data.meta;
-  readLocation();renderHero();renderShelves();renderBrowsing();renderPopular();void prepareContext();updateSavedUI();const id=Number(new URLSearchParams(location.search).get('work'));if(id)openDetail(id,false);
-}catch(error){console.error('찰픽 최신 DB 작품 화면을 불러오지 못했습니다.',error);catalogMeta=null;items=[];byId=new Map();$('#hero-grid').innerHTML='';$('#results-count').textContent='최신 DB 연결을 확인하지 못했어요';$('#browse-grid').innerHTML='';$('#empty-state').hidden=false;$('#empty-state').innerHTML='<h3>최신 작품 목록을 불러오지 못했어요</h3><p>이전 자료로 대신 표시하지 않습니다.<br>잠시 후 다시 시도해주세요.</p><button class="primary-button" data-action="retry">다시 불러오기</button>';}finally{catalogLoading=false;}}
+function setCatalogStatus(message,error=false){const status=$('#catalog-status');if(!status)return;status.hidden=!message;status.classList.toggle('is-error',error);status.textContent=message;if(error){const button=document.createElement('button');button.dataset.action='retry';button.textContent='다시 불러오기';status.append(' ',button);}}
+function searchableItem(item){const cover=coverImages.find(entry=>entry.id===item.id&&entry.source===item.image);return {...item,...(cover&&safeImageURL(cover.url)?{image:cover.url}:{}),searchText:norm([item.title,...item.creators,...item.credits.map(credit=>credit.name),...item.tags,...item.contextTags.map(tag=>themeById(tag)?.label||tag),item.description].join(' '))};}
+function readBootstrap(){try{const value=JSON.parse($('#catalog-bootstrap')?.textContent||'null');if(value?.schemaVersion!==1||value.source!=='supabase'||!Array.isArray(value.items)||!Array.isArray(value.popular?.lists))return null;return value;}catch{return null;}}
+async function loadCatalog(){
+  if(catalogLoading)return;
+  catalogLoading=true;document.documentElement.dataset.catalogState='loading';
+  const bootstrap=readBootstrap();
+  if(!catalogMeta&&bootstrap){coverImages=Array.isArray(bootstrap.coverImages)?bootstrap.coverImages:[];items=bootstrap.items.map(normalizeCatalogItem).filter(item=>item.adult!==true).map(searchableItem);byId=new Map(items.map(item=>[item.id,item]));popular=bootstrap.popular;readLocation();updateSavedUI();}
+  setCatalogStatus('추천은 바로 확인하세요. 전체 검색을 준비하고 있어요.');
+  if(!bootstrap&&!catalogMeta){$('#results-count').textContent='작품 검색 자료를 불러오고 있어요';$('#empty-state').hidden=true;}
+  const rankingsReady=bootstrap?Promise.resolve(bootstrap.popular):(async()=>{try{const response=await fetch('/data/popular.json',{signal:AbortSignal.timeout(5000)});return response.ok?await response.json():{lists:[]};}catch{return {lists:[]};}})();
+  try{
+    const data=await loadFastCatalog({release:bootstrap?.release});
+    items=data.items.map(searchableItem);byId=new Map(items.map(item=>[item.id,item]));taxonomy=data.taxonomy;catalogMeta=data.meta;
+    readLocation();renderHero();renderShelves();renderBrowsing();renderPopular();updateSavedUI();
+    visitContext=chooseVisitTheme({items,storage:getStorage()});renderContext();void prepareContext();
+    setCatalogStatus('');document.documentElement.dataset.catalogState='ready';document.documentElement.dataset.catalogReadyMs=String(Math.round(performance.now()));
+    const id=Number(new URLSearchParams(location.search).get('work'));if(id)openDetail(id,false);
+    void rankingsReady.then(rankings=>{if(Array.isArray(rankings?.lists)){popular=rankings;renderPopular();}});
+  }catch(error){
+    console.error('찰픽 전체 작품 검색 자료를 불러오지 못했습니다.',error);document.documentElement.dataset.catalogState='error';
+    setCatalogStatus('전체 검색을 연결하지 못했어요. 보이는 추천은 DB 반영일 기준입니다.',true);
+    if(!bootstrap&&!catalogMeta){$('#results-count').textContent='전체 작품 검색을 연결하지 못했어요';$('#empty-state').hidden=false;$('#empty-state').innerHTML='<h3>작품 검색 자료를 불러오지 못했어요</h3><p>네트워크 연결을 확인한 뒤 다시 시도해주세요.</p><button class="primary-button" data-action="retry">다시 불러오기</button>';}
+  }finally{catalogLoading=false;}
+}
 initAuth();loadCatalog();

@@ -7,10 +7,10 @@
   <meta name="description" content="웹툰부터 영화까지, 취향에 꼭 맞는 다음 이야기. 찰픽에서 작품을 발견하고 감상할 플랫폼을 한눈에 확인하세요.">
   <title>찰픽 — 취향에 꼭 맞는 다음 이야기</title>
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+  <!-- prerender:preload:start --><!-- prerender:preload:end -->
   <link rel="stylesheet" href="/styles.css">
   <link rel="stylesheet" href="/context.css">
+  <link rel="stylesheet" href="/fast.css">
   <script src="/app.js" type="module"></script>
 </head>
 <body>
@@ -28,16 +28,17 @@
     </div>
   </header>
   <main class="container">
+    <p class="catalog-status" id="catalog-status" role="status" aria-live="polite">전체 검색 준비 중</p>
     <section class="home-only hero-section" aria-labelledby="hero-title">
       <div class="section-heading hero-heading"><div><p class="eyebrow">YOUR NEXT STORY</p><h1 id="hero-title">오늘, 어떤 이야기에 빠져볼까요?</h1></div><button class="editorial-note" data-action="profile"><span class="mint-dot"></span><span id="profile-caption">액션파 독자를 위한 추천</span><span class="temporary-label">임시 취향</span></button></div>
-      <div class="hero-grid" id="hero-grid"><div class="hero-loading"></div><div class="hero-loading"></div><div class="hero-loading"></div></div>
+      <div class="hero-grid" id="hero-grid"><!-- prerender:hero:start --><!-- prerender:hero:end --></div>
       <div class="hero-bottom"><button class="basis-link" data-action="criteria" data-section="hero">내 취향과 맞닿은 이야기 · 선정 기준 ⓘ</button><div class="hero-controls"><button class="small-round" data-action="hero-prev" aria-label="이전 추천">←</button><span id="hero-page"><b>01</b> / 02</span><button class="small-round" data-action="hero-next" aria-label="다음 추천">→</button></div></div>
     </section>
     <section class="home-only curated-section" aria-labelledby="curated-title">
       <div class="section-heading"><div class="title-with-note"><h2 id="curated-title">한번 시작하면, 멈출 수 없는</h2><button class="basis-link" data-action="criteria" data-section="immersive">취향에 맞는 액션·무협·스릴러 ⓘ</button></div><button class="text-link" data-action="curated-more">더 둘러보기 <span aria-hidden="true">→</span></button></div>
-      <div class="poster-grid curated-grid" id="curated-grid"></div>
+      <div class="poster-grid curated-grid" id="curated-grid"><!-- prerender:curated:start --><!-- prerender:curated:end --></div>
     </section>
-    <aside class="advertisement ad-wide" aria-label="가로 광고 영역"><span class="ad-label">AD</span><img src="/assets/ad-wide.svg" alt="여기가 광고하는 자리입니다" width="1200" height="112"></aside>
+    <button type="button" class="advertisement ad-wide promo-banner" data-action="profile" aria-label="찰픽에서 내 취향 찾기"><img src="/assets/promo-wide.webp" alt="취향에 꼭 맞는 다음 이야기. 웹툰 · 웹소설 · 드라마 · 영화. 내 취향 찾기" width="1500" height="501" loading="lazy" decoding="async"></button>
     <div class="content-layout">
       <section id="discover" class="discover-section" aria-labelledby="discover-title">
         <div class="section-heading"><div><p class="eyebrow">FIND YOUR PICK</p><h2 id="discover-title">취향이 닿는 곳</h2></div><button class="reset-button" id="reset-filters" data-action="reset" hidden>필터 초기화 ↺</button></div>
@@ -51,32 +52,33 @@
         <div id="theme-banner" class="theme-banner" hidden></div>
         <div class="filter-panel facet-panel">
           <form id="catalog-search-form" class="catalog-search" role="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="7.1"/><path d="m16 16 4.7 4.7"/></svg><label class="sr-only" for="catalog-search">제목, 작가, 감독, 출연배우 통합 검색</label><input id="catalog-search" type="search" maxlength="200" placeholder="제목, 작가, 감독, 출연배우 — 한 곳에서 검색"><button type="submit" class="catalog-search-submit">검색</button></form>
-          <div class="facet-tabs" role="tablist" aria-label="태그 분류" id="facet-tabs"></div>
-          <div class="facet-tag-area" id="facet-tag-panel" role="tabpanel"><div class="facet-chips" id="facet-chips"></div><button class="facet-more" id="facet-more" data-action="facet-more" hidden>더 보기</button><p class="facet-count-note">선택한 태그를 모두 포함한 작품을 찾아요. 숫자는 현재 결과 중 해당 태그의 작품 수입니다.</p></div>
-          <div class="facet-dimensions"><div class="facet-row"><span class="facet-label">플랫폼</span><div class="facet-chips" id="platform-chips" aria-label="플랫폼 필터"></div></div></div>
+          <div class="facet-tabs" role="tablist" aria-label="태그 분류" id="facet-tabs"><!-- prerender:facet-tabs:start --><!-- prerender:facet-tabs:end --></div>
+          <div class="facet-tag-area" id="facet-tag-panel" role="tabpanel" aria-labelledby="facet-tab-genre"><div class="facet-chips" id="facet-chips"><!-- prerender:facets:start --><!-- prerender:facets:end --></div><!-- prerender:facet-more:start --><button class="facet-more" id="facet-more" data-action="facet-more" hidden>더 보기</button><!-- prerender:facet-more:end --><p class="facet-count-note">선택한 태그를 모두 포함한 작품을 찾아요. 숫자는 현재 결과 중 해당 태그의 작품 수입니다.</p></div>
+          <div class="facet-dimensions"><div class="facet-row"><span class="facet-label">플랫폼</span><div class="facet-chips" id="platform-chips" aria-label="플랫폼 필터"><!-- prerender:platforms:start --><!-- prerender:platforms:end --></div></div></div>
         </div>
-        <div class="results-bar"><p id="results-count" role="status" aria-live="polite">작품을 불러오고 있어요</p><label class="sort-label"><span class="sr-only">정렬 방식</span><select id="sort" aria-label="정렬 방식"><option value="taste">취향순</option><option value="latest">공개연도순</option><option value="title">가나다순</option></select></label></div>
+        <div class="results-bar"><p id="results-count" role="status" aria-live="polite"><!-- prerender:count:start -->작품을 불러오고 있어요<!-- prerender:count:end --></p><label class="sort-label"><span class="sr-only">정렬 방식</span><select id="sort" aria-label="정렬 방식"><option value="taste">취향순</option><option value="latest">공개연도순</option><option value="title">가나다순</option></select></label></div>
         <div class="taste-summary"><button data-action="profile" id="taste-summary">임시 취향 · 액션 · 무림 · 먼치킨 · 회귀</button><span>선택한 모든 태그와 일치</span></div>
         <div id="active-filters" class="active-filters"></div>
-        <div class="poster-grid browse-grid" id="browse-grid"></div>
+        <div class="poster-grid browse-grid" id="browse-grid"><!-- prerender:browse:start --><!-- prerender:browse:end --></div>
         <div class="empty-state" id="empty-state" hidden></div>
         <button class="load-more" id="load-more" data-action="load-more" hidden>작품 더 보기 <span aria-hidden="true">⌄</span></button>
       </section>
       <aside class="sidebar">
-        <section class="sidebar-picks" aria-labelledby="sidebar-title"><div class="section-heading"><h2 id="sidebar-title">매체별 인기 작품</h2><span class="small-pick-label">TOP</span></div><div class="popular-tabs" id="popular-tabs" aria-label="인기 작품 매체"></div><div id="side-picks"></div><div class="popular-source" id="popular-source"></div></section>
-        <div class="advertisement ad-square" aria-label="사이드 광고 영역"><span class="ad-label">AD</span><img src="/assets/ad-square.svg" alt="여기가 광고하는 자리입니다" width="600" height="500" loading="lazy"></div>
-        <section class="collection-card context-card" aria-labelledby="context-title"><p class="eyebrow">A STORY FOR THIS MOMENT</p><h2 id="context-title">지금 이 순간의 이야기</h2><div id="context-content" aria-live="polite"><p class="context-loading">지금에 어울리는 한 편을 고르고 있어요.</p></div></section>
+        <section class="sidebar-picks" aria-labelledby="sidebar-title"><div class="section-heading"><h2 id="sidebar-title">매체별 인기 작품</h2><span class="small-pick-label">TOP</span></div><div class="popular-tabs" id="popular-tabs" aria-label="인기 작품 매체"><!-- prerender:popular-tabs:start --><!-- prerender:popular-tabs:end --></div><div id="side-picks"><!-- prerender:popular:start --><!-- prerender:popular:end --></div><div class="popular-source" id="popular-source"><!-- prerender:popular-source:start --><!-- prerender:popular-source:end --></div></section>
+        <button type="button" class="advertisement ad-square promo-banner" data-action="profile" aria-label="찰픽에서 내 취향 찾기"><img src="/assets/promo-sidebar.webp" alt="오늘의 한 편, 찰픽에서 발견하세요. 고르는 시간은 짧게, 몰입은 깊게." width="720" height="600" loading="lazy" decoding="async"></button>
+        <!-- prerender:context:start --><section class="collection-card context-card" aria-labelledby="context-title"><p class="eyebrow">A STORY FOR THIS MOMENT</p><h2 id="context-title">지금 이 순간의 이야기</h2><div id="context-content" aria-live="polite"></div></section><!-- prerender:context:end -->
       </aside>
     </div>
-    <section class="home-only bottom-shelf" aria-labelledby="shelf-title"><div class="section-heading"><div class="title-with-note"><h2 id="shelf-title">발견픽 · 취향의 다음 장</h2><button class="basis-link" data-action="criteria" data-section="discovery">익숙한 재미에서 새로운 매체로 ⓘ</button></div><button class="text-link" data-action="discovery-more">발견픽 더 보기 →</button></div><div class="poster-grid curated-grid" id="discovery-grid"></div></section>
+    <section class="home-only bottom-shelf" aria-labelledby="shelf-title"><div class="section-heading"><div class="title-with-note"><h2 id="shelf-title">발견픽 · 취향의 다음 장</h2><button class="basis-link" data-action="criteria" data-section="discovery">익숙한 재미에서 새로운 매체로 ⓘ</button></div><button class="text-link" data-action="discovery-more">발견픽 더 보기 →</button></div><div class="poster-grid curated-grid" id="discovery-grid"><!-- prerender:discovery:start --><!-- prerender:discovery:end --></div></section>
   </main>
   <footer class="site-footer"><div class="container"><div class="footer-top"><a class="brand" href="/" aria-label="찰픽 홈"><img src="/assets/logo.png" alt="찰픽" width="112" height="47" loading="lazy"></a><p>이야기를 고르는 새로운 방법.</p><button class="text-link" data-action="about">찰픽 소개</button></div><div class="footer-bottom"><p>찰픽은 작품을 발견하고 공식 감상 플랫폼으로 연결하는 서비스입니다.<br>작품 이미지와 콘텐츠의 권리는 각 권리자에게 있습니다.</p><span>© 2026 CHALPICK</span></div></div></footer>
   <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title"><button class="dialog-close icon-button" data-action="close-dialog" aria-label="닫기">×</button><div id="detail-content"></div></dialog>
   <dialog id="library-dialog" class="library-dialog" aria-labelledby="library-title"><button class="dialog-close icon-button" data-action="close-dialog" aria-label="닫기">×</button><p class="eyebrow">MY COLLECTION</p><h2 id="library-title">내 보관함</h2><p class="dialog-subtitle">좋아하는 이야기를, 오래 곁에.</p><p class="storage-note">이 브라우저에 저장됩니다.</p><div class="poster-grid" id="library-grid"></div></dialog>
-  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="dialog-close icon-button" data-action="close-dialog" aria-label="닫기">×</button><p class="eyebrow">ABOUT CHALPICK</p><h2 id="about-title">취향에 꼭 맞는 다음 이야기</h2><p>웹툰, 웹소설, 영화, 드라마, 애니메이션.<br>여러 플랫폼의 이야기를 한곳에서 발견하세요.</p><p>좋아하는 키워드를 바탕으로 작품을 정렬합니다. 유사픽은 작품 간 공통점을, 발견픽은 익숙한 재미와 새로운 장르·매체를 함께 고려합니다.</p><p class="storage-note">카탈로그 기준: 2026.10.22 · 이용 정보는 각 플랫폼에서 확인해주세요.<br>취향과 보관함은 현재 브라우저에 저장됩니다. 소셜 로그인 상태와 임시 취향은 별개입니다.</p></dialog>
+  <dialog id="about-dialog" class="about-dialog" aria-labelledby="about-title"><button class="dialog-close icon-button" data-action="close-dialog" aria-label="닫기">×</button><p class="eyebrow">ABOUT CHALPICK</p><h2 id="about-title">취향에 꼭 맞는 다음 이야기</h2><p>웹툰, 웹소설, 영화, 드라마·OTT.<br>여러 플랫폼의 이야기를 한곳에서 발견하세요.</p><p>좋아하는 키워드를 바탕으로 작품을 정렬합니다. 유사픽은 작품 간 공통점을, 발견픽은 익숙한 재미와 새로운 장르·매체를 함께 고려합니다.</p><p class="storage-note"><!-- prerender:date:start -->배포 시 확인한 DB 자료를 표시합니다.<!-- prerender:date:end --> · 이용 정보는 각 플랫폼에서 확인해주세요.<br>취향과 보관함은 현재 브라우저에 저장됩니다. 소셜 로그인 상태와 임시 취향은 별개입니다.</p></dialog>
   <dialog id="profile-dialog" class="about-dialog profile-dialog" aria-labelledby="profile-title"><button class="dialog-close icon-button" data-action="close-dialog" aria-label="닫기">×</button><p class="eyebrow">MY TASTE</p><h2 id="profile-title">액션파 독자의 취향</h2><p>요청하신 임시 사용자입니다. 로그인 계정을 생성하지 않고 추천 취향만 적용합니다.</p><form id="profile-form"><label for="preferred-tags">좋아하는 키워드</label><input id="preferred-tags" type="text" value="액션, 무림, 먼치킨, 회귀" maxlength="160"><p class="storage-note">쉼표로 구분해 입력하세요. 변경하면 취향순·유사픽·발견픽에 바로 반영됩니다.</p><div class="profile-actions"><button type="submit" class="primary-button">이 취향 적용하기</button><button type="button" class="outline-button" data-action="sample-profile">임시 취향으로 되돌리기</button></div></form></dialog>
   <dialog id="criteria-dialog" class="about-dialog" aria-labelledby="criteria-title"><button class="dialog-close icon-button" data-action="close-dialog" aria-label="닫기">×</button><p class="eyebrow">WHY THIS PICK</p><h2 id="criteria-title">추천 기준</h2><div id="criteria-content"></div></dialog>
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <!-- prerender:bootstrap:start --><!-- prerender:bootstrap:end -->
   <noscript><p class="noscript">작품 검색과 보관함을 사용하려면 브라우저에서 JavaScript를 켜주세요.</p></noscript>
 </body>
 </html>

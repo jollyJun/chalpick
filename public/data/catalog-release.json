@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "source": "supabase",
+  "generatedAt": "2026-10-23T05:38:34.780Z",
+  "catalogUrl": "/data/live-catalog.9bff1f6a040c4ee6.json",
+  "hash": "9bff1f6a040c4ee6275247785f9532ccfe8aca0ecc0b1118c8c704f4c50cd3e4",
+  "total": 10170,
+  "loaded": 10170,
+  "excluded": 0,
+  "available": 9962,
+  "adultExcluded": 208,
+  "bytes": 14864863,
+  "gzipBytes": 2934544,
+  "brotliBytes": 2216598,
+  "compressionEstimate": "gzip level 6; Brotli quality 6; actual CDN transfer varies"
+}

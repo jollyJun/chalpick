@@ -10,7 +10,7 @@ export function safePublicURL(value){
 }
 
 export function safeImageURL(value){
-  return value==='/assets/adult-placeholder.svg'?value:safePublicURL(value);
+  return value==='/assets/adult-placeholder.svg'||/^\/assets\/covers\/[a-f0-9]{16,64}\.webp$/.test(value||'')?value:safePublicURL(value);
 }
 
 export function normalizeCatalogItem(item){
@@ -21,6 +21,44 @@ export function normalizeCatalogItem(item){
 function normalizeTaxonomy(taxonomy){
   if(!taxonomy||!Array.isArray(taxonomy.groups)||GROUP_IDS.some(group=>!taxonomy.groups.some(entry=>entry.id===group&&Array.isArray(entry.tags))))throw invalid();
   return {...taxonomy,groups:taxonomy.groups.filter(group=>GROUP_IDS.includes(group.id)).map(group=>({...group,tags:group.tags.filter(tag=>tag&&typeof tag.label==='string')}))};
+}
+
+export function validateCatalogRelease(release){
+  if(release?.schemaVersion!==1||release.source!=='supabase'||!/^[a-f0-9]{64}$/.test(release.hash||'')||release.catalogUrl!==`/data/live-catalog.${release.hash.slice(0,16)}.json`)throw invalid();
+  if(!['total','loaded','excluded','available','adultExcluded'].every(key=>integer(release[key]))||release.loaded+release.excluded!==release.total||release.available+release.adultExcluded!==release.loaded||!Number.isFinite(Date.parse(release.generatedAt)))throw invalid();
+  return release;
+}
+
+export async function loadFastCatalog({release,fetchImpl=globalThis.fetch,signal,onProgress=()=>{}}={}){
+  const options={headers:{Accept:'application/json'},signal:signal||AbortSignal.timeout(30000)};
+  if(!release){
+    const response=await fetchImpl('/data/catalog-release.json',{...options,cache:'no-cache'});
+    if(!response.ok)throw new Error('작품 목록의 배포 정보를 불러오지 못했습니다.');
+    release=await response.json();
+  }
+  validateCatalogRelease(release);
+  onProgress({loaded:0,total:release.total});
+  const response=await fetchImpl(release.catalogUrl,{...options,cache:'default'});
+  if(!response.ok)throw new Error('전체 작품 검색 자료를 불러오지 못했습니다.');
+  const payload=await response.json(),meta=payload?.meta;
+  if(!Array.isArray(payload?.items)||meta?.source!=='supabase'||meta.generatedAt!==release.generatedAt||payload.items.length!==release.loaded||['total','loaded','excluded','available','adultExcluded'].some(key=>meta[key]!==release[key]))throw invalid();
+  const items=payload.items.map(normalizeCatalogItem),identifiers=new Set();
+  for(const item of items){
+    if(identifiers.has(item.id)||item.type==='애니메이션'||(item.adult===true&&item.image!=='/assets/adult-placeholder.svg'))throw invalid();
+    identifiers.add(item.id);
+  }
+  if(items.filter(item=>item.adult===true).length!==release.adultExcluded)throw invalid();
+  const taxonomy=normalizeTaxonomy(payload.taxonomy);
+  for(const group of taxonomy.groups){
+    const counts=new Map(),countsAll=new Map();
+    for(const item of items)for(const label of new Set(item.tagGroups[group.id])){
+      countsAll.set(label,(countsAll.get(label)||0)+1);
+      if(item.adult!==true)counts.set(label,(counts.get(label)||0)+1);
+    }
+    if(group.tags.some(tag=>tag.count!==(counts.get(tag.label)||0)||tag.countAll!==(countsAll.get(tag.label)||0)))throw invalid();
+  }
+  onProgress({loaded:release.total,total:release.total});
+  return {items,taxonomy,meta:{...meta,delivery:'cdn-snapshot'}};
 }
 
 export async function loadLiveCatalog({fetchImpl=globalThis.fetch,onProgress=()=>{},signal}={}){
@@ -62,5 +100,6 @@ export async function loadLiveCatalog({fetchImpl=globalThis.fetch,onProgress=()=
 
 export function catalogCountLabel(meta){
   const format=value=>value.toLocaleString('ko-KR');
-  return `DB 공개 대상 ${format(meta.total)}편 · 탐색 ${format(meta.available)}편 · 성인 제외 ${format(meta.adultExcluded)}편${meta.excluded?` · 기타 공개 제외 ${format(meta.excluded)}편`:''}`;
+  const date=meta.generatedAt?new Date(meta.generatedAt).toLocaleDateString('ko-KR',{timeZone:'Asia/Seoul'}):'';
+  return `DB 공개 대상 ${format(meta.total)}편 · 탐색 ${format(meta.available)}편 · 성인 제외 ${format(meta.adultExcluded)}편${meta.excluded?` · 기타 공개 제외 ${format(meta.excluded)}편`:''}${date?` · DB 반영 ${date}`:''}`;
 }

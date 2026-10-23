@@ -33,14 +33,12 @@ for (const match of html.matchAll(/(?:src|href)="(\/[^"#?]*)"/g)) {
   if (!pathname || pathname.endsWith('/')) pathname += 'index.html';
   await access(new URL(pathname, root));
 }
-for (const file of ['assets/ad-wide.svg', 'assets/ad-square.svg']) {
-  const svg = await readFile(new URL(file, root), 'utf8');
-  assert.ok(svg.includes('여기가 광고하는 자리입니다'));
-  assert.ok(svg.includes('fill="#fff"'));
-}
+for (const file of ['assets/promo-wide.webp', 'assets/promo-sidebar.webp']) await access(new URL(file, root));
+assert.ok(!html.includes('여기가 광고하는 자리입니다'), '광고 자리 표시자를 찰픽 홍보 이미지로 교체');
 const app = await readFile(new URL('app.js', root), 'utf8');
 const client = await readFile(new URL('catalog-client.js', root), 'utf8');
-assert.ok(app.includes('loadLiveCatalog'), '화면은 실시간 카탈로그 클라이언트 사용');
+assert.ok(app.includes('loadFastCatalog'), '화면은 검증된 DB 배포본의 단일 CDN 요청 사용');
+assert.ok(!app.includes('loadLiveCatalog('), '방문자마다 전체 DB를 순차 조회하지 않음');
 assert.ok(client.includes('/api/catalog?offset='), '전체 DB 카탈로그 페이지 순회');
 assert.ok(!/\/data\/(?:catalog|catalog-manifest|taxonomy|context-tags)\.json/.test(app + client), '예전 정적 카탈로그 및 우회 복구 경로 없음');
 assert.ok(!/SUPABASE_|sb_(?:secret|publishable)_/.test(app + client), '브라우저 코드에 DB 연결 설정 없음');
@@ -70,4 +68,4 @@ for (const file of sourceFiles) {
   const source = await readFile(file, 'utf8');
   for (const match of source.matchAll(/\b(?:import|export)\s[^;]*?\bfrom\s*['"]([.][^'"]+)['"]/g)) await access(new URL(match[1], file));
 }
-console.log(`Passed: live catalog API wiring, ${popular.lists.length} sourced ranking lists, ${sourceFiles.length} JavaScript modules, public-file safety and local references. Database availability is verified separately; no legacy row-count assumption is used.`);
+console.log(`Passed: fast catalog wiring, ${popular.lists.length} sourced ranking lists, ${sourceFiles.length} JavaScript modules, public-file safety and local references.`);

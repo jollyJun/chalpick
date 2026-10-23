@@ -1,0 +1,10 @@
+#catalog-status{position:fixed;bottom:16px;left:50%;transform:translateX(-50%);z-index:20;max-width:calc(100% - 32px);width:max-content;margin:0;padding:8px 14px;font-size:11px;line-height:1.6;color:#63748b;border:1px solid #e3ecf7;border-radius:12px;background:#fff;box-shadow:0 2px 12px #182e5714;pointer-events:none}
+#catalog-status[hidden]{display:none}
+#catalog-status.is-error{color:#8a4b12;background:#fff7e9;border-radius:8px}
+#catalog-status button{color:#2256dc;text-decoration:underline;margin-left:8px;font:inherit;cursor:pointer;pointer-events:auto}
+.advertisement.promo-banner{display:block;width:100%;padding:0;cursor:pointer;text-align:left;border:1px solid #e3ecf7;background:#f4f9ff;line-height:0}
+.advertisement.promo-banner:focus-visible{outline:3px solid #3069f5;outline-offset:4px}
+.advertisement.ad-wide.promo-banner{aspect-ratio:1500/501;height:auto}
+.advertisement.ad-square.promo-banner{aspect-ratio:720/600;height:auto}
+.advertisement.promo-banner img{display:block;width:100%;height:100%;object-fit:contain}
+@media(max-width:600px){.advertisement.ad-wide.promo-banner{margin:22px 0 28px}.advertisement.ad-square.promo-banner{width:100%;margin:12px 0}}
