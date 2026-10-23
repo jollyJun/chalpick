@@ -1,0 +1,1729 @@
+{
+  "updatedAt": "2026-10-22",
+  "totalTags": 140,
+  "groups": [
+    {
+      "id": "genre",
+      "label": "장르",
+      "count": 35,
+      "tags": [
+        {
+          "slug": "romance",
+          "label": "로맨스",
+          "count": 389,
+          "countAll": 412,
+          "aliases": [
+            "멜로"
+          ],
+          "definition": "연애 감정의 형성과 선택이 감상의 중심. 로코·판타지 로맨스를 선택하면 상위 로맨스는 중복 부여하지 않는다."
+        },
+        {
+          "slug": "romcom",
+          "label": "로맨틱 코미디",
+          "count": 165,
+          "countAll": 168,
+          "aliases": [
+            "로코"
+          ],
+          "definition": "연애 진전과 코믹한 오해·상황이 함께 반복된다. 단순히 밝은 로맨스는 제외."
+        },
+        {
+          "slug": "romance-fantasy",
+          "label": "판타지 로맨스",
+          "count": 196,
+          "countAll": 201,
+          "aliases": [
+            "로판",
+            "로맨스 판타지"
+          ],
+          "definition": "초자연 규칙이나 가상 세계가 연애의 성립·장애를 결정한다. 배경의 국적·서구풍 여부로 제한하지 않는다."
+        },
+        {
+          "slug": "fantasy",
+          "label": "판타지",
+          "count": 442,
+          "countAll": 451,
+          "aliases": [
+            "환상"
+          ],
+          "definition": "현실에 없는 존재·능력·세계 규칙이 이야기의 주요 전제. 세부 판타지 장르와 자동 중복하지 않는다."
+        },
+        {
+          "slug": "urban-fantasy",
+          "label": "현대 판타지",
+          "count": 107,
+          "countAll": 112,
+          "aliases": [
+            "현판",
+            "현대판타지"
+          ],
+          "definition": "현대의 일상·사회 제도와 초자연 규칙이 지속적으로 결합한다. 단발 기적만 있는 작품은 제외."
+        },
+        {
+          "slug": "murim",
+          "label": "무협",
+          "count": 100,
+          "countAll": 102,
+          "aliases": [
+            "무협물"
+          ],
+          "definition": "무공과 협객·문파 질서를 주요 감상 문법으로 삼는다. 동양 배경만으로 부여하지 않는다."
+        },
+        {
+          "slug": "action",
+          "label": "액션",
+          "count": 402,
+          "countAll": 446,
+          "aliases": [
+            "액션물"
+          ],
+          "definition": "신체적 대결·추격·전투 장면이 주요 감상 비중을 차지한다."
+        },
+        {
+          "slug": "thriller",
+          "label": "스릴러",
+          "count": 197,
+          "countAll": 245,
+          "aliases": [
+            "서스펜스"
+          ],
+          "definition": "위협·추격·불확실성에서 오는 지속적 긴장이 중심이다. 범죄 소재만으로 자동 부여하지 않는다."
+        },
+        {
+          "slug": "mystery",
+          "label": "미스터리",
+          "count": 128,
+          "countAll": 150,
+          "aliases": [
+            "추리",
+            "미스터리물"
+          ],
+          "definition": "사건·정체·원인의 숨겨진 답을 추론하고 밝혀가는 재미가 중심이다."
+        },
+        {
+          "slug": "horror",
+          "label": "공포",
+          "count": 78,
+          "countAll": 87,
+          "aliases": [
+            "호러"
+          ],
+          "definition": "공포·불안·혐오를 일으키는 연출과 상황이 중심이다. 괴물이 등장한다는 이유만으로 부여하지 않는다."
+        },
+        {
+          "slug": "noir",
+          "label": "누아르",
+          "count": 20,
+          "countAll": 27,
+          "aliases": [
+            "느와르"
+          ],
+          "definition": "범죄 세계의 도덕적 모호함과 파멸적 선택을 중심 정조로 삼는다."
+        },
+        {
+          "slug": "crime",
+          "label": "범죄",
+          "count": 82,
+          "countAll": 114,
+          "aliases": [
+            "범죄물"
+          ],
+          "definition": "범죄의 실행·수사·후과가 중심 소재인 범죄극. 수사 엔진과 범죄자 엔진을 별도 판단한다."
+        },
+        {
+          "slug": "revenge",
+          "label": "복수극",
+          "count": 110,
+          "countAll": 119,
+          "aliases": [
+            "복수",
+            "복수물"
+          ],
+          "definition": "과거 피해에 대한 의도적 응징이 주요 목표다. 잠깐의 앙갚음은 제외."
+        },
+        {
+          "slug": "coming-of-age",
+          "label": "성장물",
+          "count": 100,
+          "countAll": 102,
+          "aliases": [
+            "성장",
+            "성장드라마"
+          ],
+          "definition": "인물의 가치관·자립·사회적 성숙이 핵심 변화다. 능력 수치 상승만 있는 작품에는 부여하지 않는다."
+        },
+        {
+          "slug": "youth",
+          "label": "청춘",
+          "count": 161,
+          "countAll": 166,
+          "aliases": [
+            "청춘물"
+          ],
+          "definition": "청소년·청년기의 진로·정체성·관계 경험을 주요 감상 대상으로 삼는다. 어린 주인공이라는 이유만으로 부여하지 않는다."
+        },
+        {
+          "slug": "sports",
+          "label": "스포츠",
+          "count": 63,
+          "countAll": 63,
+          "aliases": [
+            "스포츠물"
+          ],
+          "definition": "스포츠 훈련·경기·선수 또는 팀 활동이 핵심이다. 운동선수 출연만으로 부여하지 않는다."
+        },
+        {
+          "slug": "slice-of-life",
+          "label": "일상",
+          "count": 116,
+          "countAll": 117,
+          "aliases": [
+            "일상물"
+          ],
+          "definition": "비일상적 대사건보다 반복되는 생활 경험의 관찰이 중심이다."
+        },
+        {
+          "slug": "comedy",
+          "label": "코미디",
+          "count": 240,
+          "countAll": 255,
+          "aliases": [
+            "개그",
+            "코믹"
+          ],
+          "definition": "웃음을 주요 목적으로 하는 상황·대사·행동이 반복된다. 개그와 별도 중복 분류하지 않는다."
+        },
+        {
+          "slug": "human-drama",
+          "label": "휴먼 드라마",
+          "count": 290,
+          "countAll": 307,
+          "aliases": [
+            "휴먼",
+            "휴먼물"
+          ],
+          "definition": "인간의 존엄·삶의 상처·공감과 회복을 중심 감상으로 삼는다. 모든 극적 작품의 포괄값은 아니다."
+        },
+        {
+          "slug": "sf",
+          "label": "SF",
+          "count": 111,
+          "countAll": 124,
+          "aliases": [
+            "공상과학",
+            "사이언스 픽션"
+          ],
+          "definition": "과학기술·미래·비인간 지성의 가정이 사건의 인과를 만든다. 초능력만으로 부여하지 않는다."
+        },
+        {
+          "slug": "period",
+          "label": "시대극",
+          "count": 74,
+          "countAll": 91,
+          "aliases": [
+            "사극",
+            "역사극"
+          ],
+          "definition": "과거의 제도·생활·사건을 이해하는 것이 감상에 중요하다. 가상의 서양풍 왕국만으로 부여하지 않는다."
+        },
+        {
+          "slug": "war",
+          "label": "전쟁",
+          "count": 26,
+          "countAll": 31,
+          "aliases": [
+            "전쟁물"
+          ],
+          "definition": "조직된 무력 충돌·전장·전쟁의 피해가 중심이다. 전쟁이 과거 설정에만 있는 작품은 제외."
+        },
+        {
+          "slug": "medical",
+          "label": "의학",
+          "count": 31,
+          "countAll": 31,
+          "aliases": [
+            "메디컬",
+            "의학물"
+          ],
+          "definition": "진료·치료·의료 현장과 의료인의 판단이 반복되는 중심 소재다."
+        },
+        {
+          "slug": "legal",
+          "label": "법정",
+          "count": 23,
+          "countAll": 26,
+          "aliases": [
+            "법정물",
+            "법률극"
+          ],
+          "definition": "법적 분쟁·재판·법률가의 대응이 중심이다. 법률가 주인공만으로 부여하지 않는다."
+        },
+        {
+          "slug": "political-drama",
+          "label": "정치극",
+          "count": 42,
+          "countAll": 47,
+          "aliases": [
+            "정치",
+            "정치물"
+          ],
+          "definition": "공적 권력의 획득·유지·정책·정당성이 중심 갈등이다. 궁중 배경만으로 부여하지 않는다."
+        },
+        {
+          "slug": "survival",
+          "label": "생존",
+          "count": 99,
+          "countAll": 107,
+          "aliases": [
+            "생존물"
+          ],
+          "definition": "실제 생명 위협 아래에서 살아남는 과정이 중심이다. 탈락만 있는 예능 경연은 제외."
+        },
+        {
+          "slug": "bl",
+          "label": "BL",
+          "count": 22,
+          "countAll": 23,
+          "aliases": [
+            "비엘",
+            "남성 간 로맨스"
+          ],
+          "definition": "남성 간 연애가 중심인 작품. 남성 간 우정이나 조연의 성적 지향만으로 부여하지 않는다."
+        },
+        {
+          "slug": "gl",
+          "label": "GL",
+          "count": 3,
+          "countAll": 3,
+          "aliases": [
+            "지엘",
+            "여성 간 로맨스"
+          ],
+          "definition": "여성 간 연애가 중심인 작품. 여성 우정만으로 부여하지 않는다."
+        },
+        {
+          "slug": "spy",
+          "label": "첩보",
+          "count": 27,
+          "countAll": 29,
+          "aliases": [
+            "스파이",
+            "첩보물"
+          ],
+          "definition": "비밀 정보·위장 신분·잠입·첩보 임무가 중심이다. 일반 형사 수사는 제외."
+        },
+        {
+          "slug": "heist",
+          "label": "하이스트",
+          "count": 7,
+          "countAll": 11,
+          "aliases": [
+            "케이퍼",
+            "범죄 작전"
+          ],
+          "definition": "절도·사기 등 정교한 범행 계획과 실행의 재미가 중심이다. 일반 범죄극 전체는 제외."
+        },
+        {
+          "slug": "disaster",
+          "label": "재난",
+          "count": 20,
+          "countAll": 21,
+          "aliases": [
+            "재난물"
+          ],
+          "definition": "대규모 사고·자연재해·괴수 등 집단적 위기에 대한 대응이 중심이다."
+        },
+        {
+          "slug": "black-comedy",
+          "label": "블랙 코미디",
+          "count": 25,
+          "countAll": 30,
+          "aliases": [
+            "블랙코미디",
+            "풍자 코미디"
+          ],
+          "definition": "죽음·범죄·권력 등 불편한 현실을 풍자와 부조리한 웃음으로 다룬다. 밝은 상황극은 제외."
+        },
+        {
+          "slug": "occult",
+          "label": "오컬트",
+          "count": 34,
+          "countAll": 36,
+          "aliases": [
+            "퇴마물",
+            "주술 공포"
+          ],
+          "definition": "주술·의례·종교적 초자연 현상이 사건 해결과 공포의 핵심이다. 일반 마법 판타지는 제외."
+        },
+        {
+          "slug": "adventure",
+          "label": "모험",
+          "count": 79,
+          "countAll": 81,
+          "aliases": [
+            "어드벤처",
+            "모험물"
+          ],
+          "definition": "미지의 장소를 이동하며 목표·보물·해답을 찾아 장애를 넘는 경험이 중심이다."
+        },
+        {
+          "slug": "reality",
+          "label": "리얼리티 예능",
+          "count": 52,
+          "countAll": 55,
+          "aliases": [
+            "리얼리티",
+            "관찰 예능"
+          ],
+          "definition": "실제 참가자의 선택·관계·경연을 관찰하는 비극화 프로그램. 허구의 데스게임과 구분한다."
+        }
+      ]
+    },
+    {
+      "id": "setting",
+      "label": "소재·배경",
+      "count": 63,
+      "tags": [
+        {
+          "slug": "modern",
+          "label": "현대",
+          "count": 996,
+          "countAll": 1095,
+          "aliases": [
+            "현대 배경"
+          ],
+          "definition": "현대의 생활·제도·기술이 배경이다. 검색용 넓은 배경값이며 단독으로 강한 추천 유사성을 만들지 않는다."
+        },
+        {
+          "slug": "joseon",
+          "label": "조선",
+          "count": 46,
+          "countAll": 48,
+          "aliases": [
+            "조선시대"
+          ],
+          "definition": "조선시대의 제도·생활이 주요 배경. 고려·고구려·중국 왕조는 제외."
+        },
+        {
+          "slug": "medieval-west",
+          "label": "서양풍 왕국",
+          "count": 101,
+          "countAll": 108,
+          "aliases": [
+            "서양중세",
+            "서양풍 귀족사회"
+          ],
+          "definition": "유럽 중세를 연상시키는 기사·귀족·왕국 사회. 실제 중세 연대의 사실 판정값은 아니다."
+        },
+        {
+          "slug": "modern-history",
+          "label": "근현대사",
+          "count": 72,
+          "countAll": 86,
+          "aliases": [
+            "근대",
+            "역사적 현대"
+          ],
+          "definition": "근대화·식민지기·20세기 역사와 당시 사회가 주요 배경. 고대 왕조는 제외."
+        },
+        {
+          "slug": "secondary-world",
+          "label": "가상 세계",
+          "count": 176,
+          "countAll": 178,
+          "aliases": [
+            "이세계 배경",
+            "가공 세계"
+          ],
+          "definition": "현실과 구별되는 독자적 지리·사회·역사를 가진 세계. 주인공의 이동 여부와 무관하다."
+        },
+        {
+          "slug": "world-transfer",
+          "label": "이세계 이동",
+          "count": 0,
+          "countAll": 0,
+          "aliases": [
+            "차원이동",
+            "이세계 전이"
+          ],
+          "definition": "자신으로서 다른 세계로 소환·이동하고 낯선 세계에 적응하는 경험. 독자 세계의 배경 자체, 다른 사람 역할로 빙의, 같은 세계의 시간 이동과 구분하는 보류 개념."
+        },
+        {
+          "slug": "space",
+          "label": "우주",
+          "count": 29,
+          "countAll": 30,
+          "aliases": [
+            "우주 배경"
+          ],
+          "definition": "우주 공간·행성 간 활동이 사건의 주요 무대다."
+        },
+        {
+          "slug": "school",
+          "label": "학교",
+          "count": 282,
+          "countAll": 295,
+          "aliases": [
+            "학교물"
+          ],
+          "definition": "초중고 등 일반 학교 공동체가 핵심 무대다. 대학·대학원은 university, 마법·무공·헌터 등 특수능력 교육기관은 academy. 학원이라는 옛 표시명은 작품 전제를 보고 조건부 해석한다."
+        },
+        {
+          "slug": "university",
+          "label": "대학",
+          "count": 81,
+          "countAll": 81,
+          "aliases": [
+            "캠퍼스",
+            "대학생",
+            "대학원"
+          ],
+          "definition": "대학·대학원 생활과 성인 학생 관계가 중심 무대다."
+        },
+        {
+          "slug": "academy",
+          "label": "아카데미",
+          "count": 31,
+          "countAll": 31,
+          "aliases": [
+            "판타지 아카데미"
+          ],
+          "definition": "마법·무공·헌터·초능력 등 특별한 규칙과 능력을 교육하는 기관이 핵심 무대다. 단순 영어 명칭 Academy나 초능력 학생이 있다는 이유만으로 부여하지 않는다."
+        },
+        {
+          "slug": "office",
+          "label": "직장",
+          "count": 164,
+          "countAll": 175,
+          "aliases": [
+            "오피스",
+            "회사"
+          ],
+          "definition": "회사·조직의 업무와 직장 생활이 주요 무대다."
+        },
+        {
+          "slug": "chaebol",
+          "label": "재벌·대기업",
+          "count": 75,
+          "countAll": 80,
+          "aliases": [
+            "재벌",
+            "대기업",
+            "재벌남"
+          ],
+          "definition": "대기업의 자본·가문·상속·지배 구조가 사건에 중요하다. 부유한 인물만으로 부여하지 않는다."
+        },
+        {
+          "slug": "palace",
+          "label": "궁중",
+          "count": 106,
+          "countAll": 115,
+          "aliases": [
+            "황궁",
+            "왕궁"
+          ],
+          "definition": "왕실·황실·궁정의 생활과 권력이 주요 무대다."
+        },
+        {
+          "slug": "magic-world",
+          "label": "마법 체계",
+          "count": 110,
+          "countAll": 111,
+          "aliases": [
+            "마법세계",
+            "마법"
+          ],
+          "definition": "마법의 규칙·학습·운용이 사건에 중요하다. 초현실적 사건 한 번만으로 부여하지 않는다."
+        },
+        {
+          "slug": "hunter",
+          "label": "헌터",
+          "count": 39,
+          "countAll": 40,
+          "aliases": [
+            "헌터물"
+          ],
+          "definition": "헌터라는 역할·직업·등급 체계로 괴물이나 던전을 상대한다. 괴수를 막는 일반 군인·시민은 제외."
+        },
+        {
+          "slug": "dungeon",
+          "label": "던전·탑",
+          "count": 34,
+          "countAll": 35,
+          "aliases": [
+            "던전",
+            "탑 공략",
+            "게이트"
+          ],
+          "definition": "단계적 공략 공간인 던전·탑·게이트가 주요 무대다. 모든 위험한 장소를 포함하지 않는다."
+        },
+        {
+          "slug": "apocalypse",
+          "label": "아포칼립스",
+          "count": 64,
+          "countAll": 68,
+          "aliases": [
+            "포스트 아포칼립스",
+            "문명 붕괴"
+          ],
+          "definition": "사회 질서의 붕괴 또는 문명 규모의 멸망 상황이 지속된다. 단일 지역 재난은 자동 포함하지 않는다."
+        },
+        {
+          "slug": "zombie",
+          "label": "좀비",
+          "count": 26,
+          "countAll": 28,
+          "aliases": [
+            "좀비물"
+          ],
+          "definition": "좀비 또는 좀비형 감염자가 갈등의 주요 요소다."
+        },
+        {
+          "slug": "countryside",
+          "label": "시골·지역 공동체",
+          "count": 67,
+          "countAll": 73,
+          "aliases": [
+            "시골",
+            "농촌",
+            "어촌"
+          ],
+          "definition": "농어촌·소도시의 생활과 지역 공동체가 작품 경험에 중요하다."
+        },
+        {
+          "slug": "showbiz",
+          "label": "연예계",
+          "count": 62,
+          "countAll": 71,
+          "aliases": [
+            "방송계",
+            "엔터테인먼트"
+          ],
+          "definition": "연예 산업의 제작·매니지먼트·명성과 활동이 주요 무대다."
+        },
+        {
+          "slug": "hospital",
+          "label": "병원",
+          "count": 46,
+          "countAll": 46,
+          "aliases": [
+            "의료 현장"
+          ],
+          "definition": "병원의 공간과 조직이 주요 사건 무대다. 인물이 아프다는 이유만으로 부여하지 않는다."
+        },
+        {
+          "slug": "military",
+          "label": "군대",
+          "count": 75,
+          "countAll": 90,
+          "aliases": [
+            "군생활",
+            "군 조직"
+          ],
+          "definition": "군 조직·복무·군인의 임무 수행이 주요 무대다."
+        },
+        {
+          "slug": "murim-world",
+          "label": "무림·문파",
+          "count": 90,
+          "countAll": 92,
+          "aliases": [
+            "무림",
+            "문파",
+            "강호"
+          ],
+          "definition": "문파·무림세가·강호 질서가 갈등의 배경이다. 개별 문파명은 태그로 추가하지 않는다."
+        },
+        {
+          "slug": "regression",
+          "label": "회귀",
+          "count": 140,
+          "countAll": 141,
+          "aliases": [
+            "회귀물"
+          ],
+          "definition": "자신의 과거 시점으로 돌아가 이전 경험을 바탕으로 삶을 다시 진행한다. 다른 사람으로 새로 태어나는 환생과 구분한다."
+        },
+        {
+          "slug": "possession",
+          "label": "빙의",
+          "count": 108,
+          "countAll": 110,
+          "aliases": [
+            "인물 빙의"
+          ],
+          "definition": "다른 인물의 신체·역할을 주인공이 차지한 상태가 중심 전제다. 악령의 침입은 별도 태그다."
+        },
+        {
+          "slug": "spirit-possession",
+          "label": "악령 빙의",
+          "count": 16,
+          "countAll": 17,
+          "aliases": [
+            "퇴마 빙의",
+            "귀신 들림"
+          ],
+          "definition": "귀신·악령이 인간의 몸을 점유하거나 지배하는 것이 갈등이다. 소설 속 인물로 들어가는 전이는 제외."
+        },
+        {
+          "slug": "reincarnation",
+          "label": "환생",
+          "count": 80,
+          "countAll": 81,
+          "aliases": [
+            "전생",
+            "환생물"
+          ],
+          "definition": "죽음 이후 다른 생으로 태어나며 전생의 인과가 중요하다. 같은 과거로 되돌아가는 회귀와 구분한다."
+        },
+        {
+          "slug": "awakening",
+          "label": "능력 각성",
+          "count": 16,
+          "countAll": 16,
+          "aliases": [
+            "각성"
+          ],
+          "definition": "잠재된 능력의 발현이나 특별한 힘 획득이 핵심 전환점이다. 이미 강한 주인공이면 자동 부여하지 않는다."
+        },
+        {
+          "slug": "superpower",
+          "label": "초능력",
+          "count": 164,
+          "countAll": 176,
+          "aliases": [
+            "이능력",
+            "초능력자"
+          ],
+          "definition": "마법 학습과 별개로 비범한 개인 능력이 반복 사용된다. 단발 기적·비유적 표현은 제외."
+        },
+        {
+          "slug": "time-travel",
+          "label": "시간 이동",
+          "count": 32,
+          "countAll": 36,
+          "aliases": [
+            "시간여행",
+            "타임슬립"
+          ],
+          "definition": "시간대를 넘나드는 이동·연결이 인과에 중요하다. 자신의 과거 재시작만 있는 회귀와 자동 중복하지 않는다."
+        },
+        {
+          "slug": "time-loop",
+          "label": "시간 반복",
+          "count": 20,
+          "countAll": 22,
+          "aliases": [
+            "타임루프"
+          ],
+          "definition": "같은 구간을 여러 차례 되풀이하며 선택과 결과를 바꾼다. 한 번의 회귀는 제외."
+        },
+        {
+          "slug": "disguise",
+          "label": "신분 위장",
+          "count": 97,
+          "countAll": 102,
+          "aliases": [
+            "위장 신분",
+            "잠입 신분",
+            "신분위장"
+          ],
+          "definition": "이름·직위·출신·소속을 숨기거나 다른 정체로 활동하는 일이 중요하다."
+        },
+        {
+          "slug": "amnesia",
+          "label": "기억상실",
+          "count": 36,
+          "countAll": 40,
+          "aliases": [
+            "잃어버린 기억"
+          ],
+          "definition": "기억의 상실·복구가 관계나 사건의 핵심 원인이다."
+        },
+        {
+          "slug": "childcare",
+          "label": "육아",
+          "count": 64,
+          "countAll": 65,
+          "aliases": [
+            "육아물",
+            "양육"
+          ],
+          "definition": "아이를 양육·보호·교육하는 생활이 반복되는 주요 소재다. 아이 주인공만으로 부여하지 않는다."
+        },
+        {
+          "slug": "body-swap",
+          "label": "몸 바뀜",
+          "count": 9,
+          "countAll": 10,
+          "aliases": [
+            "영혼 교환",
+            "신체 교환"
+          ],
+          "definition": "둘 이상의 인물이 신체를 교환하는 전제다. 일방 빙의·단순 변신과 구분한다."
+        },
+        {
+          "slug": "cross-dressing",
+          "label": "성별 위장",
+          "count": 8,
+          "countAll": 8,
+          "aliases": [
+            "남장",
+            "여장"
+          ],
+          "definition": "복장·사회적 성별 표현을 바꿔 신분을 숨긴다. 실제 신체 변화와 구분한다."
+        },
+        {
+          "slug": "body-transformation",
+          "label": "신체 변신",
+          "count": 56,
+          "countAll": 60,
+          "aliases": [
+            "변신",
+            "성별전환",
+            "회춘"
+          ],
+          "definition": "종·외모·연령·성별 등 신체가 바뀌는 전제다. 위장 복장이나 초능력 일반과 구분한다."
+        },
+        {
+          "slug": "fictional-world",
+          "label": "창작물 속 세계",
+          "count": 105,
+          "countAll": 106,
+          "aliases": [
+            "소설속세계",
+            "만화 속 세계",
+            "책빙의"
+          ],
+          "definition": "책·만화·게임의 등장인물이나 세계가 실제 사건의 무대가 된다. 모든 가상 판타지 세계를 포함하지 않는다."
+        },
+        {
+          "slug": "death-game",
+          "label": "데스게임",
+          "count": 10,
+          "countAll": 11,
+          "aliases": [
+            "죽음의 게임"
+          ],
+          "definition": "주최자·규칙이 있는 경쟁에 생명 박탈의 위험이 직접 연결된다. 일반 생존이나 비치명 경연은 제외."
+        },
+        {
+          "slug": "system-window",
+          "label": "시스템·상태창",
+          "count": 62,
+          "countAll": 64,
+          "aliases": [
+            "상태창",
+            "시스템"
+          ],
+          "definition": "능력·퀘스트·보상이 수치나 UI형 규칙으로 제시된다. 게임 배경만으로 부여하지 않는다."
+        },
+        {
+          "slug": "returnee",
+          "label": "귀환자",
+          "count": 13,
+          "countAll": 13,
+          "aliases": [
+            "귀환"
+          ],
+          "definition": "다른 세계·오랜 부재에서 돌아온 경험이 현재 갈등의 핵심 자원이다."
+        },
+        {
+          "slug": "cooking",
+          "label": "요리·음식",
+          "count": 70,
+          "countAll": 71,
+          "aliases": [
+            "요리",
+            "먹방",
+            "음식"
+          ],
+          "definition": "조리·음식·식사가 감상 경험과 관계 형성에 중요하다. 식사 장면만으로 부여하지 않는다."
+        },
+        {
+          "slug": "music",
+          "label": "음악·공연",
+          "count": 36,
+          "countAll": 36,
+          "aliases": [
+            "음악",
+            "공연",
+            "무대"
+          ],
+          "definition": "연주·노래·춤·무대 작업이 주요 활동이다. 배경음악을 뜻하지 않는다."
+        },
+        {
+          "slug": "idol",
+          "label": "아이돌",
+          "count": 21,
+          "countAll": 21,
+          "aliases": [
+            "아이돌물"
+          ],
+          "definition": "아이돌 데뷔·팬덤·팀 활동의 관습이 주요 소재다."
+        },
+        {
+          "slug": "game",
+          "label": "게임",
+          "count": 61,
+          "countAll": 63,
+          "aliases": [
+            "게임물",
+            "가상현실 게임"
+          ],
+          "definition": "플레이·게임 제작·가상 게임 세계가 주요 소재다. 현실의 생존 시험을 전부 포함하지 않는다."
+        },
+        {
+          "slug": "monster",
+          "label": "괴수·크리처",
+          "count": 67,
+          "countAll": 71,
+          "aliases": [
+            "괴수",
+            "괴수물",
+            "크리처",
+            "괴물"
+          ],
+          "definition": "인간과 구별되는 위협적 생물·괴물이 중요하다. 초능력자·흡혈귀·좀비만 있으면 해당 구체 태그를 우선한다."
+        },
+        {
+          "slug": "ghost",
+          "label": "귀신",
+          "count": 73,
+          "countAll": 76,
+          "aliases": [
+            "유령",
+            "영혼"
+          ],
+          "definition": "죽은 자의 영혼·귀신과의 접촉이 주요 요소다."
+        },
+        {
+          "slug": "vampire",
+          "label": "흡혈귀",
+          "count": 14,
+          "countAll": 19,
+          "aliases": [
+            "뱀파이어"
+          ],
+          "definition": "흡혈·불멸 등 뱀파이어의 규칙이 갈등과 관계에 중요하다."
+        },
+        {
+          "slug": "alien",
+          "label": "외계 생명",
+          "count": 30,
+          "countAll": 32,
+          "aliases": [
+            "외계인",
+            "외계 생물"
+          ],
+          "definition": "지구 밖 지성·생명체와 접촉·침공·공존한다. 우주 배경만으로 부여하지 않는다."
+        },
+        {
+          "slug": "ai-robot",
+          "label": "AI·로봇",
+          "count": 30,
+          "countAll": 32,
+          "aliases": [
+            "인공지능",
+            "로봇",
+            "안드로이드"
+          ],
+          "definition": "인공지능·로봇·인조인간의 행위와 인간 관계가 중요하다."
+        },
+        {
+          "slug": "afterlife",
+          "label": "저승",
+          "count": 35,
+          "countAll": 37,
+          "aliases": [
+            "사후세계"
+          ],
+          "definition": "사후 세계의 제도·여정·심판이 주요 무대다."
+        },
+        {
+          "slug": "religion-cult",
+          "label": "종교·사이비",
+          "count": 36,
+          "countAll": 39,
+          "aliases": [
+            "사이비",
+            "종교"
+          ],
+          "definition": "신앙·교단·종교적 권위나 통제가 갈등의 주요 구조다."
+        },
+        {
+          "slug": "police",
+          "label": "경찰·수사기관",
+          "count": 89,
+          "countAll": 119,
+          "aliases": [
+            "형사",
+            "수사기관"
+          ],
+          "definition": "형사·경찰·수사 조직의 활동이 주요 무대다. 범죄가 발생한다는 이유만으로 부여하지 않는다."
+        },
+        {
+          "slug": "organized-crime",
+          "label": "범죄 조직",
+          "count": 80,
+          "countAll": 110,
+          "aliases": [
+            "조폭",
+            "갱단",
+            "마피아"
+          ],
+          "definition": "조직범죄·마피아·갱단의 위계와 사업이 중요하다."
+        },
+        {
+          "slug": "prison",
+          "label": "교도소",
+          "count": 15,
+          "countAll": 23,
+          "aliases": [
+            "감옥",
+            "수감생활"
+          ],
+          "definition": "수감·교도소 공동체와 제도가 주요 무대다."
+        },
+        {
+          "slug": "business",
+          "label": "사업·경영",
+          "count": 75,
+          "countAll": 84,
+          "aliases": [
+            "창업",
+            "경영",
+            "투자"
+          ],
+          "definition": "창업·투자·시장 경쟁·조직 운영이 핵심 활동이다. 직장 배경만으로 부여하지 않는다."
+        },
+        {
+          "slug": "school-bullying",
+          "label": "학교폭력",
+          "count": 50,
+          "countAll": 54,
+          "aliases": [
+            "학폭",
+            "따돌림"
+          ],
+          "definition": "따돌림·폭력·학교 내 권력 질서가 핵심 갈등이다. 모든 학교물에 부여하지 않는다."
+        },
+        {
+          "slug": "social-inequality",
+          "label": "사회 불평등",
+          "count": 70,
+          "countAll": 83,
+          "aliases": [
+            "계급 갈등",
+            "차별",
+            "빈부격차"
+          ],
+          "definition": "계층·차별·생계의 구조적 격차가 갈등의 핵심이다. 연인의 신분 차이만 있으면 관계 태그를 우선한다."
+        },
+        {
+          "slug": "historical-resistance",
+          "label": "독립·민주화",
+          "count": 11,
+          "countAll": 12,
+          "aliases": [
+            "독립운동",
+            "민주화운동"
+          ],
+          "definition": "식민 지배·독재에 대한 저항과 역사적 집단행동이 중심이다."
+        },
+        {
+          "slug": "arts",
+          "label": "예술 창작",
+          "count": 50,
+          "countAll": 54,
+          "aliases": [
+            "미술",
+            "문학",
+            "창작"
+          ],
+          "definition": "그림·문학·영화 등 창작과 표현의 과정이 중요하다. 음악·공연이 중심이면 해당 태그를 우선한다."
+        },
+        {
+          "slug": "science-technology",
+          "label": "과학·기술",
+          "count": 58,
+          "countAll": 66,
+          "aliases": [
+            "발명",
+            "기술 개발"
+          ],
+          "definition": "과학적 탐구·발명·공학 문제 해결이 주요 활동이다. SF 장르만으로 부여하지 않는다."
+        },
+        {
+          "slug": "journey",
+          "label": "여행·여정",
+          "count": 112,
+          "countAll": 116,
+          "aliases": [
+            "여행",
+            "로드무비"
+          ],
+          "definition": "이동·여행 중 만나는 장소와 인물이 경험의 중심이다. 이동 장면 자체는 제외한다."
+        },
+        {
+          "slug": "death-loss",
+          "label": "죽음·상실",
+          "count": 87,
+          "countAll": 94,
+          "aliases": [
+            "애도",
+            "사별"
+          ],
+          "definition": "가까운 존재의 죽음이나 상실을 받아들이는 과정이 중요하다. 단순 사망 사건은 제외한다."
+        }
+      ]
+    },
+    {
+      "id": "relationship",
+      "label": "인물·관계",
+      "count": 42,
+      "tags": [
+        {
+          "slug": "cold-male",
+          "label": "무심남",
+          "count": 11,
+          "countAll": 11,
+          "aliases": [
+            "냉정남"
+          ],
+          "definition": "주요 남성 인물의 감정 표현이 적고 거리 두는 태도가 관계의 중요한 취향 요소다."
+        },
+        {
+          "slug": "obsession",
+          "label": "집착 관계",
+          "count": 87,
+          "countAll": 101,
+          "aliases": [
+            "집착남",
+            "집착녀",
+            "일방적집착"
+          ],
+          "definition": "상대를 독점·통제하려는 강한 애착이 관계를 반복적으로 움직인다. 단순 호감·일편단심과 구분한다."
+        },
+        {
+          "slug": "regret-male",
+          "label": "후회남",
+          "count": 8,
+          "countAll": 8,
+          "aliases": [
+            "후회하는 남주"
+          ],
+          "definition": "과거의 가해·외면을 후회하고 관계를 되돌리려는 남성 인물이 핵심이다."
+        },
+        {
+          "slug": "manipulative-character",
+          "label": "유혹·조종형 인물",
+          "count": 47,
+          "countAll": 56,
+          "aliases": [
+            "유혹녀",
+            "팜므파탈",
+            "조종자"
+          ],
+          "definition": "매력·거짓말·심리 조작을 이용해 타인의 선택을 통제하는 인물이 핵심이다."
+        },
+        {
+          "slug": "assertive-female",
+          "label": "주도적 여성",
+          "count": 74,
+          "countAll": 75,
+          "aliases": [
+            "걸크러시",
+            "주체적 여성"
+          ],
+          "definition": "주요 여성 인물이 자신의 목표와 선택으로 갈등을 이끈다. 여성 등장만으로 부여하지 않는다."
+        },
+        {
+          "slug": "devoted-male",
+          "label": "순정남",
+          "count": 21,
+          "countAll": 21,
+          "aliases": [
+            "일편단심남"
+          ],
+          "definition": "주요 남성 인물의 꾸준한 사랑과 헌신이 관계의 핵심이다. 통제적 집착과 구분한다."
+        },
+        {
+          "slug": "gentle-male",
+          "label": "다정남",
+          "count": 12,
+          "countAll": 12,
+          "aliases": [
+            "다정한 남주"
+          ],
+          "definition": "주요 남성 인물의 배려·돌봄·온화한 상호작용이 취향 요소다. 모든 선역을 포함하지 않는다."
+        },
+        {
+          "slug": "competent-lead",
+          "label": "유능한 주인공",
+          "count": 182,
+          "countAll": 205,
+          "aliases": [
+            "능력녀",
+            "능력남",
+            "능력자 주인공"
+          ],
+          "definition": "직업적 숙련이나 판단력으로 문제를 푸는 주인공이 핵심 매력이다. 천재적 재능·압도적 무력과 구분한다."
+        },
+        {
+          "slug": "villainess",
+          "label": "악녀 역할",
+          "count": 25,
+          "countAll": 25,
+          "aliases": [
+            "악녀",
+            "악역 영애"
+          ],
+          "definition": "여성 주인공 또는 핵심 인물이 악녀로 규정된 사회적 역할·평판을 가진다. 모든 여성 악역을 포함하지 않는다."
+        },
+        {
+          "slug": "antihero",
+          "label": "안티히어로",
+          "count": 53,
+          "countAll": 78,
+          "aliases": [
+            "반영웅"
+          ],
+          "definition": "주인공의 수단·윤리가 전형적 영웅상과 충돌한다. 무뚝뚝함·강한 전투력만으로 부여하지 않는다."
+        },
+        {
+          "slug": "genius",
+          "label": "천재",
+          "count": 68,
+          "countAll": 72,
+          "aliases": [
+            "천재형 주인공"
+          ],
+          "definition": "비범한 지능·재능으로 높은 성취를 만드는 특성이 중심이다. 주인공·강자라는 이유만으로 부여하지 않는다."
+        },
+        {
+          "slug": "overpowered",
+          "label": "먼치킨",
+          "count": 73,
+          "countAll": 74,
+          "aliases": [
+            "압도적 강자",
+            "먼치킨 주인공"
+          ],
+          "definition": "주인공의 압도적 전투·능력 우위가 반복적 감상 요소다. 성장 예정만으로 부여하지 않는다."
+        },
+        {
+          "slug": "enemies-to-lovers",
+          "label": "혐관 로맨스",
+          "count": 38,
+          "countAll": 39,
+          "aliases": [
+            "혐관",
+            "애증 로맨스"
+          ],
+          "definition": "서로 적대하거나 강하게 반목하는 관계와 연애 감정의 전환·공존이 핵심이다."
+        },
+        {
+          "slug": "first-love",
+          "label": "첫사랑",
+          "count": 76,
+          "countAll": 79,
+          "aliases": [
+            "첫사랑물"
+          ],
+          "definition": "처음 사랑한 경험과 기억이 관계를 설명하는 핵심이다. 청춘 로맨스 전체를 뜻하지 않는다."
+        },
+        {
+          "slug": "unrequited",
+          "label": "짝사랑",
+          "count": 66,
+          "countAll": 67,
+          "aliases": [
+            "외사랑"
+          ],
+          "definition": "상호 확인되지 않은 일방의 연애 감정이 주요 갈등이다."
+        },
+        {
+          "slug": "childhood-friend",
+          "label": "소꿉친구",
+          "count": 38,
+          "countAll": 44,
+          "aliases": [
+            "소꿉친구물"
+          ],
+          "definition": "어린 시절부터 이어진 친밀함과 기억이 관계에 중요하다."
+        },
+        {
+          "slug": "contract-romance",
+          "label": "계약 관계",
+          "count": 68,
+          "countAll": 70,
+          "aliases": [
+            "계약연애",
+            "계약결혼"
+          ],
+          "definition": "계약·합의로 연인이나 배우자 역할을 수행하다 실제 감정과 충돌한다."
+        },
+        {
+          "slug": "arranged-marriage",
+          "label": "정략결혼",
+          "count": 45,
+          "countAll": 48,
+          "aliases": [
+            "정략 혼인"
+          ],
+          "definition": "가문·권력·경제적 목적에 의해 정해진 혼인이 중심 관계다. 당사자만의 위장 계약과 구분한다."
+        },
+        {
+          "slug": "office-romance",
+          "label": "사내연애",
+          "count": 49,
+          "countAll": 52,
+          "aliases": [
+            "직장 로맨스"
+          ],
+          "definition": "같은 직장·업무 관계의 규칙이 연애의 주요 기회나 장애다."
+        },
+        {
+          "slug": "love-triangle",
+          "label": "삼각관계",
+          "count": 92,
+          "countAll": 99,
+          "aliases": [
+            "다각관계"
+          ],
+          "definition": "셋 이상 인물의 연애 선택 경쟁이 상당한 비중을 가진다. 일회성 질투는 제외한다."
+        },
+        {
+          "slug": "reunion",
+          "label": "재회",
+          "count": 117,
+          "countAll": 120,
+          "aliases": [
+            "재회물"
+          ],
+          "definition": "과거 관계가 단절된 뒤 다시 만나 과거와 현재를 조정한다. 첫 만남의 우연은 제외한다."
+        },
+        {
+          "slug": "class-gap",
+          "label": "신분 차이",
+          "count": 67,
+          "countAll": 75,
+          "aliases": [
+            "신분차이",
+            "계층차 로맨스"
+          ],
+          "definition": "두 인물의 신분·계층 차이가 관계의 직접적인 장애나 긴장이다."
+        },
+        {
+          "slug": "age-gap",
+          "label": "연상연하",
+          "count": 22,
+          "countAll": 24,
+          "aliases": [
+            "연하남",
+            "연상녀",
+            "나이차 로맨스"
+          ],
+          "definition": "성인 간 나이 차이에 따른 관계 경험이 중요하다. 방향은 표시명·상세 설명에서 다루고 별도 태그를 중복하지 않는다."
+        },
+        {
+          "slug": "mentor-student",
+          "label": "사제 관계",
+          "count": 104,
+          "countAll": 108,
+          "aliases": [
+            "사제",
+            "스승과 제자"
+          ],
+          "definition": "가르침·수련·계승을 통해 관계가 이어진다. 성직자 직함의 사제와 구분한다."
+        },
+        {
+          "slug": "rivalry",
+          "label": "라이벌",
+          "count": 103,
+          "countAll": 127,
+          "aliases": [
+            "경쟁자"
+          ],
+          "definition": "실력·목표·인정을 두고 반복적으로 경쟁하는 인물 관계다. 단순 적대와 구분한다."
+        },
+        {
+          "slug": "forbidden",
+          "label": "금지된 사랑",
+          "count": 19,
+          "countAll": 25,
+          "aliases": [
+            "금지된사랑"
+          ],
+          "definition": "사회 규범·법·소속 때문에 성립하기 어려운 사랑이 핵심 갈등이다."
+        },
+        {
+          "slug": "family-bonds",
+          "label": "가족 유대",
+          "count": 123,
+          "countAll": 134,
+          "aliases": [
+            "가족",
+            "가족애"
+          ],
+          "definition": "가족의 돌봄·화해·연대가 중심이다. 혈연 인물의 등장만으로 부여하지 않는다."
+        },
+        {
+          "slug": "found-family",
+          "label": "선택한 가족",
+          "count": 63,
+          "countAll": 65,
+          "aliases": [
+            "유사가족",
+            "비혈연 가족"
+          ],
+          "definition": "혈연 밖 인물들이 서로의 보호자·가족 역할을 만들어간다. 단순 팀 구성과 구분한다."
+        },
+        {
+          "slug": "friendship",
+          "label": "우정",
+          "count": 203,
+          "countAll": 225,
+          "aliases": [
+            "친구 관계"
+          ],
+          "definition": "친구 사이의 신뢰·갈등·연대가 중요한 감상 요소다. 조연 친구의 존재만으로 부여하지 않는다."
+        },
+        {
+          "slug": "buddy",
+          "label": "버디",
+          "count": 99,
+          "countAll": 108,
+          "aliases": [
+            "콤비",
+            "파트너"
+          ],
+          "definition": "대조적인 두 인물의 협력·충돌이 반복되는 주요 재미다. 인원 많은 팀물과 구분한다."
+        },
+        {
+          "slug": "teamwork",
+          "label": "팀워크",
+          "count": 318,
+          "countAll": 357,
+          "aliases": [
+            "팀플레이",
+            "동료애"
+          ],
+          "definition": "여러 인물이 역할을 나누고 서로 의존해 목표를 달성한다. 일시 동행은 제외한다."
+        },
+        {
+          "slug": "couple-crisis",
+          "label": "부부·연인 위기",
+          "count": 78,
+          "countAll": 91,
+          "aliases": [
+            "부부갈등",
+            "이별 위기",
+            "이혼"
+          ],
+          "definition": "성립한 연애·혼인 관계의 균열과 유지·종료 선택이 중심이다."
+        },
+        {
+          "slug": "parent-child",
+          "label": "부모와 자녀",
+          "count": 216,
+          "countAll": 235,
+          "aliases": [
+            "부모자식",
+            "부성애",
+            "모성애"
+          ],
+          "definition": "세대 간 기대·보호·독립 등 부모자녀 관계가 핵심이다. 어린 자녀가 있을 때만 쓰는 육아와 구분한다."
+        },
+        {
+          "slug": "siblings",
+          "label": "형제자매",
+          "count": 108,
+          "countAll": 117,
+          "aliases": [
+            "남매",
+            "자매",
+            "형제"
+          ],
+          "definition": "형제·자매·남매 간 갈등·연대가 주요 감상 요소다."
+        },
+        {
+          "slug": "infidelity",
+          "label": "불륜",
+          "count": 35,
+          "countAll": 43,
+          "aliases": [
+            "외도"
+          ],
+          "definition": "기존 혼인·연애 약속 밖의 관계가 중심 갈등이다. 모든 삼각관계를 포함하지 않는다."
+        },
+        {
+          "slug": "redemption",
+          "label": "속죄·갱생",
+          "count": 23,
+          "countAll": 25,
+          "aliases": [
+            "갱생",
+            "속죄"
+          ],
+          "definition": "자신의 과오를 인정하고 행동을 바꾸는 과정이 핵심이다. 보복이나 타인의 용서만으로 부여하지 않는다."
+        },
+        {
+          "slug": "outsider",
+          "label": "아웃사이더",
+          "count": 85,
+          "countAll": 89,
+          "aliases": [
+            "소외된 인물",
+            "이방인"
+          ],
+          "definition": "공동체에 적응하기 어렵거나 배제된 위치가 인물 경험의 핵심이다."
+        },
+        {
+          "slug": "underdog",
+          "label": "언더독",
+          "count": 125,
+          "countAll": 129,
+          "aliases": [
+            "약자의 도전",
+            "열세 극복"
+          ],
+          "definition": "불리한 지위·자원·평가를 딛고 목표에 도전하는 과정이 중심이다. 압도적 강자와 자동 병기하지 않는다."
+        },
+        {
+          "slug": "human-nonhuman",
+          "label": "인간과 비인간",
+          "count": 120,
+          "countAll": 127,
+          "aliases": [
+            "인외 관계",
+            "인외 로맨스"
+          ],
+          "definition": "인간과 초자연·인공·비인간 존재 사이의 공존·애착이 핵심이다. 단순 괴물 퇴치는 제외한다."
+        },
+        {
+          "slug": "animal-companion",
+          "label": "동물과 교감",
+          "count": 34,
+          "countAll": 35,
+          "aliases": [
+            "반려동물",
+            "동물 친구"
+          ],
+          "definition": "동물과의 돌봄·신뢰·동행이 주요 감상 요소다. 동물의 일회성 출현은 제외한다."
+        },
+        {
+          "slug": "trauma-recovery",
+          "label": "상처 극복",
+          "count": 134,
+          "countAll": 143,
+          "aliases": [
+            "트라우마 극복",
+            "정서 회복"
+          ],
+          "definition": "인물이 과거의 심리적 상처와 취약함을 다루고 관계·삶을 회복한다. 모든 성장 서사에 붙이지 않는다."
+        },
+        {
+          "slug": "family-conflict",
+          "label": "가족 갈등",
+          "count": 114,
+          "countAll": 135,
+          "aliases": [
+            "가문 갈등",
+            "가족의 비밀"
+          ],
+          "definition": "가족 내부의 비밀·상속·책임·욕망이 충돌하며 선택을 압박한다. 가족의 등장이나 돌봄 자체와 구분한다."
+        }
+      ]
+    }
+  ],
+  "countScope": "adult !== true인 작품 수. countAll은 전체 2,500편 기준.",
+  "roles": {
+    "STORY_WRITER": "글",
+    "LEAD_ARTIST": "그림",
+    "ORIGINAL_AUTHOR": "원작",
+    "ADAPTATION_WRITER": "각색",
+    "DIRECTOR": "감독",
+    "SCREENWRITER": "각본",
+    "LEAD_ACTOR": "주요 출연",
+    "SUPPORT_ACTOR": "조연"
+  },
+  "storyEngines": [
+    {
+      "slug": "monster_disaster",
+      "label": "괴수 재난 대응",
+      "definition": "거대한 생물 위협을 파악하고 민간인 보호·대피·저지를 반복한다."
+    },
+    {
+      "slug": "hunter_growth",
+      "label": "헌터 성장·공략",
+      "definition": "사냥·던전 공략과 보상·등급 상승을 순환한다."
+    },
+    {
+      "slug": "murim_growth",
+      "label": "무공 수련·성장",
+      "definition": "수련·비무·강적 돌파로 무공과 강호 위상을 높인다."
+    },
+    {
+      "slug": "murim_power_struggle",
+      "label": "무림 세력 경쟁",
+      "definition": "문파·세가를 이끌고 동맹·분쟁·계승을 통해 강호 질서를 바꾼다."
+    },
+    {
+      "slug": "revenge_progression",
+      "label": "복수 계획·응징",
+      "definition": "가해자를 겨냥해 준비·접근·응징하며 목표를 달성한다."
+    },
+    {
+      "slug": "extraordinary_conflict",
+      "label": "초상 존재·능력 대결",
+      "definition": "초자연 존재·저주 또는 비일상적 SF 능력·기술의 규칙을 파악하고 대결·억제·해소한다."
+    },
+    {
+      "slug": "romance_formation",
+      "label": "연애 형성·선택",
+      "definition": "호감·접근·오해 해소·고백과 선택을 반복하며 연애 관계를 형성한다."
+    },
+    {
+      "slug": "family_healing",
+      "label": "가족·공동체 돌봄",
+      "definition": "가족 또는 가까운 공동체의 상처·갈등을 돌봄과 화해로 풀어간다."
+    },
+    {
+      "slug": "workplace_problem_solving",
+      "label": "현장 업무 해결",
+      "definition": "실무 과제·고객 문제·조직 갈등을 전문성과 협업으로 해결한다."
+    },
+    {
+      "slug": "investigation_mystery",
+      "label": "단서 추적·진실 규명",
+      "definition": "단서를 모으고 가설을 검증해 범인·원인·정체를 밝힌다."
+    },
+    {
+      "slug": "survival_strategy",
+      "label": "생존 전략·탈출",
+      "definition": "죽음·구속 등 중대한 위협을 피하고 자원·신분·은신처·탈출 경로를 관리하며 생존 가능성을 높인다."
+    },
+    {
+      "slug": "death_game",
+      "label": "생사를 건 규칙 경쟁",
+      "definition": "강제된 게임 규칙을 해독하고 생명을 건 라운드를 통과한다."
+    },
+    {
+      "slug": "political_power_struggle",
+      "label": "권력 획득·유지",
+      "definition": "연합·책략·협상·정당성 확보로 공적 권력을 얻고 유지한다."
+    },
+    {
+      "slug": "war_campaign",
+      "label": "전쟁·전역 수행",
+      "definition": "군사 전략·전투·영토 방어·해방을 이어 전쟁 목표를 추구한다."
+    },
+    {
+      "slug": "sports_competition",
+      "label": "훈련·실력 경쟁",
+      "definition": "훈련·전술·신체 과제를 수행하며 경기와 라운드의 승리를 추구한다."
+    },
+    {
+      "slug": "medical_cases",
+      "label": "진단·치료",
+      "definition": "환자별 진단·시술·치료와 윤리적 판단을 반복한다."
+    },
+    {
+      "slug": "courtroom_cases",
+      "label": "법적 분쟁 해결",
+      "definition": "증거·변론·재판을 통해 사건의 법적 결론을 만든다."
+    },
+    {
+      "slug": "creative_achievement",
+      "label": "예술·창작 성취",
+      "definition": "연습·창작·오디션·제작·발표와 평가를 거치며 예술적 목표나 창작 경력을 추진한다."
+    },
+    {
+      "slug": "school_relationship",
+      "label": "학교 관계·성숙",
+      "definition": "친구·또래·교사와 관계를 조정하며 소속과 정체성을 만든다."
+    },
+    {
+      "slug": "journey_quest",
+      "label": "탐색 여정·목표 수행",
+      "definition": "목적지·대상·해답을 찾아 이동하며 만남과 장애를 넘는다."
+    },
+    {
+      "slug": "fantasy_growth",
+      "label": "판타지 능력 성장",
+      "definition": "능력 습득·시련·전투·보상으로 판타지 세계에서 강해진다."
+    },
+    {
+      "slug": "game_progression",
+      "label": "게임 플레이·공략",
+      "definition": "게임의 규칙·퀘스트·전략·보상을 공략하며 플레이 성취를 높인다."
+    },
+    {
+      "slug": "couple_repair",
+      "label": "연인·부부 관계 재조정",
+      "definition": "이미 형성된 관계의 상처·배신·단절을 다루며 재결합·유지·이별을 선택한다."
+    },
+    {
+      "slug": "romance_negotiation",
+      "label": "계약·신분 속 연애 협상",
+      "definition": "혼인·계약·가문 의무 속에서 경계·권리·신뢰를 협상하며 사랑을 발전시킨다."
+    },
+    {
+      "slug": "crime_enterprise",
+      "label": "범죄 세계의 흥망",
+      "definition": "범죄 사업·조직의 생존·확장·배신과 대가를 누적한다."
+    },
+    {
+      "slug": "heist_operation",
+      "label": "범행 계획·실행",
+      "definition": "팀과 수단을 구성하고 사기·절도 등의 작전을 실행·수정한다."
+    },
+    {
+      "slug": "covert_operation",
+      "label": "위장·잠입 임무",
+      "definition": "신분을 숨긴 채 조직 안에서 역할·임무를 수행하고 정보 접근과 발각 위기를 관리한다."
+    },
+    {
+      "slug": "protection_rescue",
+      "label": "구출·호위",
+      "definition": "위험에 처한 대상을 찾아 보호·이송하고 추적자를 저지한다."
+    },
+    {
+      "slug": "business_building",
+      "label": "사업·조직 구축",
+      "definition": "자원·인재·투자·시장 경쟁을 통해 사업·영지·조직을 키운다."
+    },
+    {
+      "slug": "everyday_comedy",
+      "label": "생활 속 소동",
+      "definition": "생활의 작은 욕구·실수·오해가 소동을 만들고 다음 일상으로 이어진다."
+    },
+    {
+      "slug": "personal_recovery",
+      "label": "자립·삶의 재정립",
+      "definition": "상실·좌절·전환기에 일상과 선택을 다시 만들며 자기 삶을 회복한다."
+    },
+    {
+      "slug": "social_resistance",
+      "label": "부조리 저항·권리 회복",
+      "definition": "차별·억압·부패에 대응해 개인과 공동체의 권리·존엄을 회복한다."
+    },
+    {
+      "slug": "anomaly_consequence",
+      "label": "기이한 규칙·선택의 대가",
+      "definition": "낯선 규칙·현상을 만난 인물의 선택이 역설적 결과·대가로 이어진다."
+    },
+    {
+      "slug": "school_power_struggle",
+      "label": "학교 서열·저항",
+      "definition": "학교·또래 집단의 폭력·서열·통제를 대결·연합으로 바꾼다."
+    },
+    {
+      "slug": "family_conflict",
+      "label": "가족의 비밀·책임 충돌",
+      "definition": "가족의 비밀·이해관계·책임을 둘러싼 선택과 은폐·대립이 다음 갈등을 낳는다."
+    }
+  ]
+}

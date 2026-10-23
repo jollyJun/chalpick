@@ -1,0 +1,133 @@
+{
+  "version": "2026-10-15-v16.1",
+  "workCount": 1700,
+  "publicDeployment": false,
+  "change": "Packaged existing v16 runtime with local main-page navigation; recommendation engine and content data unchanged.",
+  "files": [
+    {
+      "path": "index.html",
+      "bytes": 9943,
+      "sha256": "db3899391b9a30b7fe68e040af9b95cbfec4a1709fba605cbc2b16de6110464e"
+    },
+    {
+      "path": "css/style.css",
+      "bytes": 39327,
+      "sha256": "5a16718c12e961bee8fb5039ee1e706ce984f20edd18327953801fe478e140bc"
+    },
+    {
+      "path": "data/contents.js",
+      "bytes": 3957403,
+      "sha256": "df51f7e0248e4ad42cc4efafe02fa9dad303b75a49bc1d6a84f1ff30e0f5e953"
+    },
+    {
+      "path": "data/types.js",
+      "bytes": 1742,
+      "sha256": "7df97d426402f6eae48467ba985e47a815609154303e736ce006d58d416497bd"
+    },
+    {
+      "path": "js/engine.js",
+      "bytes": 48523,
+      "sha256": "5df3fcc512e4bf3324878ab917ddfc1a40166bad8b3c2d03cc72263479856984"
+    },
+    {
+      "path": "js/preferences.js",
+      "bytes": 11133,
+      "sha256": "185563c9354ffda0eb1301d28092d7207bec6138d5b2e42277899576391212d6"
+    },
+    {
+      "path": "js/catalog.js",
+      "bytes": 13886,
+      "sha256": "cbac4f8d10e2389d5531ec96f731a52418e0929d0f25e0a7e920ff58927e1079"
+    },
+    {
+      "path": "js/app.js",
+      "bytes": 47819,
+      "sha256": "0a389bc8fbb0dbd99e5fc549ac1eea7639efbb61d4f2dc28168dc4f206d4c46f"
+    },
+    {
+      "path": "chalpick-taste-card.webp",
+      "bytes": 254440,
+      "sha256": "9d7915f6f94dab46740866cb991b9b41ead08f6abc323d69efb249906166be79"
+    },
+    {
+      "path": "assets/taste-cards/type-01.webp",
+      "bytes": 315378,
+      "sha256": "4b41d84a5d787a5ca938222f01dae32fd29bc78c4d6238c58c9089a0bde140e4"
+    },
+    {
+      "path": "assets/taste-cards/type-02.webp",
+      "bytes": 309896,
+      "sha256": "ae3923319d85cca6c6f7865a2006c6e5b021f0df3e6d451cb5851f64c068dcdd"
+    },
+    {
+      "path": "assets/taste-cards/type-03.webp",
+      "bytes": 285578,
+      "sha256": "9f903f4a8ed932e556c31029228f77890d1062f3118694c4c639d6208ffe7f4b"
+    },
+    {
+      "path": "assets/taste-cards/type-04.webp",
+      "bytes": 270284,
+      "sha256": "eaabb2dd319eb865310c16d92458d7538ddfc891fdd9b6b17a740f5cd7554cf8"
+    },
+    {
+      "path": "assets/taste-cards/type-05.webp",
+      "bytes": 293630,
+      "sha256": "c64417a2970ac63b19968efca523ebf9c0fa87038da04d0089c0f73fa6dfa08f"
+    },
+    {
+      "path": "assets/taste-cards/type-06.webp",
+      "bytes": 262608,
+      "sha256": "38df1087478983dd8b359104404e3efc3cb06a79a4b4e79c79abed46ee37d85a"
+    },
+    {
+      "path": "assets/taste-cards/type-07.webp",
+      "bytes": 277612,
+      "sha256": "91179cf44c5895c954938c064cc80d0b0f40f2522c68535197445ae80e10c9d9"
+    },
+    {
+      "path": "assets/taste-cards/type-08.webp",
+      "bytes": 261328,
+      "sha256": "1200be74f8ad6a41ddd91968a73038ab2df927cfc4f81b1dafec2b0a5daf880a"
+    },
+    {
+      "path": "assets/taste-cards/type-09.webp",
+      "bytes": 285600,
+      "sha256": "ce876ff6c0624813b1810a186ab73c37895845647cf6597d70e2f6d05b7e0e89"
+    },
+    {
+      "path": "assets/taste-cards/type-10.webp",
+      "bytes": 312176,
+      "sha256": "cc027522b68ccc64285eb94f8b420f485a183133092e997974ae7756a9a7f6cf"
+    },
+    {
+      "path": "assets/taste-cards/type-11.webp",
+      "bytes": 310370,
+      "sha256": "7a4de71453c6b0afa59d76b9f6755ffca1aedc39c9c80e596378133a724213ab"
+    },
+    {
+      "path": "assets/taste-cards/type-12.webp",
+      "bytes": 292740,
+      "sha256": "53e718c591d070184f442a7317e1a40be976d8df5f91ed426f791c4fc6e656b9"
+    },
+    {
+      "path": "assets/taste-cards/type-13.webp",
+      "bytes": 307878,
+      "sha256": "1186e7c4c374f40bea5abca62b3fa018117b9a1ef29595aacbe55a42aa52c389"
+    },
+    {
+      "path": "assets/taste-cards/type-14.webp",
+      "bytes": 308750,
+      "sha256": "fe2a3cdf43d781d097b24646c66d03c49572a0a3873593bfd1ea9ba24bd12d44"
+    },
+    {
+      "path": "assets/taste-cards/type-15.webp",
+      "bytes": 254440,
+      "sha256": "9d7915f6f94dab46740866cb991b9b41ead08f6abc323d69efb249906166be79"
+    },
+    {
+      "path": "assets/taste-cards/type-16.webp",
+      "bytes": 329416,
+      "sha256": "421c710fd57e710a34648f264140bf5d761f851a6663f6886f30fe35799a8033"
+    }
+  ]
+}

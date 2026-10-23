@@ -1,0 +1,327 @@
+{
+  "updatedAt": "2026-10-22",
+  "counts": {
+    "total": 2500,
+    "byType": {
+      "웹툰": 1502,
+      "OTT": 207,
+      "영화": 347,
+      "웹소설": 135,
+      "드라마": 299,
+      "애니메이션": 10
+    },
+    "byGenre": {
+      "판타지": 353,
+      "로맨스": 331,
+      "판타지 로맨스": 189,
+      "액션": 171,
+      "로맨틱 코미디": 157,
+      "휴먼 드라마": 130,
+      "무협": 98,
+      "코미디": 93,
+      "SF": 93,
+      "스릴러": 90,
+      "현대 판타지": 76,
+      "범죄": 62,
+      "미스터리": 56,
+      "리얼리티 예능": 54,
+      "공포": 54,
+      "스포츠": 54,
+      "생존": 42,
+      "일상": 42,
+      "복수극": 41,
+      "시대극": 37,
+      "청춘": 30,
+      "의학": 26,
+      "성장물": 25,
+      "BL": 23,
+      "법정": 23,
+      "오컬트": 22,
+      "정치극": 20,
+      "첩보": 19,
+      "블랙 코미디": 17,
+      "기타": 15,
+      "재난": 14,
+      "전쟁": 13,
+      "누아르": 11,
+      "하이스트": 10,
+      "모험": 8,
+      "GL": 1
+    },
+    "withImage": 2287,
+    "withDescription": 2274,
+    "withPlatformLink": 2281,
+    "withYear": 2393,
+    "adult": 173,
+    "nonAdultConfirmed": 1667,
+    "ageUnconfirmed": 660,
+    "creditRows": 8401,
+    "verifiedIdentityCredits": 2884,
+    "withFourAxes": 2500,
+    "withOverallComplexity": 973
+  },
+  "types": [
+    "웹툰",
+    "OTT",
+    "영화",
+    "웹소설",
+    "드라마",
+    "애니메이션"
+  ],
+  "genres": [
+    "판타지",
+    "로맨스",
+    "판타지 로맨스",
+    "액션",
+    "로맨틱 코미디",
+    "휴먼 드라마",
+    "무협",
+    "코미디",
+    "SF",
+    "스릴러",
+    "현대 판타지",
+    "범죄",
+    "미스터리",
+    "리얼리티 예능",
+    "공포",
+    "스포츠",
+    "생존",
+    "일상",
+    "복수극",
+    "시대극",
+    "청춘",
+    "의학",
+    "성장물",
+    "BL",
+    "법정",
+    "오컬트",
+    "정치극",
+    "첩보",
+    "블랙 코미디",
+    "기타",
+    "재난",
+    "전쟁",
+    "누아르",
+    "하이스트",
+    "모험",
+    "GL"
+  ],
+  "platforms": [
+    "네이버시리즈",
+    "네이버웹툰",
+    "넷플릭스",
+    "디즈니+",
+    "리디",
+    "문피아",
+    "미스터블루",
+    "애플TV",
+    "왓챠",
+    "웨이브",
+    "카카오웹툰",
+    "카카오페이지",
+    "쿠팡플레이",
+    "티빙"
+  ],
+  "featured": [
+    {
+      "id": 72,
+      "title": "전지적 독자 시점",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/747269/thumbnail/thumbnail_IMAG21_aabd9952-ff45-47a2-a543-33f19a5c6708.jpg",
+      "adult": false
+    },
+    {
+      "id": 73,
+      "title": "나 혼자만 레벨업",
+      "type": "웹툰",
+      "image": "https://dn-img-page.kakao.com/download/resource?kid=bW63x7/hyEdhnErds/7ckf3yl9ovOjpw6wnxljSk&filename=o1",
+      "adult": null
+    },
+    {
+      "id": 74,
+      "title": "화산귀환",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/769209/thumbnail/thumbnail_IMAG21_3511dcdd-6e33-4171-8839-598d6d266215.jpg",
+      "adult": false
+    },
+    {
+      "id": 64,
+      "title": "재혼황후",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/735661/thumbnail/thumbnail_IMAG21_2e35b4aa-4459-42fd-84a8-eae732910422.jpg",
+      "adult": false
+    },
+    {
+      "id": 1,
+      "title": "유미의 세포들",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/651673/thumbnail/thumbnail_IMAG21_fba9683b-260e-4a07-984c-deda6d87f62d.jpg",
+      "adult": false
+    },
+    {
+      "id": 243,
+      "title": "이번 생도 잘 부탁해",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/746858/thumbnail/thumbnail_IMAG21_7306020803348674360.jpg",
+      "adult": false
+    },
+    {
+      "id": 37,
+      "title": "인소의 법칙",
+      "type": "웹툰",
+      "image": "https://dn-img-page.kakao.com/download/resource?kid=oZS9B/hzhOnpIVDy/bkkpSiWtvel9z0mpc5b3Ik&filename=o1",
+      "adult": null
+    },
+    {
+      "id": 36,
+      "title": "연애혁명",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/570503/thumbnail/thumbnail_IMAG21_7b907ee6-a61e-495b-9b8f-be2f0a4be44b.jpeg",
+      "adult": false
+    },
+    {
+      "id": 1061,
+      "title": "세레나",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/801475/thumbnail/thumbnail_IMAG21_2904fd1a-6480-4428-8b15-76887830326a.jpg",
+      "adult": false
+    },
+    {
+      "id": 1057,
+      "title": "내가 키운 S급들",
+      "type": "웹툰",
+      "image": "https://image-comic.pstatic.net/webtoon/784248/thumbnail/thumbnail_IMAG21_5ec2a5b8-167a-497b-8316-5bb38abe6f74.jpg",
+      "adult": false
+    },
+    {
+      "id": 25,
+      "title": "상수리나무 아래",
+      "type": "웹툰",
+      "image": "https://img.ridicdn.net/cover/4766000172/xxlarge#1",
+      "adult": null
+    },
+    {
+      "id": 180,
+      "title": "전지적 독자 시점(소설)",
+      "type": "웹소설",
+      "image": "https://comicthumb-phinf.pstatic.net/20240923_73/pocket_1727093041081qbTh5_JPEG/cover4.jpg?type=m600x314",
+      "adult": null
+    },
+    {
+      "id": 181,
+      "title": "나 혼자만 레벨업(소설)",
+      "type": "웹소설",
+      "image": "https://img.ridicdn.net/cover/777034313/xxlarge#1",
+      "adult": null
+    },
+    {
+      "id": 182,
+      "title": "화산귀환(소설)",
+      "type": "웹소설",
+      "image": "https://comicthumb-phinf.pstatic.net/20260526_138/pocket_1779771698447wx7hj_JPEG/%C3%B5%B8%B6%C7%A5%C1%F6%28850x1250%29.jpg?type=m600x314",
+      "adult": null
+    },
+    {
+      "id": 194,
+      "title": "재혼황후(소설)",
+      "type": "웹소설",
+      "image": "https://comicthumb-phinf.pstatic.net/20260921_38/pocket_1789953097858KSiuk_JPEG/%C0%E7%C8%A5_%C8%B2%C8%C4_%C7%A5%C1%F6.jpg?type=m600x314",
+      "adult": null
+    },
+    {
+      "id": 7,
+      "title": "이번 생도 잘 부탁해",
+      "type": "OTT",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABcudhCKTGdHgqL-GdR_tmJOrv42qtOtuhuSqd8pd7l0YLhfXLdsLYVhE4v0XXEkA90KTOfeqls9EK9tWt66taZCSyEChIM-WIaCL.jpg?r=29f",
+      "adult": null
+    },
+    {
+      "id": 4,
+      "title": "건축학개론",
+      "type": "영화",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABRX_75Hx6__xZQsKPzsgIoDAhhjx7XHknXFWTSwk3xmT76ltjqoLesxLcxYYjx24ioRQFPUw0QliJLoeDD6HzW_O578ifONfRqey.jpg?r=58c",
+      "adult": null
+    },
+    {
+      "id": 56,
+      "title": "헤어질 결심",
+      "type": "영화",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABVT5pUAtE1OZlPtyu2gNnJi9KRYliHco2BNcozdS1Y9MP0dbqrXJfZ91pKN88gga5YbBn8D7JYWyEsvywLEp2iUeXQMvhJxOgeaY.jpg?r=a8c",
+      "adult": null
+    },
+    {
+      "id": 388,
+      "title": "기생충",
+      "type": "영화",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABS8VmgQ2YTPweKg2Cl36FzIhMkFTLSWh_aeahx-DhpXJHWNHcA1beMtSyfZdD2O9Q9a-vCDGP0s3XA-KHYCWX39h9twc7En1aw3M.jpg?r=5af",
+      "adult": false
+    },
+    {
+      "id": 397,
+      "title": "서울의 봄",
+      "type": "영화",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABfw5fQZ-ZnDvx_7JKh8of-OoIVdr6Y7juq5jguPwn-DAKTQMhxDuJQtpLv9_t9Lkja3_zOwZYcTj7lvZFEzUV_ooVEmE0MGftJq2.jpg?r=45b",
+      "adult": false
+    },
+    {
+      "id": 398,
+      "title": "파묘",
+      "type": "영화",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABalh0uBimIcgeDicX9c9nZDCTzBJAI_rHs4RKmU5LsxvTFw0-yhcPOyNYe8LNanOETq5dEZkJ3OCxEslWHswDn5HAw_ZGveFtNsk.jpg?r=c30",
+      "adult": false
+    },
+    {
+      "id": 436,
+      "title": "리틀 포레스트",
+      "type": "영화",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABUvycbap4VLA_PIj2fbtFNaPvsIZqY6uLYsdcmr84PZQJevcFm3rmo81DEoHlTbeYLbSrq8B67p0Zc14nSpLW5JXyoROdqQKx1BP.jpg?r=521",
+      "adult": false
+    },
+    {
+      "id": 1218,
+      "title": "아케인",
+      "type": "애니메이션",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABShSXWq1QsZn-w64wJQrTziOGlBGPH2c13PVemHuRHLEHNY3YXxBlXiggyo2mOLVN25k2t0qxJmDNEA5oezD7w-T0GZyCTtxknCW.jpg?r=47c",
+      "adult": false
+    },
+    {
+      "id": 1370,
+      "title": "나의 행복한 결혼",
+      "type": "애니메이션",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABRTh9P6lEPIIdVa3Do2VmVFrG4_fNRxYGGyNxHqlgt5RXzjHRetQCQrt6CgDHsbqS5mqN6g2U7mY-IUcNvSV6bCZY-ywb71ROxps.jpg?r=853",
+      "adult": false
+    },
+    {
+      "id": 1439,
+      "title": "약사의 혼잣말",
+      "type": "애니메이션",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABWK1H5Z_n9x8iGD3UMWLUIqvNn9nIHnLpqCAf7reqKdbLOQM6E3RKjsn1EttXy3F5L40Yd7LtasrFdsc7wx87i-C2A7wGB-i9CgP.jpg?r=e49",
+      "adult": false
+    },
+    {
+      "id": 1517,
+      "title": "고깔모자의 아틀리에",
+      "type": "애니메이션",
+      "image": "https://occ-0-3682-3187.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABTVfSLRsueEV5AfUxFl1r7eUPUqVft3TN7_ynmRZpJJM2E4CagPYbdmQQAfGgU3hbNzu1aI_rmuZ3xQyrr_yHtPgtzO0Pbf8zULD.jpg?r=c5e",
+      "adult": false
+    }
+  ],
+  "ageValues": {
+    "true": "확인된 성인 등급 또는 성인 인증 판본",
+    "false": "확인된 전체·7·12·15세 등급",
+    "null": "이용등급 미확인"
+  },
+  "imagePolicy": "공급처 원본 이미지 URL. 찰픽 CDN 복제본이 아니며 공급처 정책과 URL 변경에 따라 표시 여부가 달라질 수 있습니다.",
+  "taxonomyCounts": {
+    "genre": 35,
+    "setting": 63,
+    "relationship": 42
+  },
+  "creditIdentityPolicy": {
+    "verified_external_id": "같은 identityKey를 공유하는 작품만 동일 인물·창작 스튜디오로 연결",
+    "content_scoped": "작품별 인물 레코드이며 동명인으로 자동 병합하지 않음",
+    "collective_account": "여러 작가를 묶은 공동 계정은 동일 작가 추천에서 제외",
+    "candidateKey": "동일 역할·이름 검색용 후보. 동일 인물 근거가 아니므로 동명 포함 표시 필요"
+  },
+  "recommendationDataPolicy": "원본의 잠정 분석값을 보존합니다. 공식 플랫폼 평가나 확정 추천 점수가 아니며, 결측값은 null입니다."
+}

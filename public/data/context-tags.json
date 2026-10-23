@@ -1,0 +1,830 @@
+{
+  "version": 1,
+  "updatedAt": "2026-10-23",
+  "entries": [
+    {
+      "contentId": 4,
+      "tags": [
+        "spring",
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "spring"
+          ],
+          "title": "넥센타이어 웹진 vol.99 — 네세인들이 뽑은 감성 폭발 봄 영화 추천",
+          "url": "https://webzine.nexentire.com/pdf/vol99.pdf",
+          "note": "봄 영화 추천 목록에 2012년 영화 건축학개론을 선정."
+        },
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "백석대학교 백녹담 — 가을 감성 영화",
+          "url": "https://community.bu.ac.kr/bbs/web/1692/51330/artclView.do?layout=unknown",
+          "note": "가을 감성 영화 목록에서 건축학개론을 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 5,
+      "tags": [
+        "snow"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "snow"
+          ],
+          "title": "YTN — 너의 결혼식, 박보영♥김영광이 그린 사계절 연애史",
+          "url": "https://www.ytn.co.kr/_ln/0117_201808201052148921",
+          "note": "배급사 공개 장면을 소개하며 두 주인공이 눈 내리는 거리를 걷는 겨울 장면을 명시. 눈 테마의 장면 근거."
+        }
+      ]
+    },
+    {
+      "contentId": 8,
+      "tags": [
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "아트인사이트 — [Opinion] 가을을 여는 장면들 [영화]",
+          "url": "https://www.artinsight.co.kr/news/view.php?no=71977",
+          "note": "가을에 볼 영화로 김정권 감독의 동감(2000)을 추천. 동명의 2022년 리메이크와 구분."
+        }
+      ]
+    },
+    {
+      "contentId": 10,
+      "tags": [
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "백석대학교 백녹담 — 가을 감성 영화",
+          "url": "https://community.bu.ac.kr/bbs/web/1692/51330/artclView.do?layout=unknown",
+          "note": "가을 감성 영화 목록에서 백종열 감독의 뷰티 인사이드(2015)를 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 11,
+      "tags": [
+        "autumn",
+        "winter",
+        "christmas"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "ELLE — 겨울 직전에 꺼내 보고 싶은 가을맛 영화 추천 3",
+          "url": "https://www.elle.co.kr/article/1892123",
+          "note": "이정재·전지현 주연 시월애(2000)를 늦가을 추천작으로 선정."
+        },
+        {
+          "tags": [
+            "winter",
+            "christmas"
+          ],
+          "title": "마리끌레르 — OTT에 다 있다! 실패 없는 홀리데이 영화 3",
+          "url": "https://www.marieclairekorea.com/culture/2023/12/holidaymovie3/",
+          "note": "겨울 연말·크리스마스에 볼 영화로 시월애(2000)를 직접 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 17,
+      "tags": [
+        "parents"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "parents"
+          ],
+          "title": "맥스무비 — 어버이날에 꼭 봐야 할 영화 몇 편",
+          "url": "https://v.daum.net/v/cc0XvbylAt",
+          "note": "맥스무비 공식 발행 채널의 어버이날 추천 목록에 수상한 그녀(2014)를 포함."
+        }
+      ]
+    },
+    {
+      "contentId": 20,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 로맨스 정주행 추천작으로 나의 해방일지를 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 22,
+      "tags": [
+        "spring",
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "spring"
+          ],
+          "title": "테일러콘텐츠 — 봄 향기 품은 영화 5",
+          "url": "https://v.daum.net/v/BxDvZBUlvd",
+          "note": "테일러콘텐츠 공식 발행 채널의 봄 영화 추천에 봄날은 간다를 포함."
+        },
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "bnt뉴스 — 가을에 보기 좋은 영화 추천",
+          "url": "https://www.bntnews.co.kr/article/view/bnt202010120029",
+          "note": "허진호 감독의 봄날은 간다(2001)를 가을에 볼 영화로 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 23,
+      "tags": [
+        "autumn",
+        "rain",
+        "summer"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "백석대학교 백녹담 — 가을 감성 영화",
+          "url": "https://community.bu.ac.kr/bbs/web/1692/51330/artclView.do?layout=unknown",
+          "note": "가을 감성 영화 목록에서 클래식(2003)을 추천."
+        },
+        {
+          "tags": [
+            "rain"
+          ],
+          "title": "ELLE — 비와 로맨스",
+          "url": "https://www.elle.co.kr/article/18738",
+          "note": "비 오는 날의 로맨스 영화로 클래식을 소개하며 빗속 장면을 선정."
+        },
+        {
+          "tags": [
+            "summer"
+          ],
+          "title": "ESQUIRE — 더위를 잊게 하는 압도적 몰입감, 여름 영화·드라마 인생작 추천 4",
+          "url": "https://www.esquirekorea.co.kr/article/1905194",
+          "note": "여름 영화로 클래식(2003)을 선정. 여름방학과 소나기 장면을 추천 이유로 설명."
+        }
+      ]
+    },
+    {
+      "contentId": 27,
+      "tags": [
+        "winter",
+        "christmas",
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "winter",
+            "christmas"
+          ],
+          "title": "텐아시아 — 크리스마스 연휴 맞이 정주행할 드라마 TOP5",
+          "url": "https://v.daum.net/v/20231222200102927",
+          "note": "텐아시아 공식 발행 기사에서 겨울 배경의 도깨비를 크리스마스 정주행 작품으로 추천."
+        },
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "ELLE — 아이유 기습 등장! 2025 가을 맞이 감성 가득 콘텐츠 모음",
+          "url": "https://www.elle.co.kr/article/1887833",
+          "note": "가을 감성 영화·드라마 큐레이션에서 도깨비(2016)를 선정. 별도의 겨울 추천 근거와 함께 복수 계절을 부여."
+        }
+      ]
+    },
+    {
+      "contentId": 32,
+      "tags": [
+        "rain"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "rain"
+          ],
+          "title": "뉴스프리존 — 영화 지금 만나러 갑니다 제작보고회",
+          "url": "https://www.newsfreezone.co.kr/news/articleView.html?idxno=42880",
+          "note": "한국판 지금 만나러 갑니다(2018)의 제작발표회 취재. 감독이 비 오는 날 다시 만나는 연인이라는 핵심 설정을 설명한 직접 취재 근거."
+        }
+      ]
+    },
+    {
+      "contentId": 39,
+      "tags": [
+        "spring"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "spring"
+          ],
+          "title": "ELLE — 3월이면 생각나는 새학기 설렘 되살릴 청춘 드라마 3",
+          "url": "https://www.elle.co.kr/article/1898123",
+          "note": "3월 새학기 계절에 추천하는 청춘물로 스물다섯 스물하나를 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 46,
+      "tags": [
+        "chuseok"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "chuseok"
+          ],
+          "title": "ELLE — 긴긴 연휴, 드라마 결방을 달래줄 영화 3",
+          "url": "https://www.elle.co.kr/article/1870555",
+          "note": "추석에 볼 영화로 강하늘·정소민 주연 30일(2023)을 직접 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 58,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 정주행 추천작으로 눈물의 여왕을 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 59,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 정주행 추천작으로 동백꽃 필 무렵을 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 66,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 사극 추천작으로 옥씨부인전을 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 311,
+      "tags": [
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "서울신문 — 사랑과 우정, 그 간질거리는 설렘에 대하여 [OTT 언박싱]",
+          "url": "https://www.seoul.co.kr/news/editOpinion/opinion/review-new-contents/2023/10/13/20231013019002",
+          "note": "키노라이츠 매거진 편집장의 가을 감성 추천작으로 사운드트랙#1(2022)을 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 331,
+      "tags": [
+        "winter",
+        "christmas"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "winter",
+            "christmas"
+          ],
+          "title": "텐아시아 — 크리스마스 연휴 맞이 정주행할 드라마 TOP5",
+          "url": "https://v.daum.net/v/20231222200102927",
+          "note": "겨울 배경과 로맨스를 소개하며 사랑의 불시착을 크리스마스 연휴 추천작으로 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 336,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 정주행 추천작으로 이상한 변호사 우영우를 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 343,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 로맨스 추천작으로 선재 업고 튀어를 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 357,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 사극 추천작으로 연인(2023)을 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 360,
+      "tags": [
+        "seollal"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "seollal"
+          ],
+          "title": "ELLE — 설 연휴 정주행하기 좋은 장르별 레전드 드라마 총정리",
+          "url": "https://www.elle.co.kr/article/1876401",
+          "note": "설 연휴 사극 추천작으로 옷소매 붉은 끝동을 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 371,
+      "tags": [
+        "spring"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "spring"
+          ],
+          "title": "ELLE — 3월이면 생각나는 새학기 설렘 되살릴 청춘 드라마 3",
+          "url": "https://www.elle.co.kr/article/1898123",
+          "note": "3월 새학기와 캠퍼스 분위기에 맞는 드라마로 치얼업(2022)을 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 401,
+      "tags": [
+        "summer"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "summer"
+          ],
+          "title": "iMBC — 밀수 400만 관객 돌파, 한국영화계에 내린 단비",
+          "url": "https://enews.imbc.com/M/Detail/391140",
+          "note": "시원한 수중 액션과 유쾌한 연출을 이유로 밀수(2023)를 여름 극장 필람 영화로 소개."
+        }
+      ]
+    },
+    {
+      "contentId": 405,
+      "tags": [
+        "memorial"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "memorial"
+          ],
+          "title": "왓챠 공식 추천 — 현충일 특선 영화 모음",
+          "url": "https://watcha.com/ko/staffmades/1603",
+          "note": "왓챠의 현충일 특선 공식 큐레이션에 명량(2014)을 포함."
+        }
+      ]
+    },
+    {
+      "contentId": 407,
+      "tags": [
+        "liberation",
+        "independence-march",
+        "memorial"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "liberation"
+          ],
+          "title": "대한민국 정책브리핑·행정안전부 — 광복절에 꼭 봐야 하는 영화 7선",
+          "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148919462",
+          "note": "행정안전부의 광복절 추천 영화 목록에 암살(2015)을 포함."
+        },
+        {
+          "tags": [
+            "independence-march"
+          ],
+          "title": "대한민국 정책브리핑 — ‘암살’ 전지현 통해 본 여성 독립운동가",
+          "url": "https://www.korea.kr/news/reporterView.do?newsId=148810028",
+          "note": "3.1절 특집에서 영화 암살(2015)을 통해 여성 독립운동가의 희생과 공로를 조명. 삼일절과 작품의 직접적인 주제 연결 근거."
+        },
+        {
+          "tags": [
+            "memorial"
+          ],
+          "title": "왓챠 공식 추천 — 현충일 특선 영화 모음",
+          "url": "https://watcha.com/ko/staffmades/1603",
+          "note": "왓챠의 현충일 특선 공식 큐레이션에 암살(2015)을 포함."
+        }
+      ]
+    },
+    {
+      "contentId": 409,
+      "tags": [
+        "chuseok"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "chuseok"
+          ],
+          "title": "ELLE — 추석 안방에서 즐기는 TV 특선 영화와 특집 예능은?",
+          "url": "https://prd.elle.co.kr/article/1889110",
+          "note": "추석에 즐길 범죄 영화로 베테랑2(2024)를 추천. 기사에 실린 과거 방송 편성은 현재 감상 가능 여부를 뜻하지 않음."
+        }
+      ]
+    },
+    {
+      "contentId": 436,
+      "tags": [
+        "spring",
+        "summer",
+        "new-year"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "spring"
+          ],
+          "title": "동아일보·스포츠동아 — 랜선 봄 즐길 수 있는 추천 콘텐츠② 영화로 전하는 따스한 위로",
+          "url": "https://www.donga.com/news/Entertainment/article/all/20200402/100478387/5",
+          "note": "봄을 즐길 수 있는 영화로 임순례 감독의 리틀 포레스트(2018)를 추천. 일본판과 구분."
+        },
+        {
+          "tags": [
+            "summer"
+          ],
+          "title": "VOGUE — 여름 분위기 물씬 느껴지는 영화 5",
+          "url": "https://www.vogue.co.kr/2024/05/31/%EC%97%AC%EB%A6%84-%EB%B6%84%EC%9C%84%EA%B8%B0-%EB%AC%BC%EC%94%AC-%EB%8A%90%EA%BB%B4%EC%A7%80%EB%8A%94-%EC%98%81%ED%99%94-5/",
+          "note": "리틀 포레스트(2018)를 여름 추천작으로 명시. 한국판의 여름 제철 음식과 시골 생활을 소개."
+        },
+        {
+          "tags": [
+            "new-year"
+          ],
+          "title": "아트인사이트 — [Opinion] 새해 마음가짐을 정할 수 있는 영화 5 [영화]",
+          "url": "https://www.artinsight.co.kr/news/view.php?no=79089",
+          "note": "새해에 회복과 쉼을 계획할 작품으로 혜원이 고향에 돌아오는 한국 영화 리틀 포레스트(2018)를 추천."
+        }
+      ]
+    },
+    {
+      "contentId": 450,
+      "tags": [
+        "independence-march",
+        "liberation"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "independence-march"
+          ],
+          "title": "ELLE — 현빈-고아성-이제훈이 연기한 안중근-유관순-박열",
+          "url": "https://www.elle.co.kr/article/1878046",
+          "note": "3.1절 맞이 독립운동가 영화 추천에서 현빈 주연 하얼빈(2024)을 선정."
+        },
+        {
+          "tags": [
+            "liberation"
+          ],
+          "title": "ESQUIRE — 광복절에 꼭 봐야할 영화 9",
+          "url": "https://prd.esquirekorea.co.kr/article/1907495",
+          "note": "광복절 추천 목록에서 안중근 의거를 다룬 하얼빈(2024)을 선정."
+        }
+      ]
+    },
+    {
+      "contentId": 482,
+      "tags": [
+        "summer"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "summer"
+          ],
+          "title": "아트인사이트 — [Opinion] 여름의 한 시절 꺼내어보기 : 남매의 여름밤 [영화]",
+          "url": "https://www.artinsight.co.kr/news/view.php?no=49695",
+          "note": "여름방학과 가족의 여름 기억을 담은 남매의 여름밤(2020)을 여름에 돌아볼 작품으로 소개."
+        }
+      ]
+    },
+    {
+      "contentId": 497,
+      "tags": [
+        "hangul"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "hangul"
+          ],
+          "title": "국제뉴스 — 특선영화 편성표 없다면... 한글날 사흘 연휴, 집에서 볼 추천작은?",
+          "url": "https://www.gukjenews.com/news/articleView.html?idxno=3717121",
+          "note": "한글날 연휴 추천작으로 세종과 장영실을 다룬 천문: 하늘에 묻는다(2019)를 소개."
+        }
+      ]
+    },
+    {
+      "contentId": 498,
+      "tags": [
+        "hangul"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "hangul"
+          ],
+          "title": "국제뉴스 — 특선영화 편성표 없다면... 한글날 사흘 연휴, 집에서 볼 추천작은?",
+          "url": "https://www.gukjenews.com/news/articleView.html?idxno=3717121",
+          "note": "한글날 연휴 추천작으로 나랏말싸미(2019)를 선정. 영화적 각색을 포함한 작품의 추천 근거이며 역사적 사실의 검증 자료는 아님."
+        }
+      ]
+    },
+    {
+      "contentId": 763,
+      "tags": [
+        "summer"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "summer"
+          ],
+          "title": "ESQUIRE — 더위를 잊게 하는 압도적 몰입감, 여름 영화·드라마 인생작 추천 4",
+          "url": "https://www.esquirekorea.co.kr/article/1905194",
+          "note": "여름 추천 드라마로 기묘한 이야기(2016~)를 선정. 특히 시즌3의 여름방학과 수영장 배경을 근거로 소개."
+        }
+      ]
+    },
+    {
+      "contentId": 829,
+      "tags": [
+        "winter",
+        "snow",
+        "christmas"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "winter",
+            "snow",
+            "christmas"
+          ],
+          "title": "Netflix Tudum — In That Christmas, Brian Cox Is a Very Special Santa",
+          "url": "https://www.netflix.com/tudum/articles/that-christmas-release-date-photos-news",
+          "note": "겨울밤을 위한 크리스마스 영화로 소개. 크리스마스의 마을과 가족들을 덮친 눈보라가 핵심 배경이라고 공식 설명."
+        }
+      ]
+    },
+    {
+      "contentId": 830,
+      "tags": [
+        "winter",
+        "christmas",
+        "snow"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "winter",
+            "christmas"
+          ],
+          "title": "Netflix Tudum — Christmas Movies to Stream All Through the Holidays",
+          "url": "https://www.netflix.com/tudum/articles/christmas-movies-on-netflix",
+          "note": "공식 겨울 연말·크리스마스 추천 목록에 A Boy Called Christmas(2021)를 포함."
+        },
+        {
+          "tags": [
+            "snow"
+          ],
+          "title": "Czech Film Commission — A Boy Called Christmas",
+          "url": "https://filmcommission.gov.cz/en/film/a-boy-called-christmas/",
+          "note": "촬영 지원기관의 공식 작품 소개가 눈과 요정이 등장하는 니콜라스의 모험을 명시. 눈 테마의 실제 배경 근거."
+        }
+      ]
+    },
+    {
+      "contentId": 955,
+      "tags": [
+        "rain"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "rain"
+          ],
+          "title": "Netflix — The Rain 공식 작품 소개",
+          "url": "https://www.netflix.com/gb/title/80154610?fromWatch=true",
+          "note": "2018년 덴마크 시리즈. 비를 통해 전파된 바이러스가 사건의 출발점이라고 공식 시놉시스에 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 1013,
+      "tags": [
+        "autumn"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "autumn"
+          ],
+          "title": "서울신문 — 사랑과 우정, 그 간질거리는 설렘에 대하여 [OTT 언박싱]",
+          "url": "https://www.seoul.co.kr/news/editOpinion/opinion/review-new-contents/2023/10/13/20231013019002",
+          "note": "가을에 어울리는 두 로맨스 작품 중 방우리 감독의 20세기 소녀(2022)를 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 1172,
+      "tags": [
+        "liberation"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "liberation"
+          ],
+          "title": "대한민국 정책브리핑·행정안전부 — 광복절에 꼭 봐야 하는 영화 7선",
+          "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148919462",
+          "note": "행정안전부의 광복절 추천 영화 목록에 안중근의 이야기를 다룬 영웅(2022)을 포함."
+        }
+      ]
+    },
+    {
+      "contentId": 1574,
+      "tags": [
+        "children"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "children"
+          ],
+          "title": "헤럴드경제 — 어린이날 집콕을 택했다면, 엄빠와 함께 즐기는 안방 애니 추천작",
+          "url": "https://www.heraldk.com/article/2026050413300057879",
+          "note": "어린이날 OTT 추천 목록에서 100만 달러의 펜타그램(2024)을 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 1575,
+      "tags": [
+        "children"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "children"
+          ],
+          "title": "헤럴드경제 — 어린이날 집콕을 택했다면, 엄빠와 함께 즐기는 안방 애니 추천작",
+          "url": "https://www.heraldk.com/article/2026050413300057879",
+          "note": "어린이날 OTT 추천 목록에서 척안의 잔상(2025)을 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 1650,
+      "tags": [
+        "rain"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "rain"
+          ],
+          "title": "Apple TV·Universal Pictures — Twisters 공식 작품 소개",
+          "url": "https://tv.apple.com/us/movie/twisters/umc.cmc.6ptkprxyiocuqyqn04yreldpm",
+          "note": "폭풍 추적자와 대형 토네이도가 이야기 중심인 트위스터스(2024). 비/폭풍 테마 중 폭풍에 대한 직접적인 작품 소재 근거."
+        }
+      ]
+    },
+    {
+      "contentId": 1676,
+      "tags": [
+        "children"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "children"
+          ],
+          "title": "헤럴드경제 — 어린이날 집콕을 택했다면, 엄빠와 함께 즐기는 안방 애니 추천작",
+          "url": "https://www.heraldk.com/article/2026050413300057879",
+          "note": "어린이날 OTT 추천 목록에서 짱구 초능력 대결전 날아라 수제김밥(2023)을 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 1696,
+      "tags": [
+        "children"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "children"
+          ],
+          "title": "헤럴드경제 — 어린이날 집콕을 택했다면, 엄빠와 함께 즐기는 안방 애니 추천작",
+          "url": "https://www.heraldk.com/article/2026050413300057879",
+          "note": "어린이날 OTT 추천 목록에서 짱구 우리들의 공룡일기(2024)를 명시."
+        }
+      ]
+    },
+    {
+      "contentId": 1724,
+      "tags": [
+        "chuseok"
+      ],
+      "sources": [
+        {
+          "tags": [
+            "chuseok"
+          ],
+          "title": "ELLE — 긴긴 연휴, 드라마 결방을 달래줄 영화 3",
+          "url": "https://www.elle.co.kr/article/1870555",
+          "note": "추석에 볼 영화로 김해숙·신민아 주연 3일의 휴가(2023)를 직접 추천."
+        }
+      ]
+    }
+  ]
+}
