@@ -1,0 +1,6 @@
+.env*
+!.env.example
+verification/
+reports/
+scripts/test-*
+*.zip
