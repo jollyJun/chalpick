@@ -33,7 +33,7 @@ for (const match of html.matchAll(/(?:src|href)="(\/[^"#?]*)"/g)) {
   if (!pathname || pathname.endsWith('/')) pathname += 'index.html';
   await access(new URL(pathname, root));
 }
-for (const file of ['assets/promo-abstract-v7.webp', 'promo.css']) await access(new URL(file, root));
+for (const file of ['assets/promo-logo-v9.webp', 'promo.css']) await access(new URL(file, root));
 assert.ok(!/promo-(?:wide|sidebar)\.webp/.test(html), '기존 작품 장면처럼 보이는 광고 이미지 사용 안 함');
 assert.ok(html.includes('웹툰 · 웹소설 · 드라마 · 영화'), '홍보 문구는 이미지가 아닌 실제 한글 텍스트');
 assert.ok(!html.includes('여기가 광고하는 자리입니다'), '광고 자리 표시자를 찰픽 홍보 이미지로 교체');

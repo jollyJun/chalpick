@@ -1,4 +1,20 @@
-# 찰픽 광고 이미지 제작·권리 확인 기록 (v7)
+# 찰픽 광고 이미지 제작 기록 v9
+
+2026-10-24. 내장 image_gen 도구로 기존 v7 광고 배경의 펼친 책만 찰픽의 입체 심볼로 바꿨습니다. 편집 대상은 자체 생성한 v7 배경이며 참고 자료는 기존 찰픽 로고입니다. 그 외 제3자 포스터·장면·인물은 입력하지 않았습니다.
+
+- 현재 두 광고 공용 이미지: public/assets/promo-logo-v9.webp
+- 크기 1200×800, 35,426 bytes. 생성 후 웹용 크기·포맷 압축만 했습니다.
+- 생성 원본은 웹사이트_개발/찰픽_v9_검증_20261024/광고_생성원본.png에 보관했습니다.
+- 좌측/상단의 기존 로고와 한글은 HTML로 유지합니다. 광고를 눌러도 팝업을 열지 않습니다.
+- 기존 책 배경은 이전 작업 기록으로 보관하며 v9 배포 산출물에서는 제외합니다.
+
+## v9 최종 편집 프롬프트
+
+Use case: precise-object-edit. Asset type: Chalpick website promotional 3D illustration. Image 1 is the edit target: preserve its existing icy white/light blue background, aspect ratio, camera, glass circular pedestal, floating rounded square/circle/play tiles, translucent glass materials, highlights and right-weighted composition with quiet left negative space. Image 2 is supporting brand reference. Replace ONLY the open white book floating immediately above the glass pedestal with a large, beautiful three-dimensional Chalpick logo ICON from image 2: the four separated rounded petal/quadrant forms surrounding a sharp four-point diamond-shaped negative space, blue upper-left, turquoise upper-right, violet-blue lower-left, pale blue lower-right. Preserve the exact recognizable four-part silhouette and central star gap of the icon. Render it as premium glossy dimensional glass/enamel, upright facing the viewer with a slight perspective matching the scene, floating at precisely the book's position. It should be the hero object where the book was, not a tiny mark on a corner. Completely remove the book and pages. Do not copy or include the Korean wordmark from reference 2; existing website typography is separate. No additional text, logos, letters, watermarks, characters, comic panels or existing entertainment artwork. Do not redesign other objects. Keep the composition compatible with both a wide banner and right-side crop. Return the edited artwork only.
+
+아래는 이전 버전의 제작·검토 기록이며 현재 적용 내용은 위의 v9 기록을 우선합니다.
+
+# 찰픽 광고 이미지 제작·권리 확인 기록 (v7 보관)
 
 ## 현재 적용 이미지
 

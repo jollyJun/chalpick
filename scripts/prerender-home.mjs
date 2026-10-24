@@ -72,7 +72,7 @@ function popularRegions(popular,byId){
 function contextRegion(items,generatedAt){
   const theme=themeById(currentThemeIds(new Date(generatedAt)).season);
   const picks=sortByTaste(items.filter(item=>matchesTheme(item,theme)),SAMPLE_PROFILE),preview=picks.slice(0,3);
-  const content=picks.length?`<h3>${escapeHTML(theme.title)}</h3><button type="button" class="context-image-button" data-action="theme" data-theme="${escapeHTML(theme.id)}" aria-label="${escapeHTML(theme.title)} 작품 보기"><span class="context-scene" aria-hidden="true"><span class="scene-orbit"></span><span class="scene-motif">${escapeHTML(theme.icon)}</span><span class="scene-line"></span><span class="context-season-label">${escapeHTML(theme.label)}</span></span><span class="context-preview" aria-hidden="true">${preview.map(item=>`<span class="context-work"><span class="context-cover">${image(item,'')||`<span>${escapeHTML(item.title)}</span>`}</span><span class="context-work-title">${escapeHTML(item.title)}</span></span>`).join('')}</span></button>`:'';
+  const content=picks.length?`<h3>${escapeHTML(theme.title)}</h3><button type="button" class="context-card-button" data-action="theme" data-theme="${escapeHTML(theme.id)}" aria-label="${escapeHTML(theme.title)} 작품 보기"><span class="context-scene" aria-hidden="true"><span class="scene-orbit"></span><span class="scene-motif">${escapeHTML(theme.icon)}</span><span class="scene-line"></span><span class="context-season-label">${escapeHTML(theme.label)}</span></span><span class="context-preview" aria-hidden="true">${preview.map(item=>`<span class="context-work"><span class="context-cover">${image(item,'')||`<span>${escapeHTML(item.title)}</span>`}</span><span class="context-work-title">${escapeHTML(item.title)}</span></span>`).join('')}</span></button>`:'';
   return {items:preview,html:`<section class="collection-card context-card" aria-labelledby="context-title" data-theme="${theme.id}" data-group="season" ${picks.length?'':'hidden'}><p class="eyebrow">A STORY FOR THIS MOMENT</p><h2 id="context-title">지금 이 순간의 이야기</h2><div id="context-content" aria-live="polite">${content}</div></section>`};
 }
 
@@ -131,6 +131,7 @@ export async function prerenderHome({html,catalog,popular={lists:[]},publicPath,
   for(const [name,value]of Object.entries(regions))rendered=replaceRegion(rendered,name,value);
   const heroPages=Math.max(1,Math.ceil(hero.length/3));
   rendered=rendered.replace('<span id="hero-page"><b>01</b> / 02</span>',`<span id="hero-page"><b>01</b> / ${String(heroPages).padStart(2,'0')}</span>`);
+  if(items.length<=browse.length)rendered=rendered.replace('id="browse-next" data-action="browse-next"','id="browse-next" data-action="browse-next" hidden');
   rendered=rendered.replace('<body>','<body data-catalog-prerendered="true">');
   return rendered;
 }

@@ -109,7 +109,7 @@ function renderContext(){
   if(!theme)return;
   const preview=sortByTaste(items.filter(item=>matchesTheme(item,theme)),profile).slice(0,3);
   box.dataset.theme=theme.id;box.dataset.group=theme.group;
-  $('#context-content').innerHTML=`<h3>${E(theme.title)}</h3><button type="button" class="context-image-button" data-action="theme" data-theme="${E(theme.id)}" aria-label="${E(theme.title)} 작품 보기"><span class="context-scene" aria-hidden="true"><span class="scene-orbit"></span><span class="scene-motif">${E(theme.icon||'✦')}</span><span class="scene-line"></span><span class="context-season-label">${E(theme.label)}</span></span><span class="context-preview" aria-hidden="true">${preview.map(item=>`<span class="context-work"><span class="context-cover">${image(item,'')||`<span>${E(item.title)}</span>`}</span><span class="context-work-title">${E(item.title)}</span></span>`).join('')}</span></button>${theme.group==='weather'?`<small class="context-footnote"><a href="${E(safeURL(weatherContext?.source?.url)||'https://www.met.no/')}" target="_blank" rel="noopener noreferrer">${E(weatherContext?.source?.name||'MET Norway')}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></small>`:''}`;
+  $('#context-content').innerHTML=`<h3>${E(theme.title)}</h3><button type="button" class="context-card-button" data-action="theme" data-theme="${E(theme.id)}" aria-label="${E(theme.title)} 작품 보기"><span class="context-scene" aria-hidden="true"><span class="scene-orbit"></span><span class="scene-motif">${E(theme.icon||'✦')}</span><span class="scene-line"></span><span class="context-season-label">${E(theme.label)}</span></span><span class="context-preview" aria-hidden="true">${preview.map(item=>`<span class="context-work"><span class="context-cover">${image(item,'')||`<span>${E(item.title)}</span>`}</span><span class="context-work-title">${E(item.title)}</span></span>`).join('')}</span></button>${theme.group==='weather'?`<small class="context-footnote"><a href="${E(safeURL(weatherContext?.source?.url)||'https://www.met.no/')}" target="_blank" rel="noopener noreferrer">${E(weatherContext?.source?.name||'MET Norway')}</a> · <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener noreferrer">CC BY 4.0</a></small>`:''}`;
 }
 async function prepareContext(){
   if(contextPromise)return contextPromise;
@@ -199,13 +199,6 @@ async function loadCatalog(){
     setCatalogStatus('전체 검색을 연결하지 못했어요. 잠시 후 다시 시도해주세요.',true);
     if(!bootstrap&&!catalogMeta){$('#results-count').textContent='전체 작품 검색을 연결하지 못했어요';$('#empty-state').hidden=false;$('#empty-state').innerHTML='<h3>작품 검색 자료를 불러오지 못했어요</h3><p>네트워크 연결을 확인한 뒤 다시 시도해주세요.</p><button class="primary-button" data-action="retry">다시 불러오기</button>';}
   }finally{catalogLoading=false;}
-}
-if('IntersectionObserver' in window){
-  document.documentElement.classList.add('auto-browse');
-  const observer=new IntersectionObserver(entries=>{
-    if(entries.some(entry=>entry.isIntersecting))appendNextWorks();
-  },{rootMargin:'0px 0px 240px 0px'});
-  observer.observe($('#browse-sentinel'));
 }
 installPlatformLinks(document);
 initAuth();readLocation();syncLocation(currentWorkId,true);loadCatalog();
