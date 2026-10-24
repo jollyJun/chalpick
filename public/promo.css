@@ -1,4 +1,4 @@
-.advertisement.promo-original{isolation:isolate;position:relative;line-height:1.4;border-color:#dce8fb;background:linear-gradient(115deg,#f9fcff,#eaf5ff);color:#0d1d42}
+.advertisement.promo-original{isolation:isolate;position:relative;line-height:1.4;border-color:#dce8fb;background:linear-gradient(115deg,#f9fcff,#eaf5ff);color:#0d1d42;cursor:default}
 .advertisement.promo-original .promo-art{position:absolute;inset:0 0 0 auto;width:68%;height:100%;object-fit:cover;object-position:right center;z-index:-1}
 .advertisement.promo-original::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,#f4f9ff 0%,#f4f9fff2 25%,#f4f9ff00 65%);z-index:-1;pointer-events:none}
 .promo-copy{display:flex;flex-direction:column;align-items:flex-start;position:relative;gap:12px;padding:30px 4.8%;text-align:left}
