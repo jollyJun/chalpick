@@ -13,6 +13,11 @@ export function facetCounts(group, items) {
   return counts;
 }
 
+export function sortFacetLabels(labels, counts) {
+  return [...labels].sort((left, right) =>
+    (counts.get(right) || 0) - (counts.get(left) || 0) || left.localeCompare(right, 'ko'));
+}
+
 export const PLATFORM_FILTERS = Object.freeze(['넷플릭스', '네이버웹툰', '네이버시리즈', '카카오페이지', '티빙', '리디', 'U+tv모바일', '웨이브', '왓챠', '쿠팡플레이', '애플TV', '디즈니+', '카카오웹툰']);
 
 const platformKey = value => String(value || '').normalize('NFKC').toLocaleLowerCase('ko').replace(/[\s_-]+/g, '');

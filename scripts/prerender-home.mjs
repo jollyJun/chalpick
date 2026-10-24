@@ -2,7 +2,7 @@ import {readFile} from 'node:fs/promises';
 import path from 'node:path';
 import {SAMPLE_PROFILE,sortByTaste,immersivePicks,discoveryPicks} from '../public/recommendation.js';
 import {currentThemeIds,themeById,matchesTheme} from '../public/context.js';
-import {facetCounts,PLATFORM_FILTERS} from '../public/facets.js';
+import {facetCounts,sortFacetLabels,PLATFORM_FILTERS} from '../public/facets.js';
 import {preparePopularLists,popularCoverSymbol,popularCoverItem} from '../public/catalog-display.js';
 import {safePublicURL} from '../public/catalog-client.js';
 
@@ -51,7 +51,7 @@ function heroCard(item,index){
 
 function chip(label,count,dimension){
   const unavailable=count===0;
-  return `<button class="facet-chip ${unavailable?'is-empty':''}" data-facet="${dimension}" data-value="${escapeHTML(label)}" aria-pressed="false" ${unavailable?'disabled':''}>${escapeHTML(label)}</button>`;
+  return `<button class="facet-chip ${unavailable?'is-empty':''}" data-facet="${dimension}" data-value="${escapeHTML(label)}" aria-pressed="false" ${unavailable?'disabled':''}>${escapeHTML(label)} <span class="facet-count">${count.toLocaleString('ko-KR')}</span></button>`;
 }
 
 function popularRegions(popular,byId){
@@ -108,15 +108,15 @@ export async function prerenderHome({html,catalog,popular={lists:[]},publicPath,
   const counts=Object.fromEntries(GROUPS.map(group=>[group.id,facetCounts(group.id,items)]));
   const taxonomy={...catalog.taxonomy,groups:catalog.taxonomy.groups.map(group=>({...group,tags:group.tags.map(tag=>({...tag,count:counts[group.id]?.get(tag.label)||0}))}))};
   const tabs=GROUPS.map(group=>`<button role="tab" id="facet-tab-${group.id}" aria-controls="facet-tag-panel" aria-selected="${group.id==='genre'}" tabindex="${group.id==='genre'?0:-1}" data-tab="${group.id}">${group.label}</button>`).join('');
-  const genres=[...(taxonomy.groups.find(group=>group.id==='genre')?.tags||[])].sort((left,right)=>(counts.genre.get(right.label)||0)-(counts.genre.get(left.label)||0)||left.label.localeCompare(right.label,'ko'));
-  const platformCounts=facetCounts('platform',items),platforms=PLATFORM_FILTERS.map(label=>[label,platformCounts.get(label)||0]);
+  const genres=sortFacetLabels((taxonomy.groups.find(group=>group.id==='genre')?.tags||[]).map(tag=>tag.label),counts.genre);
+  const platformCounts=facetCounts('platform',items),platforms=sortFacetLabels(PLATFORM_FILTERS,platformCounts).map(label=>[label,platformCounts.get(label)||0]);
   const bootstrap={schemaVersion:1,source:'supabase',generatedAt,meta,taxonomy,items:selected,popular:rankings,coverImages,...(release?{release}:{} )};
   const regions={
     preload:hero[0]?`<link rel="preload" as="image" href="${escapeHTML(safeImage(hero[0].image))}" fetchpriority="high" referrerpolicy="no-referrer">`:'',
     hero:hero.slice(0,3).map(heroCard).join(''),
     curated:curated.map(item=>card(item,{eager:true})).join(''),
     'facet-tabs':tabs,
-    facets:genres.slice(0,16).map(tag=>chip(tag.label,counts.genre.get(tag.label)||0,'genre')).join(''),
+    facets:genres.slice(0,16).map(label=>chip(label,counts.genre.get(label)||0,'genre')).join(''),
     'facet-more':`<button class="facet-more" id="facet-more" data-action="facet-more" aria-expanded="false" ${genres.length<=16?'hidden':''}>더 보기</button>`,
     platforms:platforms.map(([label,count])=>chip(label,count,'platform')).join(''),
     browse:browse.map(item=>card(item,{tags:true})).join(''),
